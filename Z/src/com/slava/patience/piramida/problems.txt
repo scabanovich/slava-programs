@@ -1,0 +1,219 @@
+Problem 2
+	static String PACK = 
+		"9dAcAs" + 
+		"Ks5s7s2cJh3d" + 
+		"Jd2h7hAh8c5h5d8h4s" + 
+		"9hJs9s3s4d0c7c3c0hQh" +
+		//Reserve
+		"4c3hQs6sQc0dKd6c6h2sKc9cKh8s5cJc8d7d2d0sAd6d4h" +
+		// base
+		"Qd";
+Solution 1820
+ - 3s - 4d 3c - Js 0c 9h 8c 9s 0h Jd - 7h 8h 7c - - - Ah 2h - 5s - 5d - - Qh Jh - - - 7s - 4s 5h - - - - 3d 2c Ac Ks As - 9d
+		
+Problem 3
+	static String PACK = 
+		"0d7d8h" + 
+		"5h0cJd7hAd9d" + 
+		"As9s8c2h4d3sKcKhKd" + 
+		"Ac9h2d6d6hJcQhQdQc6s" +
+		//Reserve
+		"2s4s8sJh5cKs3h5d6c0s0h2c5s9c4h7cJsQs4c7s3cAh8d" +
+		// base
+		"3d";
+Solution 10800
+ - Ac 2d - - 9h - Qh Jc Qd Kc As - 6h - - 4d - 6d - - - - 3s 2h - 6s 7h 8c 9s 0c Jd Qc Kh Ad Kd - - 5h - - 0d 9d 8h 7d
+		
+	static String PACK = 
+		"7c2d6h" + 
+		"4c6s2hQh5hKs" + 
+		"9d8dJhJs6dQc2cQd0d" + 
+		"4hJcAdQs8h6c9h5c7s0c" +
+		//Reserve
+		"3h9c0s9sAh3s0h7hAsKhKd3c8c8s4dJd4s2s5dAc5s7dKc" +
+		// base
+		"3d";
+Solution 5340
+ - - - - - - 4h 5c 6c 7s 8h 9h 0c Jc Qc - - 6d - 2c Ad - Qs Jh Qh Js 0d 9d 8d - Qd Ks - 2h - - - - - - - 4c 5h 6s 7c 6h - 2d
+
+Problem 1		
+	static String PACK = 
+		"5h4s4h" + 
+		"3s5d9h7s3d6s" + 
+		"7d9sAc9d8h6dKh8c0c" + 
+		"5cJd2dJhAhJsQd8d6h8s" +
+		//Reserve
+		"0sAsAd7c3hKcQc2s7h6c5s9cKsQs4c2c3c0h0dKdJc4d2h" +
+		// base
+		"Qh";
+Solution 12530
+ Jd Qd Js - Jh - 2d Ac - - 6d 5c 6h - - Ah - - - 8d - - - - - Kh - - - - 9s 8h 7s 8s 9d 0c 9h 8c 7d 6s 5d 4s 3d 4h 3s - - - - 5h
+
+Problem 2
+	static String PACK = 
+		"7dJh0s" + 
+		"6c2cKs9s6d4s" + 
+		"Kh5c7c7sQhAd6hAs2s" + 
+		"5s3dQd0hAh8d0d3sAc4d" +
+		//Reserve
+		"5d0c8c2h8h9dQs4c9h2d3cJsJcKc4h7h6s9hJd8sKd3hQc" +
+		// base
+		"5h";
+Solution 940
+ - 4d 5s - - - 3d - - 0h - Kh Qd - 5c 6c 7c - 0d - 3s 2c Ac 2s As - 4s - - - Ah - - 6h 7d 6d 7s 8d - - - Qh Ks Ad - 9s 0s Jh
+
+Problem 3
+	static String PACK = 
+		"8c5s2h" + 
+		"AsQc6d8h9h2d" + 
+		"7s9c8s2cAhQd4hKh3h" + 
+		"5d0s5hJs3dJh0d9s0h4d" +
+		//Reserve
+		"6sQh3c4cQs8d6h7hJdKs7cKcKdAc2s9d4s3s6c0c5cAdJc" +
+		// base
+		"7d";
+Solution 8300
+ - 5h 4d 3d - - - 5d - Js 0s 9c 8s 9s 0h Jh Qc Kh Ah 2c - - - - 0d - Qd - 8h 7s 6d 5s 4h 3h 2d As - - - - - 8c 9h - - 2h
+
+Problem4		
+	static String PACK = 
+		"2h6c7c" + 
+		"7dJhQh5sKd4d" + 
+		"Ah0dAc2c9d5d8dJc6s" + 
+		"9h3cQd2sKhQs9s8hAdJs" +
+		//Reserve
+		"0c3dQcAsJd6h3s7s7h5cKc0h8sKs4s0s5h4c9c8c4h2d6d" +
+		// base
+		"3h";
+Solution 1690
+ - Js Qs Kh Qd - 2s Ac 2c 3c - - - 0d 9d 8h 9s 8d 9h - - - - - - Ah - Jh - 7d - Ad 2h - - Jc Qh Kd - 6s 5d 4d 5s 6c 7c
+
+Problem 5
+	static String PACK = 
+		"3s5cJc" + 
+		"2sAdAhKcKh6c" + 
+		"9cJdKd5d9d6sQh8h6d" + 
+		"4hQdJh7h3h7c9sQs7d9h" +
+		//Reserve
+		"7s2cJs6h0hAs5s8dAc4s0d3d2d4d0s8c2h5h8sQcKs4c0h" +
+		// base
+		"3c";
+Solution 4690
+ 4h - - - - 7d - Jh Qd Jd Qs - - - 9c - - 3h - 9s - - - - 9h 8h 7h 6d 5d 6c 7c 6s - 9d - - - - Kc Ah Kd Qh Kh Ad 2s 3s - - 5c - Jc
+
+Problem 6
+	static String PACK = 
+		"Jh6sQh" + 
+		"3h8d8sAd4s3s" + 
+		"9c6cKs0hQdJs9d8hQs" + 
+		"0d6h2sAh8c5d7sKd7d7h" +
+		//Reserve
+		"4h2c2h9hKhAc6d4c0sAsJc5sKc7c5h3c3d0c2dJd5cQc4d" +
+		// base
+		"9s";
+Solution 7270
+ - - Ah Kd - - 0d - - 2s - 5d 6h 7s 8c 9c 0h Js Qd Ks Ad - - - - - 6c 7d 8d 9d 8s 7h 6s - Qs - 8h - - - - - 3h 4s 3s - Qh Jh
+
+Problem 7
+	static String PACK = 
+		"7h5c9d" + 
+		"0hKd6h6c9c2h" + 
+		"Ad3cAh7cKs0d5dJdJh" + 
+		"0s4c2c3dJc6dQd9h8c2h" +
+		//Reserve
+		"QsQh8s8d6sKc8hKhAc3s9sAsQc5s7d5h4s2s7s4hJs0c4d" +
+		// base
+		"3h";
+Solution 7030
+ 4c 3d - Jc 0s 9h 8c 7c 6d - Ks Ad 2c 3c 2h Ah Kd Qd Jd 0h Jh 0d - 7h 6h 5d 6c 5c - 9c - - - - - 2h - - - - - - - - - - - - - 9d
+
+Problem 8
+	static String PACK = 
+		"Ad4sKh" + 
+		"Js7d4h9sQhQd" + 
+		"QsKd7cJh3h8c9c3c6d" + 
+		"7sKs6s6h8dJd0d5d5s3d" +
+		//Reserve
+		"2sKc9d2c5cAh5h7hAc4cJc3s8s2h0s0cAs2dQc9h4d0h8h" +
+		// base
+		"6c";
+Solution 1290
+ 7s 8d - - - 0d Jd - 3h - 6s 5d 6h 7c 8c 9s - Ks Qs Jh - 4h 3d 4s 5s 6d - - - 3c - Qd Kd - - 7d - - 9c - Js Qh Kh Ad
+		
+Problem 9
+	static String PACK = 
+		"AhJh6d" + 
+		"2h5cQs5s2c7s" + 
+		"8dQh5d8s6c4s8cAc6h"+ 
+		"9h9s7hAdQcKdQdJc0d3h" +
+		//Reserve
+		"7d3cKsKh9cJdJs4h3s9d0h4cAs4d0c3d2sKc0s8h5h2d6s" +
+		// base
+		"7c";
+Solution 12020
+ - - - - Ad - - Qc Kd Qd Jc 0d 9h 8s 9s 8d 7h 8c - Qh - - 2h Ac 2c 3h 4s 5d 6c 5c 6h 7s 6d 5s - - - - - - - - Ah - Qs Jh
+
+Problem 10
+	static String PACK = 
+		"Qc5c6c" + 
+		"8s4h0d9h7dAh" + 
+		"9c4cQd3dAd7c6h9sAs"+ 
+		"7h3s2hKcAc3cQh4d3h6d" +
+		//Reserve
+		"0c0h8c8h2d6s4sKhJh0s2c5h2sKsQsKd5dJdJs5s8d9dJc" +
+		// base
+		"7s";
+Solution 3060
+ - - - - - 3h 2h 3s 4c 3c 4d - 7h 6d - - As Kc Qd - Qh - 9s - Ac - 6h 7c - 3d - Ah - - Ad - - - - - 9h 0d 9c 8s 7d 6c 5c 4h - - Qc
+
+Problem 11
+	static String PACK = 
+		"7h9d3c" + 
+		"KdAd3hJcAhQd" + 
+		"2c7cJd2h0c6c0d9h2s"+ 
+		"8s7d5c4hJh5sKhJs4d5h" +
+		//Reserve
+		"7s3dQc4c0hAc9cQsKc8h6dKs2d6s6h8cQh8dAs5d9s0s4s" +
+		// base
+		"3s";
+Solution 6180
+ 4d 5h - - 2s - Jh - 5c 4h 5s - Jd - Kh - 8s 7d 6c 7c - - Ad 2c - - - - - - - - Js 0c 9h 0d Jc Qd Kd Ah 2h 3h - 7h - - - - 9d - 3c
+
+Problem 12
+	static String PACK = 
+		"5s8cJd" + 
+		"2dAdJc3sQsKc" + 
+		"5h3hJhQc8h0cKs6d4h"+ 
+		"3c0dQd9hAh4d7hAs0sJs" +
+		//Reserve
+		"9s9c6s4c7d2cQh5d7s3d9d7cKh6c2h8d0h2sAc4s6h8s5c" +
+		// base
+		"Kd";
+Solution 4190
+ As - 0d Js Qd - 0s 9h - 7h 6d - 3h 4h 3c 4d 5h - - Ah Ks - - - 8h - - 0c Jh Qc Jc Qs Kc Ad 2d 3s - 8c - - 5s - - - Jd
+
+Problem 13
+	static String PACK = 
+		"7c0h9d" + 
+		"6d3d7d2sQh6h" + 
+		"7hAs4cKc9cJcQdJsQs"+ 
+		"2hAc5d9hAh7s3cKd4s5c" +
+		//Reserve
+		"3s8s2d6sQc8h0dKs8c0c0s5h4hJhJdAd8d5s2c9s4dKh6c" +
+		// base
+		"3h";
+Solution 4260
+ - 2h Ah - 7s - Ac Kd - 7h - - 9c - 9h - - - - - - 5d 4c 3c 4s 5c - Qd Jc Qs Js Qh Kc As 2s 3d - - - 7d 6d 7c 6h - - - 0h 9d
+
+Problem 14
+	static String PACK = 
+		"8cJdAd" + 
+		"Ac6h2cKc5c5h" + 
+		"8d3hKs7sJc2h8s2sJh"+ 
+		"7h9dJsKd3d0hAs4dQh2d" +
+		//Reserve
+		"5s6c6d6s3cKh9h4h7d4c0sQc3s7c5d8h9s4s0dQs0cAhQd" +
+		// base
+		"9c";
+Solution 4210
+ - 4d 3d 2d - 7h - - - - As Kd Qh Jh 0h 9d 8d 7s 8s - - - - - Jc - Js - 2c 3h 2s Ac Ks - 6h 5c - - - 8c - 5h - - - - 2h Ad Kc - Jd

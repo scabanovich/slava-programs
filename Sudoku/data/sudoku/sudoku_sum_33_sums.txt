@@ -1,0 +1,29 @@
+  7  +  7  + 12 24  +  +  4
+  7  + 16  +  +  8  +  9  +
+ 15  8  + 14  6  + 16  + 15
+  + 17  9  +  +  +  +  +  +
+  +  +  + 19 11 21  +  + 10
+  5  +  +  +  +  9  +  3  +
+ 13  +  6 14 12 13  +  + 17
+ 18  +  +  +  +  8  4  +  +
+  +  + 12  +  +  +  + 16  +
+
+ dlu rdu dlu rdu rlu dlu  du rdu rlu
+ dlu rdu dlu rdu rdl dlu rdu rlu rdl
+ rlu dlu rdu rlu dlu  ru rlu rdl rlu
+  rl rlu rlu  dl rdu rdl  dl rdu rdl
+ rdl rdl rdl rlu rlu dlu  du rdu rlu
+ dlu rdu dlu  rd rdl dlu rdu rlu rdl
+ dlu rdu rlu rlu rlu dlu rdu rdl rlu
+ rlu dlu  rd rdl  rl rlu rlu dlu  rd
+  dl rdu dlu rdu rdl rdl rdl dlu rdu
+
+ 2 5 6 1 4 9 8 7 3
+ 4 3 9 7 8 6 2 5 1
+ 8 7 1 5 3 2 9 4 6
+ 6 8 5 2 7 1 4 3 9
+ 1 9 4 3 5 8 7 6 2
+ 3 2 7 9 6 4 5 1 8
+ 9 4 3 8 1 7 6 2 5
+ 7 1 2 6 9 5 3 8 4
+ 5 6 8 4 2 3 1 9 7
