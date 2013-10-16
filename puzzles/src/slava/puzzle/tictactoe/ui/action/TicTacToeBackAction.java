@@ -11,7 +11,7 @@ public class TicTacToeBackAction extends PuzzleAction {
 
 	public void actionPerformed(ActionEvent e) {
 		TicTacToeModel model = (TicTacToeModel)manager.getModel();
-		model.back();
+		model.getState().back();
 		manager.getComponent().repaint();
 	}
 }

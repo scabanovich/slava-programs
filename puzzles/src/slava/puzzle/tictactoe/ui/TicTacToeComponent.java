@@ -6,17 +6,20 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Set;
 
 import com.slava.common.RectangularField;
 
 import slava.puzzle.template.gui.PuzzleComponent;
 import slava.puzzle.template.model.PuzzleModel;
 import slava.puzzle.tictactoe.model.TicTacToeModel;
+import slava.puzzle.tictactoe.model.TicTacToeState;
 
 public class TicTacToeComponent extends PuzzleComponent {
 	int margin = 5;
-	int cellSize = 20;
+	int cellSize = 30;
 	int halfCellSize = (cellSize / 2);
+	int statusHeight = cellSize;
 	Dimension componentSize = null;
 
 	public TicTacToeComponent() {
@@ -26,7 +29,7 @@ public class TicTacToeComponent extends PuzzleComponent {
 	public void setModel(PuzzleModel model) {
 		super.setModel(model);
 		int w = getModel().getField().getWidth() * cellSize + margin * 2; 
-		int h = getModel().getField().getHeight() * cellSize + margin * 2;
+		int h = getModel().getField().getHeight() * cellSize + margin * 3 + statusHeight;
 		componentSize = new Dimension(w, h);
 		setPreferredSize(componentSize); 
 	}
@@ -40,6 +43,7 @@ public class TicTacToeComponent extends PuzzleComponent {
 		paintFieldBorder(g);
 		paintCells(g);
 		paintWin(g);
+		paintStatus(g);
 	}
 
 	void paintFieldBorder(Graphics g) {
@@ -62,19 +66,27 @@ public class TicTacToeComponent extends PuzzleComponent {
 			g.setColor(Color.BLACK);
 			String s = "";
 			int v = getModel().getValue(i);
-			g.setColor(getColor(v));
-			int x1 = x + m, x2 = x + cellSize - m, y1 = y + m, y2 = y + cellSize - m;
-			if(v == TicTacToeModel.CROSS) {
-				g.drawLine(x1, y1, x2, y2);
-				g.drawLine(x1, y2, x2, y1);
-			} else if(v == TicTacToeModel.ZERO) {
-				g.drawOval(x1, y1, x2 - x1, y2 - y1);
-			}
+			drawToken(g, v, x, y);
+//			int lc = getModel().getState().getLongest(i, TicTacToeState.CROSS);
+//			if(lc != 0) g.drawString("" + lc, x + 3, y + 10);
+//			int lz = getModel().getState().getLongest(i, TicTacToeState.ZERO);
+//			if(lz != 0) g.drawString("" + lz, x + 15, y + 10);
+		}
+	}
+
+	void drawToken(Graphics g, int v, int x, int y) {
+		g.setColor(getColor(v));
+		int x1 = x + m, x2 = x + cellSize - m, y1 = y + m, y2 = y + cellSize - m;
+		if(v == TicTacToeState.CROSS) {
+			g.drawLine(x1, y1, x2, y2);
+			g.drawLine(x1, y2, x2, y1);
+		} else if(v == TicTacToeState.ZERO) {
+			g.drawOval(x1, y1, x2 - x1, y2 - y1);
 		}
 	}
 
 	Color getColor(int turn) {
-		return turn == TicTacToeModel.CROSS ? Color.RED : Color.BLUE;
+		return turn == TicTacToeState.CROSS ? Color.RED : Color.BLUE;
 	}
 
 	void paintWin(Graphics g) {
@@ -89,6 +101,28 @@ public class TicTacToeComponent extends PuzzleComponent {
 			g.drawLine(xb, yb, xe, ye);
 		}
 	}
+
+	void paintStatus(Graphics g) {
+		if(!getModel().isCompleted()) {
+			int turn = getModel().getTurn();
+			int x = margin;
+			int y = componentSize.height - statusHeight - margin + 2;
+			drawToken(g, turn, x, y);
+			x += cellSize;
+			y += 20;
+			if(!getModel().getState().getPlacesForFive(turn).isEmpty()) {
+				g.drawString("Wins in 1 move.", x, y);
+			} else if(getModel().getState().getPlacesForFive(1 - turn).size() > 1) {
+				g.drawString("Loses in 1 move.", x, y);
+			} else if(getModel().getState().getPlacesForFive(1 - turn).size() == 1) {
+				int p = getModel().getState().getPlacesForFive(1 - turn).iterator().next();
+				g.drawString("Must close 4.", x, y);
+				int xc = margin + cellSize * getModel().getField().getX(p) + halfCellSize;
+				int yc = margin + cellSize * getModel().getField().getY(p) + halfCellSize + 6;
+				g.drawString("!", xc, yc);
+			}
+		}
+	}
 	
 	class ML extends MouseAdapter {
 		public void mouseReleased(MouseEvent e) {
@@ -96,7 +130,7 @@ public class TicTacToeComponent extends PuzzleComponent {
 			if(isInField(p)) {
 				int i = getCell(p);
 				if(i < 0) return;
-				getModel().move(i);
+				getModel().getState().move(i);
 				repaint();
 
 			}
