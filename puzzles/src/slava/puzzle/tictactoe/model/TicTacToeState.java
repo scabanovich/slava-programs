@@ -1,6 +1,8 @@
 package slava.puzzle.tictactoe.model;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import com.slava.common.RectangularField;
@@ -35,6 +37,27 @@ public class TicTacToeState {
 		return field;
 	}
 
+	public TicTacToeState copy() {
+		TicTacToeState copy = new TicTacToeState();
+		copy.field = field;
+		copy.t = t;
+		copy.turn = turn;
+		copy.state = new int[state.length];
+		System.arraycopy(state, 0, copy.state, 0, state.length);
+		copy.history = new int[history.length];
+		System.arraycopy(history, 0, copy.history, 0, history.length);
+		copy.isCompleted = isCompleted;
+		copy.fiveStart = fiveStart;
+		copy.fiveEnd = fiveEnd;
+		copy.longest = new int[2][field.getSize()];
+		copy.sets = new SetWrapper[2];
+		for (int i = 0; i < 2; i++) {
+			copy.sets[i] = sets[i].copy();
+			System.arraycopy(longest[i], 0, copy.longest[i], 0, longest[i].length);
+		}
+		return copy;
+	}
+
 	public void clean() {
 		turn = CROSS;
 		state = new int[field.getSize()];
@@ -58,6 +81,10 @@ public class TicTacToeState {
 		fiveEnd = -1;
 	}
 
+	public int getT() {
+		return t;
+	}
+
 	public int getTurn() {
 		return turn;
 	}
@@ -74,6 +101,10 @@ public class TicTacToeState {
 		state[p] = v;
 	}
 
+	public int getPlaceAt(int t) {
+		return history[t];
+	}
+
 	public boolean isCompleted() {
 		return isCompleted;
 	}
@@ -86,15 +117,22 @@ public class TicTacToeState {
 		return fiveEnd;
 	}
 
+	public void flipTurn() {
+		turn = 1 - turn;
+	}
+
 	public void move(int p) {
 		if(isCompleted() || state[p] != EMPTY) {
 			return;
 		}
+		isCompleted = getPlacesForFive(turn).contains(p);
 		setValue(p, turn);
 		history[t] = p;
-		turn = 1 - turn;
+		flipTurn();
 		t++;
-		checkCompleted(p);
+		if(isCompleted) {
+			checkCompleted(p);
+		}
 		updateLongestOnChange(p);
 	}
 
@@ -103,7 +141,7 @@ public class TicTacToeState {
 		t--;
 		int p = history[t];
 		setValue(p, EMPTY);
-		turn = 1 - turn;
+		flipTurn();
 		isCompleted = false;
 		fiveEnd = -1;
 		fiveStart = -1;
@@ -149,10 +187,11 @@ public class TicTacToeState {
 		for (int d = 0; d < 8; d++) {
 			int q = field.jump(p, d);
 			for (int i = 0; i < 4 && q >= 0; i++) {
-				updateLongest(q);
+				if(state[q] == EMPTY) updateLongest(q);
 				q = field.jump(q, d);
 			}
 		}
+		recomputeCriticalFours();
 	}
 
 	void updateLongest(int p) {
@@ -166,37 +205,136 @@ public class TicTacToeState {
 		if(state[p] != EMPTY) {
 			onChangeLongest(p, turn, oldValue, 0);
 		} else {
-			int newValue = 0;
-			for (int d = 0; d < 4; d++) {
-				int q = p;
-				for (int i = 0; i < 5 && q >= 0; i++) {
-					int k = count(q, d, turn);
-					if(k >= 0 && k + 1 > newValue) {
-						newValue = k + 1;
-					}
-					q = field.jump(q, d + 4);
-				}
-			}
+			int newValue = countNewValue(p, turn);
 			onChangeLongest(p, turn, oldValue, newValue);
 		}
 	}
 
-	int count(int p, int d, int turn) {
-		int r = field.jump(p, d, 5);
-		if(r >= 0 && getValue(r) == turn) return -1;
-		r = field.jump(p, d + 4);
-		if(r >= 0 && getValue(r) == turn) return -1;
-		int c = 0;
-		for (int i = 0; i < 5; i++) {
-			if(p < 0) return -1;
-			if(getValue(p) == turn) {
-				c++;
-			} else if(getValue(p) != EMPTY) {
-				return -1;
+	Map<Integer, Set<Integer>> EMPTY_MAP = new HashMap<Integer, Set<Integer>>();
+
+	void recomputeCriticalFours() {
+		for (int turn = 0; turn < 2; turn++) {
+			Set<Integer> set4 = getPlacesFor(turn, 4);
+			Map<Integer, Set<Integer>> map = null;
+			for (Integer p: set4) {
+				Set<Integer> g5 = null;
+				int p5 = -1;
+				for (int d = 0; d < 4; d++) {
+					int s = 1;
+					int q = p;
+					int qr = -1, ql = -1;
+					while(true) {
+						q = field.jump(q, d);
+						if(q >= 0 && getValue(q) != 1 - turn) {
+							if(getValue(q) == turn) {
+								s++;
+							} else {
+								qr = q;
+								break;
+							}
+						} else {
+							break;
+						}
+					}
+					q = p;
+					while(true) {
+						q = field.jump(q, d + 4);
+						if(q >= 0 && getValue(q) != 1 - turn) {
+							if(getValue(q) == turn) {
+								s++;
+							} else {
+								ql = q;
+								break;
+							}
+						} else {
+							break;
+						}
+					}
+					if(s >= 4) {
+						if(qr >= 0 && set4.contains(qr)) {
+							if(p5 < 0) {
+								p5 = qr;
+							} else {
+								if(g5 == null) {
+									g5 = new HashSet<Integer>();
+									g5.add(p5);
+								}
+								g5.add(qr);
+								
+							}
+						}
+						if(ql >= 0 && set4.contains(ql)) {
+							if(p5 < 0) {
+								p5 = ql;
+							} else {
+								if(g5 == null) {
+									g5 = new HashSet<Integer>();
+									g5.add(p5);
+								}
+								g5.add(ql);
+							}
+							
+						}
+					}
+				}
+				if(g5 != null) {
+					if (map == null) {
+						map = new HashMap<Integer, Set<Integer>>();
+					}
+					map.put(p, g5);
+				}
 			}
-			p = field.jump(p, d);
+			sets[turn].criticalFours = map != null ? map : EMPTY_MAP;
 		}
-		return c;
+	}
+
+	private int countNewValue(int p, int turn) {
+		int newValue = 0;
+		for (int d = 0; d < 4; d++) {
+			int il = -1;
+			int c = 0;
+			int cm = 0;
+			int g = 1;
+			while(true) {
+				int q = field.jump(p, d, il);
+				if(q < 0 || getValue(q) == 1 - turn) {
+					il++;
+					break;
+				}
+				g++;
+				if(getValue(q) == turn) {
+					c++;
+				}
+				if(il == -4) break;
+				il--;
+			}
+			cm = c;
+			int ir = 1;
+			while(true) {
+				int q = field.jump(p, d, ir);
+				if(q < 0 || getValue(q) == 1 - turn) {
+					ir--;
+					break;
+				}
+				if(g == 5) {
+					if(getValue(field.jump(q, d, -5)) == turn) {
+						c--;
+					}
+				} else {
+					g++;
+				}
+				if(getValue(q) == turn) {
+					c++;
+				}
+				if(c > cm) cm = c;
+				if(ir == 4) break;
+				ir++;
+			}
+			if(ir - il + 1 >= 5 && cm + 1 > newValue) {
+				newValue = cm + 1;
+			}
+		}
+		return newValue;
 	}
 
 	void onChangeLongest(int p, int turn, int oldValue, int newValue) {
@@ -207,28 +345,65 @@ public class TicTacToeState {
 	}
 
 	public Set<Integer> getPlacesForFive(int turn) {
-		return sets[turn].set5;
+		return sets[turn].sets[5];
 	}
 
-	public Set<Integer> getPlacesForFour(int turn) {
-		return sets[turn].set4;
+	public Set<Integer> getPlacesFor(int turn, int count) {
+		return sets[turn].sets[count];
+	}
+
+	public Map<Integer, Set<Integer>> getCriticalFours(int turn) {
+		return sets[turn].criticalFours;
 	}
 
 	class SetWrapper {
-		Set<Integer> set4 = new HashSet<Integer>();
-		Set<Integer> set5 = new HashSet<Integer>();
+		Set<Integer>[] sets = new Set[]{null, null, null, new HashSet<Integer>(), new HashSet<Integer>(), new HashSet<Integer>()};
+		Map<Integer, Set<Integer>> criticalFours = new HashMap<Integer, Set<Integer>>();
 		
 		void replace(int p, int oldValue, int newValue) {
-			if(oldValue == 5) {
-				set5.remove(p);
-			} else if(oldValue == 4) {
-				set4.remove(p);
+			if(oldValue >= 3 && oldValue <= 5) {
+				sets[oldValue].remove(p);
 			}
-			if(newValue == 5) {
-				set5.add(p);
-			} else if(newValue == 4) {
-				set4.add(p);
+			if(newValue >= 3 && newValue <= 5) {
+				sets[newValue].add(p);
 			}
 		}
+
+		SetWrapper copy() {
+			SetWrapper copy = new SetWrapper();
+			for (int i = 3; i <= 5; i++) {
+				copy.sets[i].addAll(sets[i]);
+			}
+			copy.criticalFours.putAll(criticalFours);
+			return copy;
+		}
+	}
+
+	public String getCode() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(turn).append(":");
+		int ln = 0;
+		int e = 0;
+		boolean f = false;
+		for (int p = 0; p < state.length; p++) {
+			int v = state[p];
+			if(v == EMPTY) {
+				e++;
+			} else {
+				if(!f) {
+					sb.append((char)(65 + ln));
+					f = true;
+				}
+				if(e > 0) sb.append((char)(96 + e));
+				sb.append(v);
+				e = 0;
+			}
+			if(field.isRightBorder(p)) {
+				ln++;
+				e = 0;
+				f = false;
+			}
+		}
+		return sb.toString();
 	}
 }

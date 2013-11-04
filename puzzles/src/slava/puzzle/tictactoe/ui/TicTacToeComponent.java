@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Map;
 import java.util.Set;
 
 import com.slava.common.RectangularField;
@@ -14,6 +15,7 @@ import slava.puzzle.template.gui.PuzzleComponent;
 import slava.puzzle.template.model.PuzzleModel;
 import slava.puzzle.tictactoe.model.TicTacToeModel;
 import slava.puzzle.tictactoe.model.TicTacToeState;
+import slava.puzzle.tictactoe.model.solver.Result;
 
 public class TicTacToeComponent extends PuzzleComponent {
 	int margin = 5;
@@ -44,6 +46,7 @@ public class TicTacToeComponent extends PuzzleComponent {
 		paintCells(g);
 		paintWin(g);
 		paintStatus(g);
+		paintForceWin(g);
 	}
 
 	void paintFieldBorder(Graphics g) {
@@ -102,6 +105,41 @@ public class TicTacToeComponent extends PuzzleComponent {
 		}
 	}
 
+	void paintForceWin(Graphics g) {
+		Result result = getModel().getResult();
+		if(result == null) return;
+		RectangularField f = getModel().getField();
+		int[] forceWin = result.getForceWin();
+		if(forceWin != null) {
+			int turn = getModel().getState().getTurn();
+			for (int t = 0; t < forceWin.length; t++) {
+				int p = forceWin[t];
+				g.setColor(getColor(turn));
+				int x = margin + f.getX(p) * cellSize + halfCellSize;
+				int y = margin + f.getY(p) * cellSize + halfCellSize + 6;
+				g.drawString("" + (t + 1), x, y);
+				turn = 1 - turn;
+			}
+		} else {
+			boolean isForceDefence = result.isForceDefence();
+			Map<Integer,Integer> ds = result.getResults();
+			int losses = 0, uncertain = 0;
+			for (Integer p: ds.keySet()) {
+				int k = ds.get(p);
+				if(k < 0) uncertain++; else losses++;
+			}
+			for (Integer p: ds.keySet()) {
+				g.setColor(getColor(getModel().getTurn()));
+				int x = margin + f.getX(p) * cellSize + halfCellSize;
+				int y = margin + f.getY(p) * cellSize + halfCellSize + 6;
+				int k = ds.get(p);
+				if(k < 0 && !isForceDefence) continue;
+				String s = k > 0 ? "L" + k : "?";
+				g.drawString(s, x, y);
+			}
+		}
+	}
+
 	void paintStatus(Graphics g) {
 		if(!getModel().isCompleted()) {
 			int turn = getModel().getTurn();
@@ -130,9 +168,8 @@ public class TicTacToeComponent extends PuzzleComponent {
 			if(isInField(p)) {
 				int i = getCell(p);
 				if(i < 0) return;
-				getModel().getState().move(i);
+				getModel().move(i);
 				repaint();
-
 			}
 		}
 	}

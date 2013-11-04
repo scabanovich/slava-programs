@@ -3,10 +3,16 @@ package slava.puzzle.tictactoe.model;
 import com.slava.common.RectangularField;
 
 import slava.puzzle.template.model.PuzzleModel;
+import slava.puzzle.tictactoe.model.solver.Result;
+import slava.puzzle.tictactoe.model.solver.Results;
+import slava.puzzle.tictactoe.model.solver.TicTacToeForceDefenceMove;
+import slava.puzzle.tictactoe.model.solver.TicTacToeForceSolver;
 
 public class TicTacToeModel extends PuzzleModel {
 	RectangularField field;
 	TicTacToeState state = new TicTacToeState();
+
+	Results results = new Results();
 
 	public TicTacToeModel() {
 		field = new RectangularField();
@@ -56,6 +62,49 @@ public class TicTacToeModel extends PuzzleModel {
 
 	public void startNewGame() {
 		state.clean();
+	}
+
+	public void move(int p) {
+		state.move(p);
+		computeForceWin();
+	}
+
+	public void back() {
+		state.back();
+	}
+
+	void computeForceWin() {
+		String code = state.getCode();
+		if(results.getResult(code) != null) {
+			return;
+		}
+		Result result = new Result();
+		result.setCode(code);
+		results.putResult(result);
+
+		TicTacToeForceSolver solver = new TicTacToeForceSolver();
+		solver.setState(state.copy());
+		int[] forceWin = solver.solve();
+		if(forceWin != null) {
+			result.setForceWin(forceWin);
+			result.setForceAnalysesCompleted(true);
+		} else {
+			if(solver.isForceAnalysesCompleted()) {
+				result.setForceAnalysesCompleted(true);
+			}
+			TicTacToeForceDefenceMove defencer = new TicTacToeForceDefenceMove();
+			defencer.setState(state.copy());
+			result.setResults(defencer.find());
+			result.setForceDefence(defencer.isForceDefence());
+		}
+	}
+
+	public Results getResults() {
+		return results;
+	}
+
+	public Result getResult() {
+		return getResults().getResult(state.getCode());
 	}
 
 }
