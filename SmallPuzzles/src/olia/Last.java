@@ -1,6 +1,6 @@
 package olia;
 
-public class LastNigger {
+public class Last {
 	int[][] table;
 
 	public void computeTable(int maxN, int maxM) {
@@ -37,7 +37,7 @@ public class LastNigger {
 	}
 
 	public static void main(String[] args) {
-		LastNigger p = new LastNigger();
+		Last p = new Last();
 		p.computeTable(20, 20);
 		p.print();
 	}
