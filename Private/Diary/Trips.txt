@@ -70,6 +70,8 @@ Carquinez Strait
   24 января
    1 февраля
    7 марта (Crockett Hills)
+   3 мая
+   9 мая (Crockett Hills)
   
 Chabot Lake
   26 марта 2011
@@ -129,6 +131,7 @@ Golden Gate Recreation
   16 октября 2011 (Tennessee trail)
    6 ноября (Muir Beach)
   25 декабря (Rodeo Beach)
+  30 декабря 2012 (Muir Beach)
 
 Guerneville
   21 июня 2014
@@ -160,12 +163,6 @@ Los-Angeles
 McClure Lake
    4 мая 2013 (site D14)
 
-Mitchell Canyon
-  24 декабря 2011 (Deers Flat)
-  26 декабря (Red Road)
-   2 февраля 2013 (до рыбок)
-  28 февраля 2015 (Eagle Peak)
-
 Montara
   18 ноября 2012 (Gray Whale Cove)
   24 ноября
@@ -175,8 +172,16 @@ Monterrey
   26 мая (Lighthouse Lodge, Room 145)
    2 марта 2013 (Best Western Plus Victoria Inn, 117)
 
-Muir Beach
-  30 декабря 2012
+Mt. Diablo
+	Donner Canyon
+  18 апреля 2015 (Prospector Gap)
+	Mitchell Canyon
+  24 декабря 2011 (Deers Flat)
+  26 декабря (Red Road)
+   2 февраля 2013 (до рыбок)
+  26 апреля 2014 (Mitchell Canyon)
+  31 мая (Deer Flat)
+  28 февраля 2015 (Eagle Peak)
 
 Napa
   27 ноября 2014 (Napa Inn, Chesney room)
@@ -201,6 +206,7 @@ Palomarin
    1 сентября (+ Stinson Beach)
    1 июня 2014
    6 июля
+   2 мая 2015
 
 Pinecrest Lake
    9 июля 2011 (Meadowview, site 114)
@@ -218,6 +224,7 @@ Pinnacles
 
 Pinole Point
   29 декабря 2012
+  24 мая 2014
 
 Point Reyes
   11 сентября 2011 (Lighthouse + Limantour Beach)
