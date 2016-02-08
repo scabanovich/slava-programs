@@ -60,6 +60,9 @@ Big Trees
   19 сентября (Arnold; Cougar Rock)
   10 октября (Arnold; around South grove)
   24 октября (Arnold; San Antonio Falls, River trail)
+  26 ноября (Arnold; Rim trail)
+  26 декабря (Arnold; Rim trail)
+  16 января 2016 (Arnold; Rocky Ridge)
 
 Briones
    3 декабря 2011 (Briones Reservoir)
@@ -74,6 +77,10 @@ Briones
   31 января 2015 (по крутой тропе)
   27 февраля
   23 августа (Mott Peak)
+  21 ноября
+   5 декабря (от Gloria Terrace)
+  16 декабря (от Gloria Terrace)
+  31 декабря (от Gloria Terrace)
 
 Carquinez Strait
   10 июля 2013
@@ -92,6 +99,15 @@ Carquinez Strait
   13 сентября (from Mt.Wanda parking)
    4 октября
    1 ноября
+   8 ноября
+   9 ноября
+  15 ноября (с бабушкой)
+   6 декабря
+  11 декабря
+  19 декабря
+   2 января 2016
+  10 января
+  23 января
   
 Chabot Lake
   26 марта 2011
@@ -140,7 +156,7 @@ Drake's beach
 
 Echo Lake
    1 октября 2011
-
+26 ноября
 Folsom Lake
   14 мая 2011 (Peninsula Campground, site 80)
 
@@ -167,7 +183,7 @@ Guerneville
 
 Half Moon Bay
   16 февраля 2013
-
+Palo
 Hetch Hetchy
   27 октября 2013
 
@@ -182,11 +198,12 @@ Jenkinson Lake
 
 Lafayette Lake
   22 декабря 2012
+  28 ноября 2016 (с бабушкой)
 
 Lagunitas Lake
   17 ноября 2013 (Lake Bon Tempe, Lake Alpine)
 
-Los-Angeles
+Los-AngelesPalo
   15 июня 2013
   13 июля
 
@@ -215,7 +232,8 @@ Mt. Diablo
   17 мая (Deer Flat)
   22 августа (Burma Springs)
 	Round Valley
-  31 октября 2015
+  31 октября
+   3 января 2016 (Black point)
 
 Napa
   27 ноября 2014 (Napa Inn, Chesney room)
@@ -292,6 +310,8 @@ San-Francisco
   24 марта (San Bruno; аэропорт)
   30 марта (Legion of Honor)
   13 апреля (аэропорт; San Bruno)
+  14 ноября 2015 (San Bruno; аэропорт)
+  29 ноября (аэропорт; San Bruno)
 
 San-Rafael
   29 декабря 2014 (Marin Lodge, 119)
@@ -369,6 +389,7 @@ Tilden
   30 августа (Wildcat Peak)
   27 сентября (Lake Anza)
   17 октября (Seaview trail)
+  12 декабря (Nimitz)
 
 Union Valley
   18 мая 2013 (+ Folsom Lake, Peninsular, site 56)
@@ -380,7 +401,7 @@ Upper Blue Lake
   17 августа 2013 (Expansion Middle Creek, site 53)
 
 Upper San Leandro
-  11 ноября 2012
+  11 ноября 2012Palo
 
 Yosemity
   28 мая 2011
