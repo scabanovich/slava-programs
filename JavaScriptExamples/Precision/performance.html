@@ -1,0 +1,216 @@
+<html>
+  <head>
+    <style>
+      .formLabel {
+        width: 200px; text-align: right
+      }
+      .formField {
+        width: 120px
+      }
+    </style>
+    <script src="../closure-library/closure/goog/base.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="slava.js"></script>
+    <script src="performance.js"></script>
+    <script type="text/javascript">
+      goog.require('goog.dom');
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.load('current', {'packages':['table']});
+
+      function custom(x) {
+         return eval("Math.cos(x);");
+      }
+
+      var tests = [
+          {id: "cos", f1: Math.cos, f1Label: "Math.cos(x)",  f2: slava.cos, f2Label: "slava.cos(x)"},
+          {id: "sin", f1: Math.sin, f1Label: "Math.sin(x)",  f2: slava.sin, f2Label: "slava.sin(x)"},
+          {id: "tan", f1: Math.tan, f1Label: "Math.tan(x)",  f2: slava.tan, f2Label: "slava.tan(x)"},
+          {id: "exp", f1: Math.exp, f1Label: "Math.exp(x)",  f2: slava.exp, f2Label: "slava.exp(x)"},
+          {id: "log", f1: Math.log, f1Label: "Math.log(x)",  f2: slava.log, f2Label: "slava.log(x)"}
+      ];
+      
+      function __onload() {
+        var s = document.getElementById('testSelector');
+          for (i in tests) {
+            var w = tests[i];
+            var o = goog.dom.createDom('option', {value: w.id, selected: (i == 0)});
+            goog.dom.appendChild(o, goog.dom.createTextNode(w.id + '(x)'));
+            goog.dom.appendChild(s, o);
+          }
+      }
+
+      function findTest() {
+        var v = document.getElementById('testSelector').value;
+        for (i in tests) {
+          if(tests[i].id == v) {
+            return tests[i];
+          }
+        }
+        return null;
+      }
+      
+      function setPrecision() {
+        var v = document.getElementById('precisionSelector').value;
+        if(v == 'lowest') {
+          slava.precision.value = slava.precision.LOWEST;
+        } else if(v == 'low') {
+          slava.precision.value = slava.precision.LOW;
+        } else {
+          slava.precision.value = slava.precision.HIGH;
+        }
+      }
+
+      var currentTest = tests[0];
+
+      function drawStuff(data) {
+        var options = {
+          title: 'Performance comparison',
+          width: 900,
+          legend: { position: 'none' },
+          chart: { title: 'Performance comparison',
+                   subtitle: 'time in nanoseconds per test' },
+          bars: 'horizontal', // Required for Material Bar Charts.
+          axes: {
+            x: {
+              0: { side: 'top', label: 'time (ns)'} // Top x-axis.
+            }
+          },
+          bar: { groupWidth: "90%" }
+        };
+        var chart = new google.charts.Bar(document.getElementById('results'));
+        chart.draw(data, options);
+      }
+
+      function drawFunctions(data2) {
+          var options = {
+            title: 'Functions: ',
+            curveType: 'function',
+            legend: { position: 'bottom' },
+     //       hAxis: {
+     //         ticks: [0, 1, 2, 3]
+     //       }
+          };
+
+        var chart = new google.visualization.LineChart(document.getElementById('graph'));
+        chart.draw(data2, options);
+      }
+
+      function drawPrecision(data3) {
+          var options = {
+            title: 'Precision (logarithm of difference): ',
+            curveType: 'function',
+            legend: { position: 'bottom' },
+          };
+
+        var chart = new google.visualization.LineChart(document.getElementById('precision'));
+        chart.draw(data3, options);
+      }
+
+      function drawWorst(worst) {
+        var elem = document.getElementById('worst');
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Worst case');
+        data.addColumn('number', '');
+        data.addRows([
+          ['x',  worst.x],
+          [currentTest.f1Label, worst.f1],
+          [currentTest.f2Label, worst.f2],
+          ['log(delta)', worst.delta]
+        ]);
+        var table = new google.visualization.Table(elem);
+        table.draw(data, {showRowNumber: false, width: '300px', height: '130px'});
+      }
+    </script>
+    <script>
+      var testOptions = {startValue: 0, endValue: 3.1415926, dotsCount: 180};
+
+      function runOnClick() {
+          setPrecision();
+          currentTest = findTest();
+          testOptions.startValue = parseFloat(goog.dom.getElement('startValue').value);
+          testOptions.endValue = parseFloat(goog.dom.getElement('endValue').value);
+          testOptions.dotsCount = parseInt(goog.dom.getElement('dotsCount').value);
+          var elem = goog.dom.getElement('results');
+          var results = slava.performance.mathFunctionPerformanceComparator(
+                      currentTest.f1, 
+                      currentTest.f2, 
+                      testOptions.startValue, testOptions.endValue, testOptions.dotsCount);
+          var dt = results.times;
+          var data = new google.visualization.arrayToDataTable([
+                  ['Function', 'Speed (ns per test)'],
+                  [currentTest.f1Label, dt.t1 * 1000],
+                  [currentTest.f2Label, dt.t2 * 1000]
+                 ]);
+          drawStuff(data);
+
+          var vs1 = results.values[0];
+          var vs2 = results.values[1];
+          var ds = [];
+          ds.push(['x', currentTest.f1Label, currentTest.f2Label]);
+          for (var i in vs1) {
+            ds.push([vs1[i].x, vs1[i].value, vs2[i].value]);
+          }
+          data2 = new google.visualization.arrayToDataTable(ds);
+          drawFunctions(data2);
+
+          var ps = results.deltas;
+          var ds3 = [];
+          ds3.push(['x', 'Precision']);
+          for (var i in ps) {
+            ds3.push([ps[i].x, ps[i].value]);
+          }
+          data3 = new google.visualization.arrayToDataTable(ds3);
+          drawPrecision(data3);
+
+          drawWorst(results.worst);
+       }
+    </script>
+  </head>
+  <body onload="__onload()">
+    <h2 style="text-align: center;"> Compare performance</h2>
+    <div>
+      Function: 
+      <span>
+          <select id='testSelector'></select>
+      </span>
+    </div>
+    <div>
+      Test options: 
+      <br/>
+      <table>
+      <tr>
+        <td class="formLabel"> Select precision:</td>
+        <td>
+          <select id='precisionSelector'>
+            <option value="lowest">Very Low</option>
+            <option value="low" selected>Low</option>
+            <option value="high">High</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td class="formLabel">Start value:</td>
+        <td><input class="formField" name="startValue" id="startValue" type="text" value="0"></td>
+      </tr>
+      <tr>
+        <td class="formLabel">End value:</td>
+        <td><input class="formField" name="endValue" id="endValue" type="text" value="3.1415926"></td>
+      </tr>
+      <tr>
+        <td class="formLabel">Dots count:</td>
+        <td><input class="formField" name="dotsCount" id="dotsCount" type="text" value="180"></td>
+      </tr>
+      </table>
+      <br/>
+      <button onclick="runOnClick()">Run Test</button>
+    </div>
+    <hr/>
+    <div id="results"></div>
+    <table><tr>
+      <td><div id="graph" style="width: 500px; height: 400px"></div></td>
+      <td><div id="precision" style="width: 500px; height: 400px"></div></td>
+      <td><div id="worst"></div> </td>
+    </tr></table>
+  </body>
+</html>

@@ -1,0 +1,114 @@
+<html>
+  <head>
+    <style>
+      .formLabel {
+        width: 200px; text-align: right
+      }
+      .formField {
+        width: 300px
+      }
+    </style>
+    <script src="../closure-library/closure/goog/base.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="writers.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.load('current', {'packages':['table']});
+
+       function draw(data) {
+          var options = {
+          width: 800,
+          chart: {
+            title: 'Words usage by authors',
+            subtitle: 'occurrences per 1000'
+          },
+          bars: 'horizontal', // Required for Material Bar Charts.
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('graph'));
+        chart.draw(data, options);
+      }
+
+    </script>
+    <script>
+      var first = null;
+      var second = null;
+
+      function __onload() {
+        var s1 = document.getElementById('writer_1');
+        var s2 = document.getElementById('writer_2');
+        slava.initWriters(s1, s2);
+     }
+
+      function runOnClick() {
+          first = slava.findWriter(document.getElementById('writer_1').value);
+          second = slava.findWriter(document.getElementById('writer_2').value);
+          if(!first.text) {
+             slava.getText(first.url, function(text) {
+               first.text = text;
+               runOnClick();
+             });
+             return;
+          }
+          if(!second.text) {
+             slava.getText(second.url, function(text) {
+               second.text = text;
+               runOnClick();
+             });
+             return;
+          }
+          
+          
+          var ds3 = [];
+          ds3.push(['Word', first._name, second._name]);
+ 
+          var res = document.getElementById('words').value.split(",");
+          var max = 0;
+          for (var i in res) {
+            var word = res[i];
+            var a = slava.countWord(first.text, word) / slava.countWords(first.text) * 1000;
+            var b = slava.countWord(second.text, word) / slava.countWords(second.text) * 1000;
+            if(a > max) max = a;
+            if(b > max) max = b;
+            ds3.push([word, a, b]);
+          }
+          data3 = new google.visualization.arrayToDataTable(ds3);
+          draw(data3);onload
+
+       }
+    </script>
+  </head>
+  <body onload="__onload()">
+    <h3 style="text-align: center;"> Compare Word Usage by Authors</h3>
+    <div>
+      Author 1: 
+      <span>
+          <select id="writer_1"></select>
+      </span>
+    </div>
+    <div>
+      Author 2: 
+      <span>
+          <select id="writer_2"></select>
+      </span>
+    </div>
+    <div>
+      Test options: 
+      <br/>
+      <table>
+      <tr>
+        <td class="formLabel">List of words:</td>
+        <td><input class="formField" name="words" id="words" type="text" value="after,before"></td>
+      </tr>
+      </table>
+      <br/>
+      <button onclick="runOnClick()">Run Test</button>
+    </div>
+    <hr/>
+    <div id="results"></div>
+    <table><tr>
+      <td><div id="graph" style="width: 500px; height: 400px"></div></td>
+    </tr></table>
+  </body>
+</html>

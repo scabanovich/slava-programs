@@ -1,0 +1,10 @@
+{
+  "writers": [
+    {"id": "london", "_name": "Jack London", "url": "texts/london.txt"},
+    {"id": "twain", "_name": "Mark Twain", "url": "texts/twain.txt"},
+    {"id": "doyle", "_name": "Conan Doyle", "url": "texts/doyle.txt"},
+    {"id": "poe", "_name": "Edgar Poe", "url": "texts/poe.txt"},
+    {"id": "hemingway", "_name": "Ernest Hemingway", "url": "texts/hemingway.txt"},
+    {"id": "stevenson", "_name": "Robert Stevenson", "url": "texts/stevenson.txt"},
+   ]
+}
