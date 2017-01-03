@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <script src="../closure-library/closure/goog/base.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      goog.require('goog.dom');
+      google.charts.load('current', {'packages':['corechart']});
+    
+      function formattedTime(d) {
+        var result = [d.getHours()];
+        var m = d.getMinutes();
+        if(m < 10) result.push(['0', m].join('')); else result.push(m);
+        var s = d.getSeconds();
+        if(s < 10) result.push(['0', s].join('')); else result.push(s);
+        return result.join(":");
+      };
+      
+      drawWatch = function() {
+         var d = new Date();
+         var s = {name: 'seconds', value: parseInt(d.getSeconds()) * 6, off: 0.3, color: '#888888'};
+         var m = {name: 'minutes', value: parseInt(d.getMinutes()) * 6, off: 0.15, color: '#444444'};
+         var h = {name: 'hours', value: parseInt(d.getHours() % 12) * 30, off: 0, color: '#000000'};
+         var b = [s,m,h].sort(function sortNumber(a,b) { return a.value - b.value; });
+         var a = [
+             ['Time', 'handles'],
+//             ['', b[0].value],
+             ['', 1],
+             ['', b[1].value - b[0].value],
+             ['', 1],
+             ['', b[2].value - b[1].value],
+             ['', 1],
+             ['', 360 - b[2].value + b[0].value]
+         ];
+         var data = google.visualization.arrayToDataTable(a);
+        
+         var options = {
+           chartArea: {left:'35%', top:120, width:'50%', height:'50%'},
+           legend: 'none',
+           pieSliceText: 'label',
+           title: formattedTime(d),
+            slices: {
+//              0: { color: '#EDEDEF', offset: 0 },
+              0: { color: b[0].color, offset: b[0].off},
+              1: { color: '#EDEDEF', offset: 0 },
+              2: { color: b[1].color, offset: b[1].off},
+              3: { color: '#EDEDEF', offset: 0 },
+              4: { color: b[2].color, offset: b[2].off},
+              5: { color: '#EDEDEF', offset: 0 },
+            },
+            pieStartAngle: b[0].value * 1
+         };
+         var chart = new google.visualization.PieChart(document.getElementById('watch'));
+         chart.draw(data, options);
+      }
+      
+      runWatch = function() {
+          drawWatch();
+          setInterval(
+            function() {
+              drawWatch();
+            },
+            1000
+          );
+      }
+
+    </script>
+  </head>
+  <body onload="runWatch()">
+    <h3 style="text-align: center;"> Pie watch</h3>
+    <h6 style="text-align: center;">Example of Google's Pie Chart usage for a quite irrelevant task </h6>
+    <div id="watch" style="width: 800px;height: 600px;">
+    </div>
+  </body>
+</html>
