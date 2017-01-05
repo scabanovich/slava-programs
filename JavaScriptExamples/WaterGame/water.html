@@ -1,0 +1,67 @@
+<html>
+  <head>
+    </stile>
+    <script src="../closure-library/closure/goog/base.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="water.js"></script>
+    <script type="text/javascript" src="water-ui.js"></script>
+    <script type="text/javascript">
+      goog.require('goog.dom');
+      google.charts.load('current', {'packages':['corechart']});
+      
+      function onLoad() {
+          slava.water.ui.initProblemSelector();
+          slava.water.ui.drawGlasses();
+          slava.water.ui.writeHistory();
+      }
+      
+      function playSolution(solution) {
+         var i = 0; 
+         var q = setInterval(
+            function() {
+               slava.water.considerMove(solution[i].from);
+               slava.water.considerMove(solution[i].to);
+               slava.water.ui.drawGlasses();
+               slava.water.ui.writeHistory();
+               i++;
+               if(i >= solution.length) {
+                   clearInterval(q);
+               }
+            },
+            333
+          );
+      } 
+      
+      function solve() {
+          var solution = slava.water.solve(slava.water.problem.volumes, slava.water.problem.quantities);
+          if(!solution) return;
+          playSolution(solution);
+      }
+      
+    </script>
+  </head>
+  <body onload="slava.water.load(onLoad);">
+    <h3 style="text-align: center;"> Water Game</h3>
+    <h5 style="text-align: center;">You have N glasses with water. You have to measure exactly
+      1 milliliter of water by pouring it from one glass to another until either one glass is empty 
+      or the other is full.
+     </h6>
+    <div>
+      Select problem: 
+      <span><select id="problemSelector" onchange="slava.water.onProblemSelected()"></select></span>
+    </div>
+
+     <table>
+     <tr><td style='width: 40%'><div id="glasses" style="width: 600px;height: 400px;"></td>
+         <td style='width: 60%;vertical-align: top'>
+           <p>Your solution:</p>
+           <p id="history"></p>
+           <button id='back' onclick="slava.water.ui.back()">Back</button>
+         </td>
+     </tr>
+    </div>
+    
+    </table>
+    <button onclick="slava.water.onProblemSelected();solve();">Show solution</button>
+  </body>
+</html>

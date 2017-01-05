@@ -1,0 +1,13 @@
+{
+  "problems": [
+    {"id": 1, "volumes": [12,19,14], "quantities": [7,12,9], "level": "easy"},
+    {"id": 2, "volumes":  [71, 67, 29], "quantities":  [50, 7, 25], "level": "medium"},
+    {"id": 3, "volumes": [53,94,90,55], "quantities": [39,75,76,38], "level": "hard"},
+    {"id": 4, "volumes": [71,96,73,90], "quantities": [49,76,50,69], "level": "hard"},
+    {"id": 5, "volumes": [55,55,53,92], "quantities": [36,38,34,73], "level": "advanced"},
+    {"id": 6, "volumes": [84,115,112,82,113], "quantities": [61,98,88,67,89], "level": "challenging"},
+    {"id": 7, "volumes": [71,111,117,73,119], "quantities": [48,88,94,57,98], "level": "challenging"},
+    {"id": 8, "volumes": [159,167,167,125,123], "quantities": [135,126,143,104,89], "level": "extreme"},
+    {"id": 9, "volumes": [114,192,186,151,116], "quantities": [85,153,138,126,106], "level": "extreme"}
+  ]
+}
