@@ -8,11 +8,16 @@
     <script type="text/javascript">
       goog.require('goog.dom');
       google.charts.load('current', {'packages':['corechart']});
-      
+       
       function onLoad() {
           slava.water.ui.initProblemSelector();
-          slava.water.ui.drawGlasses();
-          slava.water.ui.writeHistory();
+          var w = setInterval(function() {
+              if(typeof google.visualization.arrayToDataTable == 'function') {
+                  clearInterval(w);
+                  slava.water.ui.drawGlasses();
+                  slava.water.ui.writeHistory();
+              }
+          }, 50);
       }
       
       function playSolution(solution) {
