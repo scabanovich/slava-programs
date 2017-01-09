@@ -1,0 +1,81 @@
+<html>
+  <head>
+    </stile>
+    <style>
+      .arrowUp {
+          color: red;
+      }
+      .arrowDown {
+          color: blue;
+      }
+    </style>
+    <script src="../closure-library/closure/goog/base.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="magnet.js"></script>
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script type="text/javascript" src="magnet-ui.js"></script>
+
+    <script type="text/javascript">
+      goog.require('goog.dom');
+      google.charts.load('current', {'packages':['corechart', 'gauge', 'table']});
+      
+      slava.magnet.onLoad = function() {
+          slava.magnet.instance.flipRound();
+          slava.magnet.createTable("magnetStateTable");
+          slava.magnet.drawTemperatureGauge();
+          slava.magnet.drawFieldGauge();
+          drawMagnetizationGauge();
+          play();
+      }
+
+      function play() {
+         var q = setInterval(
+            function() {
+               slava.magnet.instance.flipRound();
+               slava.magnet.updateTable();
+            },
+            500
+          );
+      }
+      
+    </script>
+  </head>
+  <body onload="slava.magnet.onLoad();">
+    <h3 style="text-align: center;"> Magnet model</h3>
+    <h5 style="text-align: center;">
+        A simple model of magnet in an external magnetic field H at temperature T.
+    </h5>
+    
+    <table>
+        <tr>
+          <td rowspan="3" width='50%'>
+              <table id="magnetStateTable"></table>
+          </td>
+          <td width='25%'>
+              <table>
+                <tr><td colspan="3"><div id="temperatureGauge"></div></td></tr>
+                <tr><td width="10%"></td><td width="80%"><div id="temperatureSlider"></div></td><td width="10%"></td></tr>
+              </table>
+          </td>
+          <td width='25%'>
+              <table>
+                <tr><td colspan="3"><div id="fieldGauge"></div></td></tr>
+                <tr><td width="10%"></td><td><div id="fieldSlider" width="80%"></div></td><td width="10%"></td></tr>
+              </table>
+          </td>
+        </tr>
+        <!--tr>
+            <td colspan="2"> Magnetization: <span id='magnetization'></span></td>
+        </tr-->
+        <tr>
+            <td colspan="2" style="height: 280px;"><div id="magnetizationGauge"></div></td>
+        </tr>
+        <tr>
+            <td colspan="2" ><div id="magnetizationHistory"></div></td>
+        </tr>
+  </body>
+</html>
