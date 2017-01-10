@@ -24,12 +24,17 @@
       google.charts.load('current', {'packages':['corechart', 'gauge', 'table']});
       
       slava.magnet.onLoad = function() {
-          slava.magnet.instance.flipRound();
-          slava.magnet.createTable("magnetStateTable");
-          slava.magnet.drawTemperatureGauge();
-          slava.magnet.drawFieldGauge();
-          drawMagnetizationGauge();
-          play();
+          var w = setInterval(function() {
+              if(typeof google.visualization.arrayToDataTable == 'function') {
+                  clearInterval(w);
+                  slava.magnet.instance.flipRound();
+                  slava.magnet.createTable("magnetStateTable");
+                  slava.magnet.drawTemperatureGauge();
+                  slava.magnet.drawFieldGauge();
+                  drawMagnetizationGauge();
+                  play();
+              }
+          }, 50);
       }
 
       function play() {
