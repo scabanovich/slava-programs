@@ -76,32 +76,85 @@ slava.circlegame.paint = function() {
 
 slava.circlegame.paintPrecision = function(ctx) {
     var reportElement = document.getElementById("report");
-    var precisionElement = document.getElementById("precision");
     if(slava.circlegame.circle != null) {
         var c = slava.circlegame.circle;
         ctx.strokeStyle="#FF0000";
         ctx.beginPath();
         ctx.arc(c.xc, c.yc, c.r, 0, 2 * Math.PI);
-        ctx.stroke();        
-        precisionElement.innerHTML = "" + slava.circlegame.getPrecision();
+        ctx.stroke();
+        if(!slava.circlegame.isCircle()) {
+            reportElement.innerHTML = "Your curve does not look like a circle. Try again.";
+        } else if(!slava.circlegame.isClosedCurve()) {
+            reportElement.innerHTML = "You drew only a part of circle. Please do not cheat!";  
+        } else {
+            reportElement.innerHTML = "Your circle is " + slava.circlegame.getPrecision() + " perfect.";
+        }
         reportElement.style.visibility = "visible";
     } else {
         reportElement.style.visibility = "hidden";
-        precisionElement.innerHTML = "";
+        reportElement.innerHTML = "";
     }
 }
 
 slava.circlegame.getPrecision = function() {
     if(slava.circlegame.circle == null) return 0;
     var c = slava.circlegame.circle;
-    var rel = c.e / c.r
-    if(rel > 1) return 0;
+    var rel = c.e / c.r * 10; //normalization
+    if(rel > 1) return "0%";
     var res = "" + (1 - rel) * 100;
     var d = res.indexOf('.');
     if(res.length > d + 3) {
         res = res.substring(0, d + 3);
     }
     return res + '%';
+}
+
+slava.circlegame.isCircle = function() {
+    if(slava.circlegame.circle == null) return false;
+    var path = slava.circlegame.path;
+    if(path.length < 3) return false;
+    var rAppr = slava.circlegame.circle.r;
+    if(rAppr > 250) return false;
+    var worst = 0;
+    var countBad = 0; 
+    var xc = slava.circlegame.circle.xc;
+    var yc = slava.circlegame.circle.yc;
+    var x0 = path[0].x;
+    var y0 = path[0].y;
+    var mR = 0;
+    for (i = 0; i < path.length; i++) {
+        var x = path[i].x;
+        var y = path[i].y;
+        var ri = slava.circlegame.distance(x, y, xc, yc);
+        var dr = Math.abs(rAppr - ri) / rAppr;
+        if(dr > worst) {
+            worst = dr;
+            if(worst > 0.3) return false;
+        }
+        if(dr > 0.15) countBad++;
+        var r0 = slava.circlegame.distance(x, y, x0, y0);
+        if(r0 > mR) mR = r0;
+    }
+    if(countBad > path.length / 4) {
+        return false;
+    }
+    if(mR < 1.5 * rAppr && slava.circlegame.isClosedCurve()) {
+        return false;
+    }
+    return true;
+}
+
+slava.circlegame.isClosedCurve = function() {
+    if(slava.circlegame.circle == null) return false;
+    var path = slava.circlegame.path;
+    if(path.length < 3) return false;
+    var rAppr = slava.circlegame.circle.r;
+    var x0 = path[0].x;
+    var y0 = path[0].y;
+    var x = path[path.length - 1].x;
+    var y = path[path.length - 1].y;
+    var ri = slava.circlegame.distance(x, y, x0, y0);
+    return ri < 0.3 * rAppr;
 }
 
 slava.circlegame.approximate = function() {
@@ -147,7 +200,7 @@ slava.circlegame.checkAppr = function(xc, yc) {
     for (i = 0; i < path.length; i++) {
         var x = path[i].x;
         var y = path[i].y;
-        rs[i] = Math.sqrt((x - xc) * (x - xc) + (y - yc) * (y - yc));
+        rs[i] = slava.circlegame.distance(x, y, xc, yc);
         r += rs[i];
     }
     r /= rs.length;
@@ -159,5 +212,6 @@ slava.circlegame.checkAppr = function(xc, yc) {
     return {xc: xc, yc: yc, r: r, e: e};
 }
 
-
-
+slava.circlegame.distance = function(x, y, xc, yc) {
+    return Math.sqrt((x - xc) * (x - xc) + (y - yc) * (y - yc));
+}
