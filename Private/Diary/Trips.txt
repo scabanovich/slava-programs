@@ -28,6 +28,7 @@ Berriessa
   28 июня 2015
    3 октября (north)
   1 мая 2016 (Smittle Creek trail)
+ 23 сентября 2018
 
 Bethany Reservoir
   14 апреля 2013
@@ -46,6 +47,7 @@ Big Trees
   30 октября (South Grove)
   27 декабря 2012
   22 декабря 2013
+
   10 января 2015
    7 февраля (Arnold)
   21 февраля (Arnold, Alpine Lake)
@@ -64,6 +66,7 @@ Big Trees
   24 октября (Arnold; San Antonio Falls, River trail)
   26 ноября (Arnold; Rim trail)
   26 декабря (Arnold; Rim trail)
+
   16 января 2016 (Arnold; Rocky Ridge)
    6 февраля (Arnold; San Antonio Falls)
   13 февраля (Arnold; Bear Valley Mountain, Lake Alpine)
@@ -80,6 +83,56 @@ Big Trees
    3 сентября (Arnold; Utica)
   24 сентября (Arnold; Bear Valley Mountain)
   15 октября (Arnold; White Pines)
+  28 октября (Arnold; Big Trees)
+  24 ноября (Arnold; Manuel Peak)
+  
+  15 января 2017 (Arnold; Big Trees)
+   4 марта (Arnold)
+  26 марта (Arnold; )
+  20 мая (Arnold; Alpine Lake)
+  10 июня (Arnold; Yosemity)
+   1 июля (Arnold; Pinecrest)
+  15 июля (Arnold; Stanislaus Meadow; White Pines)
+   5 августа (Arnold; Heizer Lake; White Pines)
+  19 августа (Arnold; Bull Run Lake; White Pines)
+   2 сентября (Arnold; White Pines; Big Trees)
+   9 сентября (Arnold; White Pines; Union+Elephant Rock)
+   7 октября (Arnold; White Pines, Top of the World)
+  21 октября (Arnold; Manuel peak)
+   9 декабря (Arnold; Love Creek Road, MacKeys Road)
+
+   1 января 2018 (Arnold; San Antonio Falls)
+  13 января (Arnold; Alpine Lake)
+  30 марта (Arnold; Bear Valley; White Pines)
+  21 апреля (Arnold; Bear Valley; Alpine Lake)
+  12 мая (Arnold; White Pines; New Melonies)
+  10 июня (Arnold; White Pines; Pinecrest)
+  23 июня (Arnold; White Pines; Top of the World)
+   6 июля (Arnold; White Pines)
+  20 июля (Arnold; Union)
+   3 августа (Arnold; Utica)
+  10 августа (Arnold; Utica)
+  31 августа (Arnold; White Pines)
+  15 сентября (Arnold; Wheeler Lake)
+  28 сентября (Arnold; Spicer; White Pines)
+  13 октября (Arnold; Manuel)
+  10 ноября (Arnold; )						2 nights
+
+   1 января 2019 (Arnold; Big Trees; White Pines)		2 nights
+  20 января (Arnold; White Pines)
+  16 марта (Arnold; White Pines)
+  30 марта (Arnold; Bear Valley)
+  20 апреля (Arnold; White Pines, Manuel, San Antonio Falls, Falls Overlook)
+  25 мая (Arnold; White Pines; -> to Yosemite)			2 nights
+  15 июня (Arnold; Yosemity)
+   4 июля (Arnold; Paincrest, Cleo's bath. New Melonies. Big Trees) 3 nights
+  27 июля (Arnold; Utica)
+  10 августа (Arnold; Arnold Rim Trail)
+  31 августа (Arnold; White Pines; Mt. Reba)			2 nights
+  21 сентября (Arnold; Big Trees)
+  26 октября (Arnold; power shutdown)
+   9 ноября (Arnold; looked condo in Camp Connell)
+  29 ноября (Arnold; snow)
 
 Briones
    3 декабря 2011 (Briones Reservoir)
@@ -101,10 +154,15 @@ Briones
    2 апреля 2016
   11 июня
    7 августа (Relieze - Briones peak)
+  19 февраля 2018
+   7 апреля (Briones Peak, не дошли из-за коров)
+   2 декабря (Briones Peak)
+  25 декабря (Briones Peak)
 
 Black Diamond Mines
   27 февраля 2016
    3 апреля
+  29 апреля 2018
 
 Carquinez Strait
   10 июля 2013
@@ -135,6 +193,9 @@ Carquinez Strait
    6 марта
   22 мая
   24 июля
+  18 марта 2018
+   9 июня (only velotrail)
+  29 декабря
   
 Chabot Lake
   26 марта 2011
@@ -194,6 +255,7 @@ Fort Bragg
 
 Fort Ross
    5 ноября 2011
+  26 мая 2018 (+ Gualala River)
 
 French Meadows Lake
   25 августа 2012 (site 50)
@@ -204,12 +266,14 @@ Golden Gate Recreation
   25 декабря (Rodeo Beach)
   30 декабря 2012 (Muir Beach)
   20 августа 2016 (John Muir Beach - Tennessi Beach)
+   4 августа 2019 (John Muir Beach - Tennessi Beach - Hill 88)
 
 Guerneville
   21 июня 2014
   28 июня (Bodega Coast Inn, 25)
    9 августа
   18 июля 2015
+  13 августа 2017
 
 Half Moon Bay
   16 февраля 2013
@@ -229,6 +293,7 @@ Jenkinson Lake
 Lafayette Lake
   22 декабря 2012
   28 ноября 2015 (с бабушкой)
+  29 июля 2017 (Олин день рождения)
 
 Lagunitas Lake
   17 ноября 2013 (Lake Bon Tempe, Lake Alpine)
@@ -248,11 +313,16 @@ Monterrey
   18 февраля 2012
   26 мая (Lighthouse Lodge, Room 145)
    2 марта 2013 (Best Western Plus Victoria Inn, 117)
+  24 ноября 2017 (Pacific Grove, Best Western, #109)
+   3 февраля 2018 (Travelodge #131 и #231; Point Lobos)
+  14 апреля (Travelodge #130)
+  19 ноября (Travelodge #209, #210; Big Sur)
 
 Mt. Diablo
 	Donner Canyon
-  18 апреля 2015 (Prospector Gap)
+  18 апреля 2015 (Prospectors Gap)
   31 января 2016 (Regency Gate - North Peak)
+  30 декабря 2018 (Regency Gate - North Peak)
 	Mitchell Canyon
   24 декабря 2011 (Deers Flat)
   26 декабря (Red Road)
@@ -266,17 +336,23 @@ Mt. Diablo
    3 января 2016 (Black point)
   14 мая (Mitchel canyon - Moses Ridge)
    2 июля
+   9 декабря 2018 (Burma Springs)
 	Round Valley
   31 октября 2015
 	Rock City
   20 февраля 2016
         Summit
   17 апреля 2016 (Summit-North Peak)
+   7 января 2018 (Mitchel canyon - summit)
+   2 июня 2019 (Mitchel canyon - summit)
 
 Napa
   27 ноября 2014 (Napa Inn, Chesney room)
 
   21 февраля 2016 (Jack London State Park)
+
+  14 февраля 2019 (Napa, Best Western)			 2 nights
+  7 сентября 2019 (Jack London State Park)
 
 New Hogan Lake
    7 мая 2011 (East Acorn Campgrownd, site 103)
@@ -300,18 +376,22 @@ Palomarin
    6 июля
    2 мая 2015
    1 августа (+ Palomarin Beach)
+  22 июля 2017
+   3 июня 2018 (+ Wildcat Beach)
 
 Pinecrest Lake
    9 июля 2011 (Meadowview, site 114)
    3 сентября (Inns of California, 204)
   17 сентября (Meadowviews, 112, уехали)
-   7 июля 2012 (Meadow Campground, site 111)
+   7 июля 2012 (Meadowview campground, site 111)
    1 сентября (все занято, поставили палатку в лесу)
   15 сентября (Meadowview campground, site 110)
    6 июля 2013 (Meadowview, site 318)
   14 июня 2014 (Strawberry Inn, #11)
   19 июля (Meadoview campground, site 129)
   12 июня 2015
+   2 июля 2017 (from Arnold)
+  11 июня 2018 (Meadowview campground, site 110)
 
 Pinnacles
    4 июня 2011
@@ -354,6 +434,7 @@ San-Francisco
   13 апреля (аэропорт; San Bruno)
   14 ноября 2015 (San Bruno; аэропорт)
   29 ноября (аэропорт; San Bruno)
+  25 ноября 2018 (аэропорт; San Bruno)
 
 San-Rafael
   29 декабря 2014 (Marin Lodge, 119)
@@ -409,6 +490,8 @@ Stinson Beach
   11 апреля 2015
   12 сентября (Steep Ravine trail)
   24 января 2016 (Willow Camp trail)
+  17 февраля 2018 (+Tamalpais)
+  18 августа 2019 (to West Inn)
 
 Stumpy Meadows Lake
   10 августа 2013 (site 29)
@@ -421,6 +504,7 @@ Tahoe Lake
    6 августа 2011 (Sugar Pine Point campground, Site 164)
   25 мая 2013 (Pepper Inn, 305; + Donner Lake)
   15 августа 2015 (Secret Harbor Dr, 689; Pope beach, Mt. Tallac, Emerald bay)
+  23 сентября 2017 (Echo Lake - Aloha Lake)
 
 Tilden
   22 сентября 2012 (Seaview trail)
@@ -439,6 +523,16 @@ Tilden
   26 июня (Lake Anza)
   23 июля (merry-go-round)
   21 августа (Nimitz - Mezue - Curren)
+
+   5 февраля 2017
+   9 апреля (оделись не по погоде)
+  20 мая
+  29 октября (Wildcat)
+  19 ноября (Nimitz до последнего высокого холма)
+
+  25 февраля 2018
+  17 июня
+  23 декабря
 
 Union Valley
   18 мая 2013 (+ Folsom Lake, Peninsular, site 56)
