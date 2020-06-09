@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <!--  Problem 24 -->
+    <title>Lexicographic permutations</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+	    factorials = [];
+	
+		factorials.push(1);
+		for (var i = 1; i < 21; i++) {
+			factorials.push(factorials[i - 1] * i);
+		}
+
+		function getPermutation(number, size, targetId) {
+		    if (size >= factorials.length) {
+		    	common.err("Too large size.", targetId);
+		        return;
+		    }
+		    if (number > factorials[size]) {
+		    	common.err("Permutation does not exist.", targetId);
+		        return;
+		    }
+		    var result = [];
+		    var usedDigits = [];
+		    for (var i = 0; i < size; i++) {
+		        usedDigits.push(0);
+		    }
+			for (var i = 0; i < size; i++) {
+				var d = parseInt(Math.floor((number - 1) / factorials[size - i - 1]), 10);
+				number -= d * factorials[size - i - 1];
+				var q = getFirstFreeDigit(usedDigits, d);
+				usedDigits[q] = 1;
+				result[i] = q;
+			}
+	    	common.out(result, targetId);
+			return result;
+		}
+	
+	    function getFirstFreeDigit(usedDigits, d) {
+			var q = 0;
+			while (usedDigits[q] == 1) {
+				q++;
+			}
+			d--;
+			while (d >= 0) {
+				q++;
+				while (usedDigits[q] == 1) {
+					q++;
+				}
+				d--;
+			}
+			return q;
+		}
+    </script>
+  </head>
+  
+  <body onload="common.addProblemHeader('problem24Title', 24);">
+    <div id="problem24Title"></div>
+    <div class="problemStatement">
+      <p>A permutation is an ordered arrangement of objects. For example, 3124 is one possible permutation of the digits 1, 2, 3 and 4. If all of the permutations are listed numerically or alphabetically, we call it lexicographic order. The lexicographic permutations of 0, 1 and 2 are:</p>
+      <p style="text-align: center;">012   021   102   120   201   210</p>
+      <p>What is the millionth lexicographic permutation of the digits 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9?</p>   
+    </div>
+  
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b><i>N</i>-th  lexicographic permutation of <i>size</i> digits</b></td></tr>
+      <tr><td>Size:</td> <td><input name="size" value="1" id="size"/></td></tr>
+      <tr>
+          <td>N:</td> <td><input name="myNumber" value="1" id="myNumber"/></td>
+          <td><button name="solve" onclick="getPermutation(common.getInt('myNumber'), common.getInt('size'), 'p1');">Solve</button></td>
+  		  <td>Result: <span id="p1"></span></td>
+      </tr>  		
+    
+    </table>
+  
+    <a href="./Euler.html">Back</a>
+  </body>
+</html>

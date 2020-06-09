@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <!-- Problem 31 -->
+    <title>Coin sums</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="./common.js"></script>
+    <!--SolvedStart
+    <script type="text/javascript">
+        var coins = [200, 100, 50, 20, 10, 5, 2, 1];
+        
+        function getNumberOfWays(n, firstCoin) {
+        	if (n == 0) {
+        		return 1;
+        	}
+        	if (firstCoin >= coins) {
+        		return 0;
+        	}
+        	var coin = coins[firstCoin];
+        	if (coin == 1) {
+        		return 1;
+        	}
+        	if (coin == 2) {
+        		return parseInt(n / 2) + 1;
+        	}
+        	var result = getNumberOfWays(n, firstCoin + 1);
+        	while (n >= coin) {
+        		n -= coin;
+        		result += getNumberOfWays(n, firstCoin + 1);
+        	}
+        	return result;
+        }
+
+    	function getNumberOfWaysAndOut(pounds, pences, targetId) {
+    		var sum = 100 * pounds + pences;
+    		var ways = getNumberOfWays(sum, 0);
+    		common.out(ways, targetId);
+    	}
+    </script>  
+    SolvedEnd-->
+  </head>
+  
+  <body onload="common.addProblemHeader('problem31Title', 31);">
+    <div id="problem31Title"></div>
+    <div class="problemStatement">
+      <p>In the United Kingdom the currency is made up of pound (&#163;) and pence (p). There are eight coins in general circulation:</p>
+      <p class="formulaIndent">1p, 2p, 5p, 10p, 20p, 50p, &#163;1 (100p), and &#163;2 (200p).</p>
+      <p>It is possible to make &#163;2 in the following way:</p>
+      <p class="formulaIndent">1&#215;&#163;1 + 1&#215;50p + 2&#215;20p + 1&#215;5p + 1&#215;2p + 3&#215;1p</p>
+      <p>How many different ways can &#163;2 be made using any number of coins?</p>
+    </div>
+    
+    <!--SolvedStart
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Number of ways to get &#163;<i>n</i> using any number of coins</b></td></tr>
+      <tr>
+        <td>N:</td><td><input name="n" id="n" value="2" onkeypress="common.out('', 'out1');"/></td>
+        <td><button onclick="getNumberOfWaysAndOut(common.getInt('n'), 0, 'out1');">Solve</button></td>
+        <td>Result: <span id="out1"></span></td>
+      </tr>    
+    </table>
+    SolvedEnd-->
+
+    <!--UnsolvedStart
+    <form action="P31_CoinSums.html" method="post" enctype="application/x-www-form-urlencoded">
+    	Answer: <input name="answer" type="text"/>
+    	<input type="submit" name="Submit"/>
+    </form>
+    UnsolvedEnd-->
+
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>

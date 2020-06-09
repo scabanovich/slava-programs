@@ -1,0 +1,117 @@
+<html>
+  <head>
+    <title>Reciprocal cycles</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    
+    	function divideWithPeriod(v, d) {
+    		var remainder = v % d;
+    		var _whole = parseInt((v - remainder) / d);
+
+    		v = remainder * 10;
+
+    		var map = {};
+    		var list = [];
+    		var periodAt = -1;
+    		while (v >= 1) {
+    		    if (("" + v) in map) {
+    		    	periodAt = map["" + v];
+    		    	break;
+    		    }
+    			remainder = v % d;
+    			var digit = parseInt((v - remainder) / d);
+				map["" + v] = list.length;
+    			list.push(digit);
+    		    v = remainder * 10;
+    		}
+    		var _fractionPrefix = (periodAt < 0) ? list : (periodAt == 0) ? [] : list.slice(0, periodAt);
+    		var _fractionPeriod = (periodAt < 0) ? [] : list.slice(periodAt);
+    		
+    		result = {
+    			whole : _whole,  
+    			fractionPrefix : _fractionPrefix,
+    			fractionPeriod : _fractionPeriod
+    		};
+
+			return result;
+    	}
+    	
+    	function fractionToString(f) {
+    	    var s = "";
+    	    s += f.whole + "." + common.arrayToString(f.fractionPrefix);
+    	    if (f.fractionPeriod.length > 0) {
+    	    	s += "(" + common.arrayToString(f.fractionPeriod) + ")";
+    	    }
+    	    return s;
+    	}
+
+		function getFractionAndOut(n, d, targetId) {
+			var result = divideWithPeriod(n, d);
+			common.out(fractionToString(result), targetId);
+		}
+		
+		function getLimitAndOut(limit, targetLengthId, targetDId) {
+			var maxLength = 0;
+			var bestD = -1;
+			for (var d = limit - 1; d > maxLength; d--) {
+				var result = divideWithPeriod(1, d);
+				if (result.fractionPeriod.length > maxLength) {
+					maxLength = result.fractionPeriod.length;
+					bestD = d;
+				}
+			}
+			common.out(maxLength, targetLengthId);
+			common.out(bestD, targetDId);
+		}
+    </script>
+  </head>
+
+  <body onload="common.addProblemHeader('problem26Title', 26)">
+    <div id="problem26Title"></div>
+    <div class="problemStatement">
+      <p>A unit fraction contains 1 in the numerator. The decimal representation of the unit fractions with denominators 2 to 10 are given:</p>
+      <div class="formulaIndent"><p>
+        <sup>1</sup>/<sub>2</sub> = 0.5, &nbsp;
+        <sup>1</sup>/<sub>3</sub> = 0.(3), &nbsp;
+        <sup>1</sup>/<sub>4</sub> = 0.25, &nbsp;
+        <sup>1</sup>/<sub>5</sub> = 0.2, &nbsp;
+        <sup>1</sup>/<sub>6</sub> = 0.1(6), &nbsp;
+        <sup>1</sup>/<sub>7</sub> = 0.(142857), &nbsp;
+        <sup>1</sup>/<sub>8</sub> = 0.125, &nbsp;
+        <sup>1</sup>/<sub>9</sub> = 0.(1), &nbsp;
+        <sup>1</sup>/<sub>10</sub> = 0.1
+      </p></div>
+      <p>Where 0.1(6) means 0.166666..., and has a 1-digit recurring cycle. It can be seen that <sup>1</sup>/<sub>7</sub> has a 6-digit recurring cycle.</p>
+      <p>Find the value of <i>d</i> < 1000 for which <sup>1</sup>/<sub><i>d</i></sub> contains the longest recurring cycle in its decimal fraction part.</p>    
+    </div>
+    
+    <table style="border-spacing: 10px;">
+    <tr><td colspan="4"><b>Compute fraction <sup>1</sup>/<sub><i>d</i></sub></b></td></tr>
+    <tr>
+        <td>D:</td> <td><input name="myNumber" value="1" id="myNumber"/></td>
+        <td><button name="solve" onclick="getFractionAndOut(1, common.getInt('myNumber'), 'out1');">Solve</button></td>
+  		<td>Result: <span id="out1"></span></td>
+    </tr>  		
+
+    <tr><td colspan="4"><b>Compute fraction <sup><i>n</i></sup>/<sub><i>d</i></sub></b></td></tr>
+    <td>N:</td> <td><input name="myN" value="1" id="myN"/></td>
+    <tr>
+        <td>D:</td> <td><input name="myD" value="1" id="myD"/></td>
+        <td><button name="solve" onclick="getFractionAndOut(common.getInt('myN'), common.getInt('myD'), 'out2');">Solve</button></td>
+  		<td>Result: <span id="out2"></span></td>
+    </tr>  		
+
+    <tr><td colspan="4"><b>Find longest recurring cycle</b></td></tr>
+    <tr>
+        <td>Limit:</td> <td><input name="myLimit" value="1" id="myLimit"/></td>
+        <td><button name="solve" onclick="getLimitAndOut(common.getInt('myLimit'), 'out3', 'out4');">Solve</button></td>
+  		<td>Cycle length <span id="out3"></span> at <i>d</i> = <span id="out4"></span></td>
+    </tr>  		
+
+    
+    </table>
+  
+    <a href="Euler.html">Back</a>
+  </body>
+</html>

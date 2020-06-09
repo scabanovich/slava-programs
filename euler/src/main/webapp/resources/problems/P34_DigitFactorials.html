@@ -1,0 +1,94 @@
+<html>
+  <head>
+    <!-- Problem 34 -->
+    <title>Digit factorials</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+		var digitFactorials = [];
+		digitFactorials.push(1);
+		for (var i = 1; i <= 9; i++) {
+			digitFactorials.push(digitFactorials[i-1] * i);
+		}
+		
+		function isNumberMadeOfDigits(usedDigits, number) {
+			var digits = [];
+			for (var i = 0; i < usedDigits.length; i++) {
+				digits.push(usedDigits[i]);
+			}
+			while (number > 0) {
+				var d = number % 10;
+				digits[d] -= 1;
+				if (digits[d] < 0) {
+					return false;
+				}
+				number = parseInt(Math.floor(number / 10));
+			}
+			for (var i = 0; i < digits.length; i++) {
+				if (digits[i] != 0) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		//(f: number,  find solutions of n / sum = f
+		// result: Set, 
+		// usedDigits: [], 
+		// totalDigits: number, 
+		// currentDigit: number, 
+		// sum: number, 
+		// )
+		function solve(f, result, usedDigits, totalDigits, currentDigit, sum) {
+			if (currentDigit > 9) {
+				if (totalDigits > 1 && isNumberMadeOfDigits(usedDigits, sum * f)) {
+					result.add(sum * f);
+				}
+				return;
+			}
+			for (var i = 0; i + totalDigits <= 12; i++) {
+				var sum1 = sum + i * digitFactorials[currentDigit];
+				usedDigits[currentDigit] = i;
+				solve(f, result, usedDigits, totalDigits + i, currentDigit + 1, sum1);
+				usedDigits[currentDigit] = 0;
+			}
+		}
+		
+		function doSolve(f, targetId) {
+			var result = new Set();
+			solve(f, result, [0,0,0,0,0,0,0,0,0,0], 0, 0, 0);
+			var list = common.toSortedArray(result);
+			var out = "Sum = ";
+			if (list.length > 0) {
+				out = out + list.reduce((total, n) => total + n);
+				out = out + " = " + list.join(" + ");
+			} else {
+				out = out + "0";
+			}
+			common.out(out, targetId);
+		}
+		
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem34Title', 34);">
+    <div id="problem34Title"></div>
+    <div class="problemStatement">
+      <p>145 is a curious number, as 1! + 4! + 5! = 1 + 24 + 120 = 145.</p>
+      <p>Find the sum of all numbers which are equal to the sum of the factorial of their digits.</p>
+      <p>Note: as 1! = 1 and 2! = 2 are not sums they are not included.</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+       <tr colspan="4"><b>Find solutions to <i>n</i> = <i>f</i> &#215; (sum of digit factorials of <i>n</i>)</b></td></tr>
+      <tr>
+        <td>F:</td><td><input name="n" id="n" value="1" onkeypress="common.out('', 'out1');"/></td>
+        <td><button onclick="doSolve(common.getInt('n'), 'out1');">Solve</button></td>
+        <td> <div id="out1"></div></td>
+      </tr>
+    
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>

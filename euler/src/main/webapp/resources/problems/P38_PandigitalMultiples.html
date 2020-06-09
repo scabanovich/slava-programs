@@ -1,0 +1,70 @@
+<html>
+  <head>
+    <!-- Problem 38 -->
+    <title>Pandigital multiples</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	function getPandigitalNumber(c) {
+    		var p = "";
+    		var s = new Set();
+    		for (var i = 1; i < 10; i++) {
+    			var ci = c * i;
+    			var ds = common.math.getDigits(ci);
+    			for (var j = 0; j < ds.length; j++) {
+    				var d = ds[j];
+    				if (s.has(d) || d == 0) {
+    					return -1;
+    				}
+    				s.add(d);
+    			}
+    			p = p + ci;
+    			if (p.length == 9) {
+    				break;
+    			}
+    		}
+    		return parseInt(p, 10);
+    	}
+
+    	function findPandigitalAndOut(targetId) {
+    		var max = 0;
+    		var cMax = 0;
+    		for (var c = 1; c < 100000; c++) {
+    			var p = getPandigitalNumber(c);
+    			if (p > max) {
+    				max = p;
+    				cMax = c;
+    				console.log(max);
+    			}
+    		}
+    		common.out("Pandigital = " + max + " n = " + cMax, targetId);
+    	}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem38Title', 38);">
+    <div id="problem38Title"></div>
+    <div class="problemStatement">
+      <p>Take the number 192 and multiply it by each of 1, 2, and 3:</p>
+      <div class="formulaIndent">
+        <p>192 &#215; 1 = 192</p>
+        <p>192 &#215; 2 = 384</p>
+        <p>192 &#215; 3 = 576</p>
+      </div>
+      <p>By concatenating each product we get the 1 to 9 pandigital, 192384576. We will call 192384576 the concatenated product of 192 and (1,2,3)</p>
+      <p>The same can be achieved by starting with 9 and multiplying by 1, 2, 3, 4, and 5, giving the pandigital, 918273645, which is the concatenated product of 9 and (1,2,3,4,5).</p>
+      <p>What is the largest 1 to 9 pandigital 9-digit number that can be formed as the concatenated product of an integer with (1,2, ... , <i>n</i>) where <i>n</i> > 1?</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Find the largest 1 to 9 pandigital 9-digit number</b></td></tr>
+      <tr>
+        <td></td>
+        <td><button onclick="findPandigitalAndOut('out1');">Solve</button></td>
+        <td> <div id="out1"></div></td>
+      </tr>
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>

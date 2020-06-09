@@ -1,0 +1,83 @@
+<html>
+  <head>
+    <title>Project Euler</title>
+    <style>
+        table {
+        	border: 1px solid gray;
+        	border-spacing: 0;
+        }
+    	table td {
+   			border-right: 1px solid gray;
+   			padding: 2px;
+ 		}
+    	table td:last-child {
+   			border-right: none;
+		}
+    </style>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	var data = [
+    		{n: 14, name: "Longest Collatz Sequence",   path: "./LongestCollatzSequence.html"},
+    		{n: 20, name: "Factorial Digit Sum",        path: "./FactorialDigitSum.html"},
+    		{n: 23, name: "Non-abundant Sums",          path: "./NonAbundantSums.html"},
+    		{n: 24, name: "Lexicographic permutations", path: "./LexicographicPermutations.html"},
+    		{n: 25, name: "1000-digit Fibonacci number", path: "./P25_BigFibonacciNumber.html"},
+    		{n: 26, name: "Reciprocal Cycles",          path: "./ReciprocalCycles.html"},
+    		{n: 27, name: "Quadratic primes",           path: "./QuadraticPrimes.html"},
+    		{n: 29, name: "Distinct powers",            path: "./P29_DistinctPowers.html"},
+    		{n: 30, name: "Digit fifth powers",         path: "./P30_DigitFifthPowers.html"},
+    		{n: 31, name: "Coin sums",                  path: "./P31_CoinSums.html"},
+    		{n: 32, name: "Pandigital products",        path: "./P32_PandigitalProducts.html"},
+    		{n: 34, name: "Digit factorials",           path: "./P34_DigitFactorials.html"},
+    		{n: 35, name: "Circular primes",            path: "./P35_CircularPrimes.html"},
+    		{n: 36, name: "Double-base palindromes",    path: "./P36_DoubleBasePalindromes.html"},
+    		{n: 37, name: "Truncatable primes",         path: "./P37_TruncatablePrimes.html"},
+    		{n: 38, name: "Pandigital multiples",       path: "./P38_PandigitalMultiples.html"},
+    	];
+    	
+    	function setColor(targetId, color, cursor) {
+    		document.getElementById(targetId).style["color"] = color;
+    		document.getElementById(targetId).style["cursor"] = cursor;
+    	}
+ 
+		function insertRowWithProblemLink(n, name, path) {
+//			return "<tr><td>" + n + "</td><td>" + '<a href="' + path + '">' + name + "</a></td></tr>";
+			var onclick = "window.location.href='" + path + "'";
+			var id = "div" + n;
+			var onmouseenter = "setColor('" + id + "','blue', 'pointer');";
+			var onmouseleave = "setColor('" + id + "','#557755', 'initial');";
+			return "<tr><td height='30'><b style='font-size: 18'>" + n + "</b></td><td>" + 
+					"<div id=" + '"' + id + '"' + " onclick=" + '"' + onclick + '"'
+					+ " onmouseenter=" + '"' + onmouseenter + '"'
+					+ " onmouseleave=" + '"' + onmouseleave + '"'
+					+ "style='color: #557755; font-size: 17'"
+					+ ">"+ name + "</div></td></tr>";
+		}
+		function fillProblemList(targetId) {
+			var s = "";
+			for (var i = 0; i < data.length; i++) {
+				var row = data[i];
+				s = s + '\n      ' + insertRowWithProblemLink(row.n, row.name, row.path);
+			}
+			s = s + '\n    ';
+			common.out(s, targetId);
+		}
+    </script>
+  </head>
+  
+  <body style="margin-left: 100" onload="fillProblemList('problemList');">
+    <h2>Project Euler</h2>
+    
+    <!-- table template-->
+    <!--table>
+      <tr><td>14</td><td><a href="./LongestCollatzSequence.html">Longest Collatz Sequence</a></td></tr>
+    </table-->
+    <table id="problemList"></table>
+    
+    <a href="projecteuler.net/about">About Euler</a>
+    <a href="www.wellsfargo.com/biz">Wells Fargo</a>
+    
+  
+  </body>
+
+</html>

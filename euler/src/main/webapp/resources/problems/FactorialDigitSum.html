@@ -1,0 +1,132 @@
+<html>
+  <head>
+    <title>Factorial digit sum</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src = "common.js"></script>
+    <script type="text/javascript">
+		function factorial(n) {
+			var result = 1;
+			for (var i = 2; i <= n; i += 1) {
+				result = result * i;
+			}
+			return result;
+		}
+ 
+		function multiply(bigNumber, n) {
+			var result = "";
+			var remainder = 0;
+			for (var i = 0; i < bigNumber.length; i += 1) {
+				var c = bigNumber.charCodeAt(i) - "0".charCodeAt(0);
+				remainder = c * n + remainder;
+				result = result + (remainder % 10);
+				remainder = parseInt(Math.floor(remainder / 10), 10);
+			}
+			while(remainder > 0) {
+				result = result + (remainder % 10);
+				remainder = parseInt(Math.floor(remainder / 10), 10);
+			}
+			return result;
+		}
+ 
+		function revertString(s) {
+			var result = "";
+			for (var i = s.length - 1; i >= 0; i -= 1) {
+				result += s.charAt(i);
+			}
+			return result;
+		}
+      
+		function bigFactorial(n) {
+			var result = "1";
+			for (var i = 2; i <= n; i += 1) {
+				result = multiply(result, i);
+			}
+			return result;
+		}
+
+        function sumDigits(bigNumber) {
+			var result = 0;
+			for (var i = 0; i < bigNumber.length; i += 1) {
+				var c = bigNumber.charCodeAt(i) - "0".charCodeAt(0);
+				result += c;
+			}
+			return result;
+        }
+ 
+ 		//For small n
+		function getFactorialAndOutput(n, targetId) {
+			var result = bigFactorial(n);
+			common.out(sumDigits(revertString(result)), targetId);
+		}
+
+		//For large n
+		var solving = false;
+		
+		function computeFactorialAsLongTask(bigNumber, from, to, callback) {
+		    if (to - from > 50) {
+		    	for (var i = from; i <= from + 49; i += 1) {
+		    	    if (!solving) {
+		    	        callback("");
+		    	        return;
+		    	    }
+					bigNumber = multiply(bigNumber, i);
+				}
+				setTimeout(function() {
+	        		computeFactorialAsLongTask(bigNumber, from + 50, to, callback);
+		        } , 30);
+		    } else {
+				for (var i = from; i <= to; i += 1) {
+					bigNumber = multiply(bigNumber, i);
+				}
+				callback(bigNumber);
+			}
+		}
+		
+		function solveOrStop(n, targetId) {
+		    if (n < 200) {
+		    	getFactorialAndOutput(n, targetId);
+		    	return;
+		    }
+		    var b = document.getElementById('solve');
+		    if (solving) {
+		        solving = false;
+		        b.innerHTML = "Solve";
+		    } else {
+		        solving = true;
+		        b.innerHTML = "Stop";
+		        computeFactorialAsLongTask("1", 1, n, function(result) {
+		        	document.getElementById(targetId).innerHTML = sumDigits(revertString(result));
+					solving = false;
+				    b.innerHTML = "Solve";
+		        });
+		    }
+		}
+    </script>
+  </head>
+  
+  <body onload="common.addProblemHeader('problem20Title', 20);">
+    <div id="problem20Title"></div>
+
+    <div class="problemStatement">
+    	<p>n! means n * (n - 1) * ... * 3 * 2 * 1</p>
+		<p>For example, 10! = 10 * 9 * ... * 3 * 2 * 1 = 3628800, <br/>
+ 		and the sum of the digits in the number 10! is 3 + 6 + 2 + 8 + 8 + 0 + 0 = 27.</p>
+ 		<p>Find the sum of the digits in the number 100!</p>
+     </div>
+
+     <div style="height: 20px;"></div>
+ 
+     <table style="border-spacing: 10px;">
+       <tr><td colspan="4"><b>Find sum of digits of <i>n!</i></b></td></tr>
+       <tr>
+         <td>Argument:</td><td><input name="n" id="n" value="1"/></td>
+         <td><button id="solve" name="Solve" onclick="solveOrStop(common.getInt('n'), 'out');">Solve</button></td>
+         <td>Result = <span id="out"></span></td>
+       </tr>
+     </table>
+ 
+     <div style="height: 20px;"></div>
+
+     <a href="Euler.html">Back</a>
+  </body>
+</html>

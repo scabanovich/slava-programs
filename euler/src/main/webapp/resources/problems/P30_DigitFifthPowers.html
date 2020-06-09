@@ -1,0 +1,134 @@
+<html>
+  <head>
+    <title>Digit fifth powers</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    
+    	var sampleNumbers = [1634, 8208, 9474];
+    
+    	function doOnLoad() {
+			common.addProblemHeader('problem30Title', 30);
+			insertExamples(sampleNumbers, 4, 'powersExamples', false);
+			insertExamples([1], 4, 'trivialExample', true);    
+			insertSumOfExamples(sampleNumbers, 'sumOfExamples');	
+    	}
+
+		function insertExamples(numbers, p, targetId, inline) {
+			var code = "";
+			for (var i = 0; i < numbers.length; i++) {
+				var n = numbers[i];
+				var m = getSumOfPowers(n, p);
+				code = code + ((!inline) ? "<p>" : "") + m + " = ";
+				var ds = common.math.getDigits(n);
+				for (var j = ds.length - 1; j >= 0; j--) {
+					if (j < ds.length - 1) {
+						code = code + " + ";
+					}
+					code = code + ds[j] + "<sup>" + p + "</sup>";
+				}
+				if (m != n) {
+					code = code + " != " + n;
+				}
+				code = code + ((!inline) ? "</p>" : "");
+			}
+			common.out(code, targetId);
+		}
+
+		function insertSumOfExamples(numbers, targetId) {
+			var code = "";
+			var sum = 0;
+			for (var i = 0; i < numbers.length; i++) {
+				var n = numbers[i];
+				sum += n;
+				if (i > 0) {
+					code = code + " + ";
+				}
+				code = code + n;
+			}
+			code = code + " = " + sum;
+			common.out(code, targetId);
+		}
+		
+		function getSumOfPowers(n, p) {
+			var sum = 0;
+			var ds = common.math.getDigits(n);
+			for (var j = 0; j < ds.length; j++) {
+				sum += common.power(ds[j], p);
+			}
+			return sum;
+		}
+		
+		function getSumOfFifthPowersAndOut(n, p, targetId) {
+			var sum = getSumOfPowers(n, p);
+			insertExamples([n], p, targetId, true);
+			//common.out(sum, targetId);
+		}
+		
+		function getSumOfNumbersEqualSumOfDigitPowers(p, targetId, result) {
+			if (p > 7) {
+				common.out("<span style='color: red'>Too large <i>p</i>.</span>", targetId);
+				return;
+			}
+			var limit = 1;
+			for (var i = 0; i <= p; i++) {
+				limit *= 10;
+			}
+			var sum = 0;
+			var list = [];
+			for (var n = 2; n < limit; n++) {
+				if (n == getSumOfPowers(n, p)) {
+					sum += n;
+					list.push(n);
+				}			
+			}
+			common.out(sum, targetId);
+			insertExamples(list, p, result, false);
+		}
+		
+		function clearOut(targetIds) {
+			for (var i = 0; i < targetIds.length; i++) {
+				common.out("", targetIds[i]);
+			}
+		}
+
+    </script>    
+  </head>
+  
+  <body onload="doOnLoad();">
+    <div id="problem30Title"></div>
+    <div class="problemStatement">
+    	<p>Surprisingly there are only three numbers that can be written as the sum of fourth powers of their digits:</p>
+    	<div class="formulaIndent" id="powersExamples"></div>
+    	<p>As <span id="trivialExample"></span> is not a sum it is not included.</p>
+		The sum of these numbers is <span id="sumOfExamples"></span>.
+		<p>Find the sum of all the numbers that can be written as the sum of fifth powers of their digits.</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4" style=""><b>Find sum of <i>p</i>-th powers of <i>n</i></b></td></tr>
+      <tr><td>P:</td> <td><input name="p1" value="5" id="p1"/></td></tr>
+      <tr>
+          <td>N:</td> <td><input name="n" value="100" id="n"/></td>
+          <td><button name="solve" onclick="getSumOfFifthPowersAndOut(common.getInt('n'), common.getInt('p1'), 'out1');">Solve</button></td>
+          <td>Sum: <span id="out1"></span></td>
+     </tr>
+    
+      <tr><td colspan="4" style=""><b>Solve the problem for <i>p</i>-th power (<i>p</i> = 5 requested)</b></td></tr>
+      <tr>
+          <td>P:</td> <td><input name="p" value="4" id="p" onkeypress="clearOut(['result', 'out2']);"/></td>
+          <td><button name="solve" onclick="getSumOfNumbersEqualSumOfDigitPowers(common.getInt('p'), 'out2', 'result');">Solve</button></td>
+          <td>Sum: <span id="out2"></span></td>
+     </tr>
+     <tr>
+	   <td colspan="3">List of numbers for the sum:</p></td>     
+    	<td colspan="2"><div class="formulaIndent" id="result"></div></td>
+     </tr>
+    
+    	
+    </table>
+
+  
+    <a href="Euler.html">Back</html>
+  </body>
+</html>

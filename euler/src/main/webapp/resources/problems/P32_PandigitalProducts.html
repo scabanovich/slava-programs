@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <!-- Problem 32 -->
+    <title>Pandigital products</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	function isPandigital9(s) {
+			if (s.length != 9) {
+				return false;
+			}
+			if (s.includes("0")) {
+				return false;
+			}
+			for (var d = 1; d <= 9; d++) {
+				if (!s.includes("" + d)) {
+					return false;
+				}
+			}
+    		return true;
+    	}
+    
+		function solve(targetSumId, targetNumbersId) {
+			var sum = 0;
+			var numbers = [];
+			var out2 = "";
+			for (var n1 = 2; n1 < 99; n1++) {
+				for (var n2 = 123; n2 < 9876; n2++) {
+					var p = n1 * n2;
+					if (p > 99999) {
+						break;
+					}
+					var s = n1 + "" + n2 + "" + p;
+					if (isPandigital9(s) && !numbers.includes(p)) {
+						sum += p;
+						out2 = out2 + "<p>" + n1 + "&#215;" + n2 + " = " + p + "</p>";
+						numbers.push(p);
+					}
+				}
+			}
+			console.log(out2);
+			common.out(sum, 'out1');
+			common.out(out2, 'out2');
+			 
+		}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem32Title', 32);">
+    <div id="problem32Title"></div>
+    <div class="problemStatement">
+		<p>We shall say that an <i>n</i>-digit number is pandigital if it makes use of all the digits 1 to <i>n</i> exactly once; for example, the 5-digit number, 15234, is 1 through 5 pandigital.</p>
+		<p>The product 7254 is unusual, as the identity, 39 &#215; 186 = 7254, containing multiplicand, multiplier, and product is 1 through 9 pandigital.</p>
+		<p>Find the sum of all products whose multiplicand/multiplier/product identity can be written as a 1 through 9 pandigital.</p>
+		<p>HINT: Some products can be obtained in more than one way so be sure to only include it once in your sum.</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr colspan="4"><b>Sum of pandigital products</b></td></tr>
+      <tr>
+        <td></td><td></td>
+        <td><button onclick="solve('out1', 'out2');">Solve</button></td>
+        <td>Result: <span id="out1"></span></td>
+      </tr>
+      <tr>
+        <td></td><td></td><td></td>
+        <td><div id="out2"></div></td>
+      </tr>
+    
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>

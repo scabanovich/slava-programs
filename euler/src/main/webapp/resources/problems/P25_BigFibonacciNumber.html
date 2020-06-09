@@ -1,0 +1,108 @@
+<html>
+  <head>
+    <!-- Problem 25 -->
+    <title>1000-digit Fibonacci number</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    
+    <script type="text/javascript">
+    
+		function getFibonacci(n) {
+			if (n < 1) {
+				return -1;
+			} else if (n == 1 || n == 2) {
+				return 1;
+			}
+			var f1 = 1;
+			var f2 = 1;
+			for (var i = 2; i < n; i++) {
+				var f3 = f1 + f2;
+				f1 = f2;
+				f2 = f3;
+			}
+			return f2;			
+		}
+
+		var one = new common.math.BigNumber([1]);
+
+		function getBigFibonacci(n) {
+			if (n < 1) {
+				return null;
+			} else if (n == 1 || n == 2) {
+				return one;
+			}
+			var f1 = one;
+			var f2 = one;
+			for (var i = 2; i < n; i++) {
+				var f3 = f1.add(f2);
+				f1 = f2;
+				f2 = f3;
+			}
+			return f2;			
+		}
+
+		function getFibonacciAndOut(n, targetId) {
+			var result = getBigFibonacci(n);
+			common.out(result, targetId);
+		}
+    
+		function getSmallestFibonacciTermByDigits(k) {
+			if (k < 1) {
+				return null;
+			} else if (k == 1) {
+				return 1;
+			}
+			var f1 = one;
+			var f2 = one;
+			for (var i = 3; ; i++) {
+				var f3 = f1.add(f2);
+				if (f3.length() >= k) {
+					return i;
+				}
+				f1 = f2;
+				f2 = f3;
+			}
+			return -1;
+		}
+
+		function getSmallestFibonacciTermByDigitsAndOut(k, targetId) {
+			result = getSmallestFibonacciTermByDigits(k);
+			common.out(result, targetId);
+		}
+
+    </script>
+  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem25Title', 25)">
+    <div id="problem25Title"></div>
+  
+    <div class="problemStatement">
+      <p>The Fibonacci sequence is defined by the recurrence relation:</p>
+      <p class="formulaIndent">F<sub>n</sub> = F<sub>n-1</sub> + F<sub>n-2</sub>, where F<sub>1</sub> = 1 and F<sub>2</sub> = 2.</p>
+      <p>Hence the first 12 terms will be:</p>
+      <p class="formulaIndent">F<sub>1</sub> = 1, F<sub>2</sub> = 1, F<sub>3</sub> = 2, F<sub>4</sub> = 3, F<sub>5</sub> = 5, ..., F<sub>12</sub> = 144</p>
+      <p>The 12th term, F<sub>12</sub>, is the first term to contain three digits.</p>
+      <p>What is the index of the first term in the Fibonacci sequence to contain 1000 digits?</p>    
+    </div>
+ 
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Find <i>n</i>-th fibonacci number</b></td></tr>
+      <tr>
+        <td>N:</td><td><input name="n" id="n" value="1"/></td>
+        <td><button id="solve" name="Solve" onclick="getFibonacciAndOut(common.getInt('n'), 'out1');">Solve</button></td>
+        <td>Result = <span id="out1"></span></td>
+      </tr>
+    
+      <tr><td colspan="4"><b>Find which first fibonacci number has <i>k</i> digits</b></td></tr>
+      <tr>
+        <td>K:</td><td><input name="n" id="k" value="1"/></td>
+        <td><button id="solve" name="Solve" onclick="getSmallestFibonacciTermByDigitsAndOut(common.getInt('k'), 'out2');">Solve</button></td>
+        <td>Result = <span id="out2"></span></td>
+      </tr>
+    
+    </table>
+  </body>
+
+  <a href="./Euler.html">Back</a>
+</html>

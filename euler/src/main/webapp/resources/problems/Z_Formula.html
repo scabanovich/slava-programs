@@ -1,0 +1,32 @@
+<html>
+  <head>
+  	<title>Formulas</title>
+    <script>
+		function commitText(sourceId, targetId) {
+  			var source = document.getElementById(sourceId);
+  			var target = document.getElementById(targetId);
+  			target.innerHTML = source.value;
+  			MathJax.Hub.Queue(["Typeset",MathJax.Hub, target]);
+  		}
+    </script>
+    <script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+      		jax: ["input/TeX", "output/HTML-CSS"],
+      		tex2jax: {
+        		inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+         		displayMath: [ ["$$","$$"], ["\\[","\\]"] ],
+         		processEscapes: true
+      		},
+      		"HTML-CSS": { availableFonts: ["TeX"]  }
+   		});
+    </script>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML-full,Safe"></script>
+  </head>
+    
+  <body>
+  	<textarea rows="10" cols="150" id="text1"></textarea>
+  	<button onclick="commitText('text1', 'out1')">Show</button>
+  	<div id="out1"></div>
+  
+  </body>
+</html>

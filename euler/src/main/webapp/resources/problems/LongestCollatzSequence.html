@@ -1,0 +1,88 @@
+<html>
+  <head>
+    <title>Longest Collatz Sequence</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+	<script type="text/javascript">
+		dic = {};
+		dic[1] = 1;
+
+		function solveForStart(start) {
+			if (start in dic) {
+				return dic[start];
+			}
+			var next;
+			if (start % 2 == 0) {
+				next = start / 2;
+			} else {
+				next = start * 3 + 1;
+			}
+			var result = 1 + solveForStart(next);
+			dic[start] = result;
+			return result;
+		}
+
+		function solveForLimit(limit) {
+			var result = {"start": 1, "length" : 1};
+			for (var n = 1; n <= limit; n += 1) {
+				var l = solveForStart(n);
+				if (l > result.length) {
+					result.length = l;
+					result.start = n;
+				}
+			}
+			return result;
+		}
+
+		function solveForStartAndOut(start, targetId) {
+			var result = solveForStart(start);
+			common.out(result, targetId);
+		}
+
+		function solveForLimitAndOut(start, targetLengthId, targetStartId) {
+			var result = solveForLimit(start);
+			common.out(result.length, targetLengthId);
+			common.out(result.start, targetStartId);
+		}
+	</script>
+  </head>
+  
+  <body onload="common.addProblemHeader('problem14Title', 14);">
+    <div id="problem14Title"></div>
+
+    <div class="problemStatement">
+    	<p>The following iterative sequence is defined for the set of positive integers:</p>
+		<div style="padding-left: 20px;">
+			<p>n &rarr; n/2 (n is even)</p>
+			<p>n &rarr; 3n + 1 (n is odd)</p>
+		</div>
+
+		<p>Using the rule above and starting with 13, we generate the following sequence:</p>
+		<p style="text-align:center">13 &rarr; 40 &rarr; 20 &rarr; 10 &rarr; 5 &rarr; 16 &rarr; 8 &rarr; 4 &rarr; 2 &rarr; 1</p>
+		<p>It can be seen that this sequence (starting at 13 and finishing at 1) contains 10 terms. Although it has not been proved yet (Collatz Problem), it is thought that all starting numbers finish at 1.</p>
+
+		<p>Which starting number, under one million, produces the longest chain?</p>
+		<p>NOTE: Once the chain starts the terms are allowed to go above one million.</p>
+     </div>
+    
+    
+  <table style="border-spacing: 10px;">
+    <tr><td colspan="4"><b>Find Collatz sequenth length for start number</b></td></tr>
+    <tr>
+        <td>Start:</td> <td><input name="myStart" value="1" id="myStart"/></td>
+        <td><button name="solve" onclick="solveForStartAndOut(common.getInt('myStart'), 'p1');">Solve</button></td>
+  		<td>Length: <span id="p1"></span></td>
+    </tr>  		
+  		
+    <tr><td colspan="4"><b>Find longest Collatz sequenth length with limited number</b></td></tr>
+    <tr>
+  		<td>Limit:</td> <td><input name="myLimit" value="1" id="myLimit"/></td>
+  		<td><button name="solve" onclick="solveForLimitAndOut(common.getInt('myLimit'), 'p2', 'p3');">Solve</button></td>
+  		<td>Maximal Length: <span id="p2"> </span> at the start of: <span id="p3"> </span></td>
+    </tr>
+  </table>
+  
+  <a href="Euler.html">Back</a>
+  </body>
+
+</html>

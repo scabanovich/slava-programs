@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <!-- Problem 35 -->
+    <title>Circular primes</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+
+    <script type="text/javascript">
+    	
+		//digit at start will be at the highest place 
+		function buildNumberByDigits(digits, start) {
+			var result = 0;
+			for (var i = 0; i < digits.length; i++) {
+				var j = start - i;
+				if (j < 0) {
+					j = j + digits.length;
+				}
+				result = result * 10 + digits[j];
+			}
+			return result;
+		}
+   
+		function isCircularNumber(n, primes) {
+			var ds = common.math.getDigits(n);
+			for (var i = 0; i < ds.length; i++) {
+				var m = buildNumberByDigits(ds, i);
+				if (!primes.isPrime(m)) {
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		function countCircularNumbers(limit) {
+			var primes = new common.math.Primes(limit);
+			var result = 0;
+			for (var n = 2; n < limit; n++) {
+				if (isCircularNumber(n, primes)) {
+					result++;
+				}
+			}
+			return result;
+		}
+		
+		function countCircularNumbersAndOut(limit, targetId) {
+			var result = countCircularNumbers(limit);
+			common.out("Result: " + result, targetId);
+		}
+    </script>
+  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem35Title', 35);">
+    <div id="problem35Title"></div>
+    <div class="problemStatement">
+    	<p>The number, 197, is called a circular prime because all rotations of the digits: 197, 971, and 719, are themselves prime.</p>
+    	<p>There are thirteen such primes below 100: 2, 3, 5, 7, 11, 13, 17, 31, 37, 71, 73, 79, and 97.</p>
+    	<p>How many circular primes are there below one million?</p>
+    </div>
+
+    <table style="">
+      <tr colspan="4"><b>Count circular numbers below <i>limit</i></b></td></tr>
+      <tr>
+        <td>Limit:</td><td><input name="limit" id="limit" value="1" onkeypress="common.out('', 'out1');"/></td>
+        <td><button onclick="countCircularNumbersAndOut(common.getInt('limit'), 'out1');">Solve</button></td>
+        <td> <div id="out1"></div></td>
+      </tr>
+    </table>
+ 
+    <a href="Euler.html">Back</a>
+  </body>
+
+</html>

@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <!-- Problem 37 -->
+    <title>Truncatable primes</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    
+    //Cut digits from <= d < to
+	function buildTruncatedNumberByDigits2(digits, from, to) {
+		var result = 0;
+		for (var i = to - 1; i >= from; i--) {
+			result = result * 10 + digits[i];
+		}
+		return result;
+	}
+
+	function isTruncatablePrime(n, primes) {
+		var ds = common.math.getDigits(n);
+		//cut high digits
+		for (var i = 1; i <= ds.length; i++) {
+			var m = buildTruncatedNumberByDigits2(ds, 0, i);
+			if (!primes.isPrime(m)) {
+				return false;
+			}
+		}
+		//cut low digits
+		for (var i = 0; i < ds.length; i++) {
+			var m = buildTruncatedNumberByDigits2(ds, i, ds.length);
+			if (!primes.isPrime(m)) {
+				return false;
+			}
+		}
+		return true;    	
+    }
+    
+	function countTruncatablePrimes(limit) {
+		var primes = new common.math.Primes(limit);
+		var size = primes.size();
+		var _count = 0;
+		var _sum = 0;
+		for (var index = 0; index < size; index++) {
+			var n = primes.get(index);
+			if (n >= 10 && isTruncatablePrime(n, primes)) {
+				_count++;
+				_sum += n;
+			}
+		}
+		return {count : _count, sum: _sum};
+	}
+	
+	function countTruncatablePrimesAndOut(limit, targetId) {
+		var result = countTruncatablePrimes(limit);
+		common.out("Count: " + result.count + " Sum: " + result.sum, targetId);
+	}
+	
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem37Title', 37);">
+    <div id="problem37Title"></div>
+    <div class="problemStatement">
+      <p>The number 3797 has an interesting property. Being prime itself, it is possible to continuously remove digits from left to right, and remain prime at each stage: 3797, 797, 97, and 7. Similarly we can work from right to left: 3797, 379, 37, and 3.</p>
+      <p>Find the sum of the only eleven primes that are both truncatable from left to right and right to left.</p>
+      <p>NOTE: 2, 3, 5, and 7 are not considered to be truncatable primes.</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Count circular numbers below <i>limit</i></b></td></tr>
+      <tr>
+        <td>Limit:</td><td><input name="limit" id="limit" value="1" onkeypress="common.out('', 'out1');"/></td>
+        <td><button onclick="countTruncatablePrimesAndOut(common.getInt('limit'), 'out1');">Solve</button></td>
+        <td> <div id="out1"></div></td>
+      </tr>
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
