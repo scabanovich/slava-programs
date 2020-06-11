@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <!-- Problem 40 -->
+    <title>Champernowne's Constant</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	function getDigitByIndex(n) {
+    		var dc = 1;
+    		var dq = 9;
+    		var index = dc * dq;
+    		while (index < n) {
+    			dc += 1;
+    			dq *= 10;
+    			index += dc * dq;
+    		}
+    		if (index == n) {
+    			return 9;
+    		}
+    		var delta = index - n;
+    		var number = parseInt(dq / 9) * 10 - 1 - parseInt((delta - delta % dc) / dc);
+    		var digit = delta % dc;
+    		return common.math.getDigits(number)[digit];
+    	}
+    	
+    	function solveAndOut(targetId) {
+    		var ns = [1, 10, 100, 1000, 10000, 100000, 1000000];
+    		var result = 1;
+    		for (var i = 0; i < ns.length; i++) {
+    			result *= getDigitByIndex(ns[i]);
+    		}
+    		common.out("Result: " + result, targetId);
+    	}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem40Title', 40);">
+    <div id="problem40Title"></div>
+    <div class="problemStatement">
+		<p>An irrational decimal fraction is created by concatenating the positive integers:</p>
+		<p class="formulaIndent">0.123456789101112131415161718192021...</p>
+		<p>It can be seen that the 12<sup>th</sup> digit of the fractional part is 1.</p>
+		<p>If <i>d</i><sub>n</sub> represents the <i>n</i><sup>th</sup> digit of the fractional part, find the value of the following expression.</p>
+		<p class="formulaIndent"><i>d</i><sub>1</sub> &#215; <i>d</i><sub>10</sub> &#215; <i>d</i><sub>100</sub> &#215; <i>d</i><sub>1000</sub> &#215; <i>d</i><sub>10000</sub> &#215; <i>d</i><sub>100000</sub> &#215; <i>d</i><sub>1000000</sub></p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Find <i>n</i><sup>th</sup> digit</b></td></tr>
+      <tr><td>N:</td><td><input id="n" name="n" value="1"/></td>
+          <td><button onclick="common.out('Result: ' + getDigitByIndex(common.getInt('n')), 'out1')">Solve</button></td>
+          <td><div id="out1"></div></td>
+      </tr>
+      
+      <tr><td colspan="4"><b>Solve the problem</b></td></tr>
+      <tr>
+          <td><button onclick="solveAndOut('out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
