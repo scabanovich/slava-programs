@@ -1,0 +1,78 @@
+<html>
+  <head>
+    <!-- Problem 41 -->
+    <title>Pandigital prime</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	var pr = new common.math.Primes(40000);
+    	var factorials = [1];
+    	for (var i = 1; i <= 9; i++) {
+    		factorials[i] = i * factorials[i - 1];
+    	}
+    	
+    	function getNextDigit(used, k, n, result) {
+    		var di = parseInt(n / factorials[k]);
+    		var d = -1;
+    		while (di >= 0) {
+    			d++;
+    			while (used[d] == 1) {
+    				d++;
+    			}
+    			di--;
+    		}
+    		result.push(d);
+    		used[d] = 1;    			
+    		return n % factorials[k];
+    	}
+    	
+    	function getPermutationNumber(k, n) {
+    		var used = [1,0,0,0,0,0,0,0,0,0];
+    		var result = [];
+    		for (var q = k - 1; q >= 0; q--) {
+    			n = getNextDigit(used, q, n, result);
+    		}
+    		var number = 0;
+    		for (var i = 0; i < result.length; i++) {
+    			number = number * 10 + result[i];
+    		}
+    		return number
+    	}
+    	
+    	function findMaximumPandigitalPrime(k) {
+    		for (var n = factorials[k] - 1; n >= 0; n--) {
+    			var r = getPermutationNumber(k, n);
+    			if (pr.isPrime(r)) {
+    				return r;
+    			}
+    		}
+    		return -1;
+    	}
+
+    	function solveAndOut(k, targetId) {
+    		var r = findMaximumPandigitalPrime(k);
+			common.out("Result: " + r, targetId);
+		}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem41Title', 41);">
+    <div id="problem41Title"></div>
+    <div class="problemStatement">
+      <p>We shall say that an <i>n</i>-digit number is pandigital if it makes use of all the digits 1 to <i>n</i> exactly once. For example, 2143 is a 4-digit</p>
+      <p>What is the largest <i>n</i>-digit pandigital prime that exists?</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+    
+      <tr><td colspan="4"><b>Solve the problem for <i>k</i> digits</b></td></tr>
+      <tr>
+          <td>K:</td><td><input id="n" name="n" value="1"/></td>
+          <td><button onclick="solveAndOut(common.getInt('n'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>

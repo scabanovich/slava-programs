@@ -166,7 +166,19 @@ common.math.Primes = function(limit) {
 }
 
 common.math.Primes.prototype.isPrime = function(n) {
-	return this.set.has(n);
+	if (n <= this.limit) {
+		return this.set.has(n);
+	}
+	for (var i = 0; i < this.list.length; i++) {
+		var p = this.list[i];
+		if (p * p > n) {
+			return true;
+		}
+		if (n % p == 0) {
+			return false;
+		}
+	}
+	return false;
 }
 
 common.math.Primes.prototype.get = function(index) {
