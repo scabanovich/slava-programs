@@ -1,0 +1,70 @@
+<html>
+  <head>
+    <!-- Problem 42 -->
+    <title>Coded triangle numbers</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+        var code_A = "A".charCodeAt(0);  //constant - code of letter A
+    	var words = [];                  //List of words loaded from the server through iframe
+ 
+    	var triangularNumbers = new Set();  //Set of triangular numbers
+    	for (var i = 1; i < 50; i++) {
+    		var t = parseInt(i * (i + 1) / 2);
+    		triangularNumbers.add(t);
+    	}
+    	
+    	function getCharValue(word) {
+    		var result = 0;
+			for (var i = 0; i < word.length; i++) {
+				result += word.charCodeAt(i) - code_A + 1;
+			}    		
+    		return result;
+    	}
+
+    	function loadFile() {
+    		var oFrame = document.getElementById("wordsFile");
+    		var text = oFrame.contentWindow.document.body.innerHTML;
+    		words = text.split(",");
+	    	for (var i = 0; i < words.length; i++) {
+	    		var word = words[i];
+	    		if (word.startsWith('"')) {
+	    			words[i] = word.substring(1, word.length - 1);
+	    		}
+	    	}
+    	}
+    	
+    	function solveAndOut(targetId) {
+    		var result = 0;
+    		for (var i = 0; i < words.length; i++) {
+    			var v = getCharValue(words[i]);
+    			if (triangularNumbers.has(v)) {
+    				result++;
+    			}
+    		}
+    		common.out("Result=" + result, targetId);
+    	}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem42Title', 42);">
+    <div id="problem42Title"></div>
+    <div class="problemStatement">
+		<p>The <i>n</i><sup>th</sup> term of the sequence of triangle numbers is given by, <i>t<sub>n</sub> = <span style="font-size: 10"><sup>1</sup>/<sub>2</sub></span> n(n+1)</i>; so the first ten triangle numbers are:</p>
+		<p class="formulaIndent">1, 3, 6, 10, 15, 21, 28, 36, 45, 55, ...</p>
+		<p>By converting each letter in a word to a number corresponding to its alphabetical position and adding these values we form a word value. For example, the word value for SKY is 19 + 11 + 25 = 55 = <i>t</i><sub>10</sub>. If the word value is a triangle number then we shall call the word a triangle word.</p>
+		<p>Using words.txt (right click and 'Save Link/Target As...'), a 16K text file containing nearly two-thousand common English words, how many are triangle words?</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Solve the problem</b></td></tr>
+      <tr>
+          <td><button onclick="solveAndOut('out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+    </table>
+
+    <iframe id="wordsFile" src="./P42_words.txt" onload="loadFile();" style="display: none;"></iframe>
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
