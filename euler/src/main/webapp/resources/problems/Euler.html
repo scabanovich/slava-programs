@@ -15,6 +15,7 @@
 		}
     </style>
     <script src="common.js"></script>
+    <script src="js/cookies.js"></script>
     <script type="text/javascript">
     	var data = [
     		{n: 14, name: "Longest Collatz Sequence",   path: "./LongestCollatzSequence.html"},
@@ -39,9 +40,49 @@
     		{n: 43, name: "Sub-string divisibility",    path: "./P43_SubstringDivisibility.html"},
     	];
     	
+    	var pageSize = 8;
+    	var pageCount = parseInt((data.length + pageSize - 1) / pageSize);
+    	var currentPage = getPageFromCookie();
+
+    	function getPageFromCookie() {
+    		var p = MyCookies.getCookie("page");
+    		if (!p || p.length == 0) {
+    			p = "0";
+    		}
+			console.log("getPage " + p);
+    		return parseInt(p);
+    	}
+    	
     	function setColor(targetId, color, cursor) {
     		document.getElementById(targetId).style["color"] = color;
     		document.getElementById(targetId).style["cursor"] = cursor;
+    	}
+    	
+    	function setCurrentPage(page, targetId, problemListId) {
+    		console.log("targetId=" + targetId);
+    		currentPage = page;
+			console.log("setPage " + page);
+    		MyCookies.setCookie("page", "" + page);
+    		var p = MyCookies.getCookie("page");
+			console.log("Page " + p);
+    		fillPageButtons(targetId, problemListId);
+    		fillProblemList(problemListId);
+    	}
+    	
+    	function fillPageButtons(targetId, problemListId) {
+    		var buttons = "";
+    		for (var i = 0; i < pageCount; i++) {
+    			var selected = i == currentPage;
+    			var text = "";
+    			if (selected) {
+    				text = "<button><b>" + (i + 1) + "</b></button> ";
+    			} else {
+    				var onclick = 'setCurrentPage(' + i + ',"' + targetId + '","' + problemListId + '")';
+    				text = "<button onclick='" + onclick + "'>" + (i + 1) + "</button> ";
+    			}    			
+    			buttons += text;
+    		}
+    		common.out(buttons, targetId);
     	}
  
 		function insertRowWithProblemLink(n, name, path) {
@@ -59,7 +100,9 @@
 		}
 		function fillProblemList(targetId) {
 			var s = "";
-			for (var i = 0; i < data.length; i++) {
+			var from = currentPage * pageSize;
+			var to = from + pageSize;
+			for (var i = from; i < data.length && i < to; i++) {
 				var row = data[i];
 				s = s + '\n      ' + insertRowWithProblemLink(row.n, row.name, row.path);
 			}
@@ -69,17 +112,18 @@
     </script>
   </head>
   
-  <body style="margin-left: 100" onload="fillProblemList('problemList');">
+  <body style="margin-left: 100" onload="setCurrentPage(getPageFromCookie(), 'pageButtons', 'problemList');">
     <h2>Project Euler</h2>
+    <a href="projecteuler.net/about">About</a>
+    <p></p>
     
     <!-- table template-->
     <!--table>
       <tr><td>14</td><td><a href="./LongestCollatzSequence.html">Longest Collatz Sequence</a></td></tr>
     </table-->
+    <div id="pageButtons"></div>
+    <p></p>
     <table id="problemList"></table>
-    
-    <a href="projecteuler.net/about">About Euler</a>
-    <a href="www.wellsfargo.com/biz">Wells Fargo</a>
     
   
   </body>
