@@ -131,7 +131,6 @@ public class MyServer {
 			URL url = new URL("https://" + uri);
 			URLConnection conn = url.openConnection();
 			Headers hs = httpExchange.getRequestHeaders();
-			System.out.println(hs.keySet());
 			for (String s : hs.keySet()) {
 				System.out.println(s + "  =  " + hs.getFirst(s));
 //				conn.setRequestProperty(s, hs.getFirst(s)); 
@@ -143,7 +142,6 @@ public class MyServer {
 				((HttpURLConnection)conn).setRequestMethod("POST");
 				conn.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded"); 
 				conn.setRequestProperty( "charset", "utf-8");
-				System.out.println("-->" + hs.get("Cookie").stream().collect(Collectors.joining(";")));
 				conn.setRequestProperty( "Cookie", hs.get("Cookie").stream().collect(Collectors.joining(";")));
 				conn.setRequestProperty("Content-Length", "" + requestBody.trim().getBytes().length);
 				System.out.println(requestBody);
