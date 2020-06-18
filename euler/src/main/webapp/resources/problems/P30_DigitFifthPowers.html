@@ -86,12 +86,6 @@
 			insertExamples(list, p, result, false);
 		}
 		
-		function clearOut(targetIds) {
-			for (var i = 0; i < targetIds.length; i++) {
-				common.out("", targetIds[i]);
-			}
-		}
-
     </script>    
   </head>
   
@@ -116,7 +110,7 @@
     
       <tr><td colspan="4" style=""><b>Solve the problem for <i>p</i>-th power (<i>p</i> = 5 requested)</b></td></tr>
       <tr>
-          <td>P:</td> <td><input name="p" value="4" id="p" onkeypress="clearOut(['result', 'out2']);"/></td>
+          <td>P:</td> <td><input name="p" value="4" id="p" onkeypress="common.clearOut(['result', 'out2']);"/></td>
           <td><button name="solve" onclick="getSumOfNumbersEqualSumOfDigitPowers(common.getInt('p'), 'out2', 'result');">Solve</button></td>
           <td>Sum: <span id="out2"></span></td>
      </tr>

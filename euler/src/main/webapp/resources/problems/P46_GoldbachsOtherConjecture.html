@@ -1,0 +1,126 @@
+<html>
+  <head>
+    <!-- Problem 46 -->
+    <title>Goldbach's other conjecture</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	var primes = new common.math.Primes(100000);
+    	function getGoldbach(n) {
+    		if (n % 2 == 0) {
+    			return {prime : -1, squared : -1};
+    		}
+    		var result = {prime : n, squared : 0};
+    		if (primes.isPrime(n)) {
+    			return result;
+    		}
+    		for (var s = 1; 2 * s * s < n; s++) {
+    			var p = n - 2 * s * s;
+    			if (primes.isPrime(p)) {
+    				result.prime = p;
+    				result.squared = s;
+    				return result;
+    			}
+    		}
+			result.prime = -1;
+			result.squared = -1;
+			return result;    		
+    	}
+    	
+    	function checkGoldbachAndOut(n, targetId) {
+    		var result = getGoldbach(n);
+    		if (n % 2 == 0) {
+    			common.out("This is an even number.", targetId);
+    		} else if (result.prime == n) {
+    			common.out("This is a prime.", targetId);
+    		} else if (result.prime < 0) {
+    			common.out("Goldbach's other conjecture is not true for this composite!", targetId);
+    		} else {
+    			common.out("" + n + " = " + result.prime + " + 2&#215;" + result.squared + "<sup>2</sup ", targetId);
+    		}
+    	}
+
+		function solveAndOut(targetId) {
+			if (runningFirstNonGoldbach) return; //the big problem is running
+			runningFirstNonGoldbach = true;
+			findFirstNonGoldbachAndOut(9, targetId, "b1");
+		}
+	
+		var runningFirstNonGoldbach = false;
+		function findFirstNonGoldbachAndOut(start, targetId, buttonId) {
+			if (start % 2 == 0) {
+				start++;
+			}
+			for (var n = start; n < start + 100000000; n += 2) {
+				if (!runningFirstNonGoldbach) {
+					common.clearOut([targetId]);
+					break;
+				}
+				var result = getGoldbach(n);
+				if (result.prime < 0) {
+					common.out("Result = " + n, targetId);
+					break;
+				}
+				if (n > start + 100000) {
+					common.out("<i>progress: checking " + n + "</i>", targetId);
+					setTimeout(function() {findFirstNonGoldbachAndOut(n + 2, targetId, buttonId)} , 500);
+					return;
+				}
+			}
+			common.out("Solve", buttonId);
+			runningFirstNonGoldbach = false;
+		}
+		
+		function runFindFirstNonGoldbachAndOut(start, targetId, buttonId) {
+			if (!runningFirstNonGoldbach) {
+				runningFirstNonGoldbach = true;
+				common.out("Stop", buttonId);
+				setTimeout(function() {findFirstNonGoldbachAndOut(start, targetId, buttonId)} , 500);
+			} else {
+				runningFirstNonGoldbach = false;
+			}
+		}
+  	</script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem46Title', 46);">
+    <div id="problem46Title"></div>
+    <div class="problemStatement">
+      <p>It was proposed by Christian Goldbach that every odd composite number can be written as the sum of a prime and twice a square.</p>
+      <p>9 = 7 + 2&#215;1<sup>2</sup></p>
+      <p>15 = 7 + 2&#215;2<sup>2</sup></p>
+      <p>21 = 3 + 2&#215;3<sup>2</sup></p>
+      <p>25 = 7 + 2&#215;3<sup>2</sup></p>
+      <p>27 = 19 + 2&#215;2<sup>2</sup></p>
+      <p>33 = 31 + 2&#215;1<sup>2</sup></p>
+      <p>It turns out that the conjecture was false.</p>
+      <p>What is the smallest odd composite that cannot be written as the sum of a prime and twice a square?</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Check Goldbach's other conjecture for <i>n</i></b></td></tr>
+      <tr>
+          <td>N:</td><td><input id="n" name="n" value="35" onkeypress="common.clearOut(['out1']);"/></td>
+          <td><button onclick="checkGoldbachAndOut(common.getInt('n'), 'out1')">Solve</button></td>
+          <td><div id="out1"></div></td>
+      </tr>
+    
+      <tr><td colspan="4"><b>Solve the problem</b></td></tr>
+      <tr>
+          <td></td><td></td>
+          <td><button id="b1" onclick="solveAndOut('out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+
+      <tr><td colspan="4"><b>Check Goldbach's other conjecture for <i>n &gt; start</i></b></td></tr>
+      <tr>
+          <td>Start:</td><td><input id="start" name="start" value="35" onkeypress="common.clearOut(['out3']);"/></td>
+          <td><button id="b" onclick="runFindFirstNonGoldbachAndOut(common.getInt('start'), 'out3', 'b')">Solve</button></td>
+          <td><div id="out3"></div></td>
+      </tr>
+    
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>

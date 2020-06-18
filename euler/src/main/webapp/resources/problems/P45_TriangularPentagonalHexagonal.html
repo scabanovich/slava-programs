@@ -6,18 +6,13 @@
     <script src="common.js"></script>
     <script type="text/javascript">
     
-		function solveAndOut(targetId) {
-			var result = "";
-			var nt = 1;
-			var np = 1;
-			var nh = 1;
-			var t = 1; //parseInt(nt * (nt + 1) / 2);
-			var p = 1; //parseInt(np * (3 * np - 1) / 2);
-			var h = 1; //nh * (2 * nh - 1);
+    	function continueSolveAndOut(result, nt, np, nh, t, p, h, targetId) {
+    		var pause = false; 
 			while (nt < 100000000) {
 				if (t == p && t == h) {
 					result += "<p>" + t + "= T<sub>" + nt + "</sub> = P<sub>" + np + "</sub> = H<sub>" + nh + "</sub>" + "</p>";
 					common.out(result, targetId);
+					pause = true;
 				}
 				if (p < t && p < h) {
 					p += 3 * np + 1;
@@ -29,9 +24,23 @@
 					nt++;
 					t += nt;
 				}
-				
+				if (pause) {
+					setTimeout(function() {continueSolveAndOut(result, nt, np, nh, t, p, h, targetId);} , 500);
+					return;
+				}
 			}
 			common.out(result , targetId);
+    	}
+    
+		function solveAndOut(targetId) {
+			var result = "";
+			var nt = 1;
+			var np = 1;
+			var nh = 1;
+			var t = 1; //parseInt(nt * (nt + 1) / 2);
+			var p = 1; //parseInt(np * (3 * np - 1) / 2);
+			var h = 1; //nh * (2 * nh - 1);
+			continueSolveAndOut(result, nt, np, nh, t, p, h, targetId);
 		}
     </script>  
   </head>

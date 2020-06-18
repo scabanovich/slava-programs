@@ -55,6 +55,12 @@ common.err = function(data, targetId) {
 	common.out(data, targetId);
 }
 
+common.clearOut = function (targetIds) {
+	for (var i = 0; i < targetIds.length; i++) {
+		common.out("", targetIds[i]);
+	}
+}
+
 common.arrayToString = function(a) {
 	var s = "";
 	for (var i = 0; i < a.length; i++) {
