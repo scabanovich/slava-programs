@@ -149,7 +149,7 @@ common.math.BigNumber.prototype.add = function(other) {
 	return new common.math.BigNumber(result);
 }
 
-//Primes class
+//class common.math.Primes
 common.math.Primes = function(limit) {
 	this.limit = limit;
 	this.set = new Set();
@@ -189,11 +189,32 @@ common.math.Primes.prototype.isPrime = function(n) {
 
 common.math.Primes.prototype.get = function(index) {
 	return index < 0 || index >= this.list.length ? -1 : this.list[index];
-} 
+}
+
+common.math.Primes.prototype.countDistinctFactors = function(n) {
+	var result = 0;
+	for (var i = 0; i < this.list.length; i++) {
+		var p = this.list[i];
+		if (p * p > n) {
+			if (n > 1) {
+				result++;
+			}
+			break;
+		}
+		if (n % p == 0) {
+			result++;
+			while (n % p == 0) {
+				n = parseInt(n / p);
+			}
+		}
+	}
+	return result;
+}
 
 common.math.Primes.prototype.size = function() {
 	return this.set.size;
 }
+//End class common.math.Primes
 
 //Returns array of digits, result[0] is ones.
 common.math.getDigits = function(n) {

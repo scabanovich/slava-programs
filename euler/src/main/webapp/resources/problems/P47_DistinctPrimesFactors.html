@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <!-- Problem 47 -->
+    <title>Distinct primes factors</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	var primes = new common.math.Primes(100000);  
+    	function solveAndOut(k, targetId) {
+    		var result = 0;
+    		for (var n = 2; n < 100000000; n++) {
+    			console.log(n);
+    			var good = true;
+    			for (var ki = k - 1; ki >= 0; ki--) {
+    				if (primes.countDistinctFactors(n + ki) != k) {
+    					n += ki;
+    					good = false;
+    					break;
+    				}
+    			}
+    			if (good) {
+    				result = n;
+    				break;
+    			}
+    		}
+    		common.out(result, targetId);
+    	}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem47Title', 47);">
+    <div id="problem47Title"></div>
+    <div class="problemStatement">
+      <p>The first two consecutive numbers to have two distinct prime factors are:</p>
+      <p class="formulaIndent">14 = 2 &#215; 7</p>
+      <p class="formulaIndent">15 = 3 &#215; 5</p>
+      <p>The first three consecutive numbers to have three distinct prime factors are:</p>
+      <p class="formulaIndent">644 = 2<sup>2</sup> &#215; 7 &#215; 23</p>
+      <p class="formulaIndent">645 = 3 &#215; 5 &#215; 43</p>
+      <p class="formulaIndent">646 = 2 &#215; 17 &#215; 19</p>
+      <p>Find the first four consecutive integers to have four distinct prime factors each. What is the first of these numbers?</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Solve the problem for <i>k</i> distinct factors</b></td></tr>
+      <tr>
+          <td>K:</td><td><input id="k" name="k" value="4" onkeypress="common.clearOut(['out2']);"/></td>
+          <td><button id="b1" onclick="solveAndOut(common.getInt('k'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+
+    
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
