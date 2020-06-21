@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <!-- Problem 48 -->
+    <title>Self powers</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	function solveAndOut(n, digits, targetId) {
+    		var result = common.math.BigNumber.ZERO;
+    		for (var m = 1; m <= n; m++) {
+    			result = result.add(new common.math.BigNumber(m).power(m, digits)).lastDigits(digits);
+    		}
+    		common.out(result.toString(), targetId);    		
+    	}
+    </script>
+  </head>
+  
+  <body onload="common.addProblemHeader('problem48Title', 48);">
+    <div id="problem48Title"></div>
+    <div class="problemStatement">
+		<p>The series, 1<sup>1</sup> + 2<sup>2</sup> + 3<sup>3</sup> + ... + 10<sup>10</sup> = 10405071317.</p>
+		<p>Find the last ten digits of the series, 1<sup>1</sup> + 2<sup>2</sup> + 3<sup>3</sup> + ... + 1000<sup>1000</sup>.</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Find last <i>k</i> digits of the sum up to <i>n</i></b></td></tr>
+      <tr><td>K:</td><td><input id="k" name="k" value="10" onkeypress="common.clearOut(['out2']);"/></td></tr>
+      <tr>
+          <td>N:</td><td><input id="n" name="n" value="10" onkeypress="common.clearOut(['out2']);"/></td>
+          <td><button id="b1" onclick="solveAndOut(common.getInt('n'), common.getInt('k'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+    
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>

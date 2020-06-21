@@ -107,8 +107,19 @@ common.math.getMinimalDivisor = function(n) {
 
 //BigNumber class
 common.math.BigNumber = function(sourceArray) {
-	this.sourceArray = sourceArray;
-} 
+	if ((typeof sourceArray) == 'number') {
+		this.sourceArray = [];
+		while (sourceArray > 0) {
+			this.sourceArray.push(sourceArray % 10);
+			sourceArray = parseInt(sourceArray / 10);
+		}
+	} else {
+		this.sourceArray = sourceArray;
+	}
+}
+
+common.math.BigNumber.ZERO = new common.math.BigNumber([0]);
+common.math.BigNumber.ONE = new common.math.BigNumber([1]);
 
 common.math.BigNumber.prototype.length = function() {
 	return this.sourceArray.length;
@@ -147,6 +158,58 @@ common.math.BigNumber.prototype.add = function(other) {
 		result.push(remainder);
 	}
 	return new common.math.BigNumber(result);
+}
+
+common.math.BigNumber.prototype.multiply = function(other) {
+	var result = [];
+	var m1 = this.length();
+	var m2 = other.length();
+	var m = m1 + m2 - 1;
+	var remainder = 0;
+	for (var s = 0; s < m; s++) {
+		for (var i = 0; i < m1; i++) {
+			var a = this.getDigit(i);
+			var j = s - i;
+			if (j < 0 > j >= m2) {
+				continue;
+			}
+			var b = other.getDigit(j);
+			remainder += a * b;
+		}
+		result.push(remainder % 10);
+		remainder = parseInt(remainder / 10);
+	}
+	while (remainder > 0) {
+		result.push(remainder % 10);
+		remainder = parseInt(remainder / 10);
+	}
+	return new common.math.BigNumber(result);
+}
+
+common.math.BigNumber.prototype.lastDigits = function(k) {
+	if (this.length() <= k) {
+		return this;
+	}
+	var result = [];
+	for (var i = 0; i < k; i++) {
+		result.push(this.getDigit(i));
+	}
+	return new common.math.BigNumber(result);
+}
+
+common.math.BigNumber.prototype.power = function(k, digits) {
+	if (k == 0) {
+		return this.ONE;
+	} else if (k == 1) {
+		return this;
+	}
+	var k2 = parseInt(k / 2);
+	var p2 = this.power(k2, digits);
+	p2 = p2.multiply(p2).lastDigits(digits);
+	if (k % 2 == 1) {
+		p2 = p2.multiply(this).lastDigits(digits);
+	}
+	return p2;
 }
 
 //class common.math.Primes
