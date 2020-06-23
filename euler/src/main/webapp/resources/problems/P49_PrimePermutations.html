@@ -17,40 +17,61 @@
     		return true;
     	}
 
-    	function solveAndOut(targetId) {
+    	function solveAndOut(digitsCount, termsCount, onlyPrimes, targetId) {
+    		if (digitsCount > 8) {
+    			common.err("Too large <i>digits</i>. Cannot complete in reasonable time.", targetId);
+    			return;
+    		}
     		var result = "";
-    		
-    		for (var n = 1000; n < 10000; n++) {
+    		var from = 1;
+    		for (var i = 1; i < digitsCount; i++) {
+    			from *= 10;
+    		}
+    		var to = from * 10;
+    		for (var n = from; n < to; n++) {
     			var ds = common.math.getDigits(n);
     			if (isSequenceIncreasing(ds)) {
     				var ps = [];
+    				var set = new Set();
     				while(true) {
     					var m = Permutations.toNumber(ds, 0, ds.length - 1);
-    					if (m >= 1000 && primes.isPrime(m)) {
+    					if (m >= from && (!onlyPrimes || primes.isPrime(m))) {
     						ps.push(m);
+    						set.add(m)
     					}
     					if (!Permutations.next(ds)) {
     						break;
     					}
 	    			}
     				ps.sort();
-    				if (ps.length >= 3) {
+    				if (ps.length >= termsCount) {
     					for (var i1 = 0; i1 < ps.length; i1++) {
     						var k1 = ps[i1];
         					for (var i2 = i1 + 1; i2 < ps.length; i2++) {
         						var k2 = ps[i2];
-            					for (var i3 = i2 + 1; i3 < ps.length; i3++) {
-            						var k3 = ps[i3];
-            						if (2 * k2 == k1 + k3) {
-            							result = result + "<p>" + k1 + " " + k2 + " " + k3 + "</p>";
-            						}
-            					}
+        						var d = ps[i2] - ps[i1];
+        						var ok = true;
+        						for (var q = 2; q < termsCount; q++) {
+        							if (!set.has(k1 + d * q)) {
+        								ok = false;
+        								break;
+        							}
+        						}
+        						if (ok) {
+           							result = result + "<p>" + k1 + " " + k2;
+           							for (var q = 2; q < termsCount; q++) {
+           								result = result + " " + (k1 + d * q);
+           							}
+           							result = result + "</p>";
+        						}
         					}
     					}
     				}
     			}
     		}
-    		
+    		if (result.length == 0) {
+    			result = "No sequence found.";
+    		}
     		common.out(result, targetId);
     	}
     </script>  
@@ -67,8 +88,12 @@
     <table style="border-spacing: 10px;">
       <tr><td colspan="4"><b>Solve the problem</b></td></tr>
       <tr>
-          <td></td><td></td>
-          <td><button id="b1" onclick="solveAndOut('out2')">Solve</button></td>
+         <td>Digits:</td><td><input id="k" name="k" value="4" onkeypress="common.clearOut(['out2']);"/></td>
+         <td>Only primes</td><td><input type="checkbox" id="onlyPrimes" name="onlyPrimes" checked value="onlyPrimes" onchange="common.clearOut(['out2']);"></td>
+       </tr>
+      <tr>
+          <td style="vertical-align:top">Terms:</td><td style="vertical-align:top"><input id="terms" name="terms" value="3" onkeypress="common.clearOut(['out2']);"/></td>
+          <td style="vertical-align:top"><button id="b1" onclick="solveAndOut(common.getInt('k'), common.getInt('terms'), document.getElementById('onlyPrimes').checked, 'out2')">Solve</button></td>
           <td><div id="out2"></div></td>
       </tr>
     
