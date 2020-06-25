@@ -1,0 +1,130 @@
+<html>
+  <head>
+    <!-- Problem 51 -->
+    <title>Prime digit replacements</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script src="js/permutations.js"></script>
+    <script type="text/javascript">
+		var primes = new common.math.Primes(200000);
+		
+		function stringFormToArray(form) {
+			var result = [];
+			for (var i = 0; i < form.length; i++) {
+				if (form[i] == '*') {
+					result.push(-1);
+				} else {
+					result.push(parseInt("" + form[i]));
+				}
+			}
+			return result;
+		}
+
+		//form example [1, -1,-1,2,3]
+		function countPrimes(form) {
+			if (typeof form == "string") {
+				form = stringFormToArray(form);
+			}
+			var digitSum = 0;
+			for (var i = 0; i < form.length; i++) {
+				if (form[i] > 0) {
+					digitSum += form[i];
+				}
+			}
+			if (digitSum % 3 == 0) {
+				return 0;
+			}
+			var result = 0;
+			var b = (form[0] == -1) ? 1 : 0;
+			for (var d = b; d <= 9; d++) {
+				var c = form.slice(0, form.length);
+				for (var i = 0; i < c.length; i++) {
+					if (c[i] == -1) {
+						c[i] = d;
+					}
+				}
+				var n = Permutations.toNumber(c, 0, c.length - 1);
+				if (primes.isPrime(n)) {
+					result++;
+				}
+			}
+			return result;
+		}
+		
+		function countPrimesAndOut(form, targetId) {
+			var result = countPrimes(form);
+			var message = (result == 0) ? "No prime found" : "Found " + result + " primes.";
+			common.out(message, targetId);
+		}
+
+		function solveAndOut(targetId) {
+			var ps2 = [1];
+			for (var i = 1; i < 10; i++) {
+				ps2[i] = 2 * ps2[i - 1];
+			}
+			for (var n = 11; n < 10000000; n++) {
+				if (!primes.isPrime(n)) {
+					continue;
+				}
+				var dc = ("" + n).length;
+				for (var fi = 1; fi < ps2[dc] - 1; fi++) {
+					var form = [];
+					var fj = fi;
+					var nj = n;
+					var sameDigitReplaced = true;
+					var replacedDigit = -1;
+					for (var k = 0; k < dc; k++) {
+						var d = nj % 10;
+						var fk = (fj % 2 == 0) ? -1 : d;
+						form.unshift(fk);
+						if (fk < 0) {
+							if (replacedDigit < 0) {
+								replacedDigit = d;
+							} else if (replacedDigit != d) {
+								sameDigitReplaced = false;
+							}
+						}
+						fj = parseInt(fj / 2);
+						nj = parseInt(nj / 10);
+					}
+					if (sameDigitReplaced) {
+						var countOfPrimes = countPrimes(form);
+						if (countOfPrimes == 8) {
+							common.out("Result = " + n + " " + form, targetId);
+							return;
+						}
+					}
+				}
+			}
+		}
+    
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem51Title', 51);">
+    <div id="problem51Title"></div>
+    <div class="problemStatement">
+		<p>By replacing the 1<sup>st</sup> digit of the 2-digit number *3, it turns out that six of the nine possible values: 13, 23, 43, 53, 73, and 83, are all prime.</p>
+		<p>By replacing the 3<sup>rd</sup> and 4<sup>th</sup> digits of 56**3 with the same digit, this 5-digit number is the first example having seven primes among the ten generated numbers, yielding the family: 56003, 56113, 56333, 56443, 56663, 56773, and 56993. Consequently 56003, being the first member of this family, is the smallest prime with this property.</p>
+		<p>Find the smallest prime which, by replacing part of the number (not necessarily adjacent digits) with the same digit, is part of an eight prime value family.</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Find number of primes for given form (use *)</b></td></tr>
+      <tr>
+          <td>Form:</td><td><input id="f" name="f" value="56**3" oninput="common.clearOut(['out1']);"/></td>
+          <td><button id="b1" onclick="countPrimesAndOut(document.getElementById('f').value, 'out1')">Solve</button></td>
+          <td><div id="out1"></div></td>
+      </tr>
+
+      <tr><td colspan="4"><b>Solve the problem</b></td></tr>
+      <tr>
+          <td></td><td></td>
+          <td><button id="b2" onclick="solveAndOut('out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>

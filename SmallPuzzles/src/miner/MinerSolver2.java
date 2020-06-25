@@ -72,7 +72,7 @@ public class MinerSolver2 implements MinerConstants {
 					setValueInSet(state, all, s1, MINE); // s1 is full
 					reduce(c, all);
 				} else if (reportProgress) {
-					System.out.println("Reduced 3");
+					System.out.println("Reduced 3"); // limit is less than s1 - cannot set mines
 				}
 				return true;
 			}
@@ -279,9 +279,9 @@ public class MinerSolver2 implements MinerConstants {
 	}
 	
 	public static void main(String[] args) {
-		int width = 6;
-		int height = 6;
-		int mines = 6;
+		int width = 5;
+		int height = 5;
+		int mines = 8;
 
 		int attempt = 0;
 		while (true) {

@@ -1,0 +1,69 @@
+<html>
+  <head>
+    <!-- Problem 50 -->
+    <title>Consecutive prime sum</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	var primes = new common.math.Primes(500000);
+    	
+    	function solveAndOut(limit, targetId) {
+    		var leftIndex = 0;
+    		var rightIndex = 0;
+    		var sum = primes.get(0);
+    		var bestSum = sum;
+    		var longestSequence = 1;
+    		var startSequence = 0;
+    		while (true) {
+    			while (sum + primes.get(rightIndex + 1) < limit) {
+    				rightIndex++;
+    				sum += primes.get(rightIndex);
+    				if (primes.isPrime(sum)) {
+    					longestSequence = rightIndex - leftIndex + 1;
+    					bestSum = sum;
+    					startSequence = leftIndex;
+    				}
+    				if (rightIndex + 1 >= primes.size()) {
+    					common.err("Do not have enough primes.", targetId);
+    					return;
+    				}
+    			}
+    			sum -= primes.get(leftIndex);
+    			leftIndex++;
+    			if (rightIndex - leftIndex + 2 < longestSequence) {
+    				break;
+    			}
+    			while (rightIndex - leftIndex >= longestSequence && rightIndex > leftIndex) {
+    				sum -= primes.get(rightIndex);
+    				rightIndex--;
+    			}
+    		}
+    		common.out("Prime sum = " + bestSum + ", length = " + longestSequence 
+    				+ " starting with " + primes.get(startSequence), targetId);
+    	}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem50Title', 50);">
+    <div id="problem50Title"></div>
+    <div class="problemStatement">
+		<p>The prime 41, can be written as the sum of six consecutive primes:</p>
+		<p class="formulaIndent">41 = 2 + 3 + 5 + 7 + 11 + 13</p>
+		<p>This is the longest sum of consecutive primes that adds to a prime below one-hundred.</p>
+		<p>The longest sum of consecutive primes below one-thousand that adds to a prime, contains 21 terms, and is equal to 953.</p>
+		<p>Which prime, below one-million, can be written as the sum of the most consecutive primes?</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Solve the problem for prime less than <i>limit</i></b></td></tr>
+      <tr>
+          <td>Limit:</td><td><input id="limit" name="limit" value="1000" oninput="common.clearOut(['out2']);"/></td>
+          <td><button id="b1" onclick="solveAndOut(common.getInt('limit'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+    
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
