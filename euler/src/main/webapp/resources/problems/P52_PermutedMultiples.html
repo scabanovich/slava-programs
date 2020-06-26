@@ -1,0 +1,94 @@
+<html>
+  <head>
+    <!-- Problem 52 -->
+    <title>Permuted multiples</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    
+    	function getDigitUsage(n, base) {
+    		var u = [];
+    		for (var d = 0; d < base; d++) {
+    			u.push(0);
+    		}
+    		while (n > 0) {
+    			var d = (n % base);
+    			u[d]++;
+    			n = parseInt(n / base);
+    		}
+    		return u;
+    	}
+    	
+    	function getDigitsCountByArray(a) {
+    		var result = 0;
+    		for (var d = 0; d < a.length; d++) {
+    			result += a[d];
+    		}
+    		return result;
+    	}
+ 
+    	function equal(a1, a2) {
+    		for (var d = 0; d < a1.length; d++) {
+    			if (a1[d] != a2[d]) {
+    				return false;
+    			}
+    		}
+    		return true;
+    	}
+    	
+    	function solveAndOut(base, maxMultiple, targetId) {
+    		var result = "";
+    		for (var n = 1; n < 100000000; n++) {
+    			var a1 = getDigitUsage(n, base);
+    			var l = getDigitsCountByArray(a1);
+    			var a2 = getDigitUsage(maxMultiple * n, base);
+    			var l2 = getDigitsCountByArray(a2);
+    			if (l < l2) {
+    				console.log(n);
+    				n = 1;
+    				for (var i = 0; i < l; i++) {
+    					n *= base;
+    				}
+    			}
+    			var ok = true;
+    			for (var m = 2; m <= maxMultiple; m++) {
+        			a2 = getDigitUsage(n * m, base);
+    				if (!equal(a1, a2)) {
+    					ok = false;
+    					break;
+    				}
+    			}
+    			if (ok) {
+    				result = common.math.convertToBase(n, base);
+    				break;
+    			}
+    		}
+    		if (result.length == 0) {
+    			result = "No solution found.";
+    		}
+    		common.out(result, targetId);
+    	}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem52Title', 52);">
+    <div id="problem52Title"></div>
+    <div class="problemStatement">
+      <p>It can be seen that the number, 125874, and its double, 251748, contain exactly the same digits, but in a different order.</p>
+      <p>Find the smallest positive integer, x, such that 2x, 3x, 4x, 5x, and 6x, contain the same digits.</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+    
+      <tr><td colspan="4"><b>Solve the problem</b></td></tr>
+      <tr><td>Base:</td><td><input id="b" name="b" value="10" oninput="common.clearOut(['out2']);"/></td></tr>
+      <tr>
+          <td>Multiples:</td><td><input id="m" name="m" value="2" oninput="common.clearOut(['out2']);"/></td>
+          <td><button id="b2" onclick="solveAndOut(common.getInt('b'), common.getInt('m'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>

@@ -295,3 +295,17 @@ common.math.getDigitsInBase = function(n, b) {
 	}
 	return result;
 }
+
+//returns string
+common.math.convertToBase = function (n, b) {
+	var ds = common.math.getDigitsInBase(n, b);
+	var result = "";
+	for (var i = ds.length - 1; i >= 0; i--) {
+		if (ds[i] < 10) {
+			result += ds[i];
+		} else {
+			result += String.fromCharCode(87 + ds[i]);
+		}
+	}
+	return result;
+}
