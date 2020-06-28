@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <!-- Problem 53 -->
+    <title>Combinatoric selections</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	function getNumberOfCombinations(r, n) {
+    		if (r < 0 || r > n) {
+    			return 0;
+    		}
+    		if (r == 0 || r == n) {
+    			return 1;
+    		}
+    		if (r * 2 >= n) {
+    			r = n - r;
+    		}
+    		var result = 1;
+    		for (var k = 1; k <= r; k++) {
+    			result = result * (n - k + 1);
+    			result = parseInt(result / k);
+    		}
+    		return result;
+    	}
+    	
+    	function getNumberOfCombinationsAndOut(r, n, targetId) {
+    		var result = getNumberOfCombinations(r, n);
+    		common.out(result, targetId);
+    	}
+    	
+    	function solveAndOut(nMax, limit, targetId) {
+    		var result = 0;
+    		for (var r = 1; r <= nMax; r++) {
+    			for (var n = r; n <= nMax; n++) {
+    				var c = getNumberOfCombinations(r, n);
+    				if (c > limit) {
+    					result += nMax - n + 1;
+    					break;
+    				}
+    			}
+    		}
+    		common.out(result, targetId);
+    	}
+
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem53Title', 53);">
+    <div id="problem53Title"></div>
+    <div class="problemStatement">
+      <p>There are exactly ten ways of selecting three from five, 12345:</p>
+      <p class="formulaIndent">123, 124, 125, 134, 135, 145, 234, 235, 245, and 345</p>
+      <p>In combinatorics, we use the notation,  <i>C<sup>3</sup><sub>5</sub></i></p>
+      <p>In general, <i>C<sup>r</sup><sub>n</sub> = n!/(r!(n-r)!)</i>, 
+         where <i>r &le; n</i>, n! = n &#215; (n - 1) &#215; ... &#215; 3 &#215; 2 &#215; 1, and 0! = 1.</p> 
+      <p>It is not until n=23, that a value exceeds one-million: <i>C<sup>10</sup><sub>23</sub></i>=1144066.</p>
+      <p>How many, not necessarily distinct, values of <i>C<sup>r</sup><sub>n</sub></i> for 1 &le; n &le; 100, are greater than one-million?</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="5"><b>Count number of combinations <i>C<sup>r</sup><sub>n</sub></i></b></td></tr>
+      <tr><td>R:</td><td><input id="r" name="r" value="3" oninput="common.clearOut(['out1']);"/></td><td style="width: 200"></td></tr>
+      <tr>
+          <td>N:</td><td><input id="n" name="n" value="5" oninput="common.clearOut(['out1']);"/></td>
+          <td><button id="b1" onclick="getNumberOfCombinationsAndOut(common.getInt('r'), common.getInt('n'), 'out1')">Solve</button></td>
+          <td><div id="out1"></div></td><td ></td>
+      </tr>
+    
+      <tr><td colspan="5"><b>Count number of values <i>C<sup>r</sup><sub>n</sub></i> for <i>1 &le; n &le; Nmax</i> greater than <i>Limit</i></b></td></tr>
+      <tr><td>Nmax:</td><td><input id="nmax" name="nmax" value="100" oninput="common.clearOut(['out2']);"/></td><td style="width: 200;"></td></tr>
+      <tr>
+          <td>Limit:</td><td><input id="limit" name="limit" value="1000000" oninput="common.clearOut(['out2']);"/></td>
+          <td style="width: 30px;"><button id="b2" onclick="solveAndOut(common.getInt('nmax'), common.getInt('limit'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td><td style="width: 200;"></td>
+      </tr>
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
