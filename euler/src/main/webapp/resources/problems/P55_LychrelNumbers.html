@@ -1,0 +1,116 @@
+<html>
+  <head>
+    <!-- Problem 55 -->
+    <title>Lychrel numbers</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+		function getNumberOfIterations(n, limit) {
+			var ds = common.math.getDigits(n);
+			var bn = new common.math.BigNumber(ds);
+			var iterations = 0;
+			while (iterations <= limit) {
+				var nb = bn.reverseDigits();
+				if (iterations > 0) {
+					if (bn.equals(nb)) {
+						return iterations;
+					}
+				}
+				bn = bn.add(nb);
+				iterations++;
+			}
+			return -1;
+		}
+
+    	function getNumberOfIterationsAndOut(n, limit, targetId) {
+    		var result = getNumberOfIterations(n, limit);
+    		if (result < 0) {
+    			result = "It is a Lychrel number.";
+    		}
+    		common.out(result, targetId);
+    	}
+    	
+    	function solveAndOut(limit, iterationsLimit, targetId) {
+    		var result = 0;
+			for (var n = 1; n < limit; n++) {
+				var iterations = getNumberOfIterations(n, iterationsLimit);
+				if (iterations < 0) {
+					result++;
+				}
+			}
+    		common.out(result, targetId);
+    	}
+    	
+    	function visualize(nStart, iterationsLimit, targetId) {
+    		var canvas = document.getElementById(targetId);
+    		canvas.style.visibility = 'visible';
+    		canvas.style.width = 800;
+    		canvas.style.height = 400;
+    		var ctx = canvas.getContext('2d');
+    		
+			for (var i = 0; i < 10000 ; i++) {
+				var n = nStart + i;
+				var x = i % 100;
+				var y = parseInt(i / 100);
+				var iterations = getNumberOfIterations(n, iterationsLimit);
+				if (iterations < 0) {
+		    		ctx.fillStyle = 'rgb(200, 0, 0)';
+					ctx.fillRect(1 * x, 1 * y, 1, 1);
+				} else {
+		    		ctx.fillStyle = 'rgb(0, 200, 0)';
+					ctx.fillRect(1 * x, 1 * y, 1, 1);
+				}
+			}
+    	}
+    	
+    	function hideCanvas(targetId) {
+    		var canvas = document.getElementById(targetId);
+    		canvas.style.visibility = 'hidden';
+    		canvas.style.width = 0;
+    		canvas.style.height = 0;
+    	}
+    </script>
+  </head>
+  
+  <body onload="common.addProblemHeader('problem55Title', 55);">
+    <div id="problem55Title"></div>
+    <div class="problemStatement">
+      <p>If we take 47, reverse and add, 47 + 74 = 121, which is palindromic.</p>
+      <p>Not all numbers produce palindromes so quickly. For example,</p>
+      <p class="formulaIndent">349 + 943 = 1292,</p>
+      <p class="formulaIndent">1292 + 2921 = 4213</p>
+      <p class="formulaIndent">4213 + 3124 = 7337</p>
+      <p>That is, 349 took three iterations to arrive at a palindrome.</p>
+      <p>Although no one has proved it yet, it is thought that some numbers, like 196, never produce a palindrome. A number that never forms a palindrome through the reverse and add process is called a Lychrel number. Due to the theoretical nature of these numbers, and for the purpose of this problem, we shall assume that a number is Lychrel until proven otherwise. In addition you are given that for every number below ten-thousand, it will either (i) become a palindrome in less than fifty iterations, or, (ii) no one, with all the computing power that exists, has managed so far to map it to a palindrome. In fact, 10677 is the first number to be shown to require over fifty iterations before producing a palindrome: 4668731596684224866951378664 (53 iterations, 28-digits).</p>
+      <p>Surprisingly, there are palindromic numbers that are themselves Lychrel numbers; the first example is 4994.</p>
+      <p>How many Lychrel numbers are there below ten-thousand?</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td>Iterations Limit:</td><td><input id="limit" name="limit" value="50" oninput="common.clearOut(['out1']);"/></td></tr>
+      <tr><td colspan="5"><b>Count number of iterations for  <i>n</i></b></td></tr>
+      <tr>
+          <td>N:</td><td><input id="n" name="n" value="349" oninput="common.clearOut(['out1']);"/></td>
+          <td><button id="b1" onclick="getNumberOfIterationsAndOut(common.getInt('n'), common.getInt('limit'), 'out1')">Solve</button></td>
+          <td><div id="out1"></div></td><td ></td>
+      </tr>
+    
+      <tr><td colspan="5"><b>Count Lychrel numbers below <i>n</i></b></td></tr>
+      <tr>
+          <td>N:</td><td><input id="n1" name="n1" value="10000" oninput="common.clearOut(['out2']);"/></td>
+          <td><button id="b1" onclick="solveAndOut(common.getInt('n1'), common.getInt('limit'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td><td ></td>
+      </tr>
+
+      <tr><td colspan="5"><b>Visualize Lychrel numbers in the range <i>[n, n + 10000]</i></b></td></tr>
+      <tr>
+          <td>N:</td><td><input id="n2" name="n2" value="10000" oninput="hideCanvas('out3')"/></td>
+          <td><button id="b1" onclick="visualize(common.getInt('n2'), common.getInt('limit'), 'out3')">Solve</button></td>
+          <td></td><td ></td>
+      </tr>
+    </table>
+    <canvas style="visibility: hidden; width: 0; height: 0;" id="out3"></canvas>
+	<br/>
+    <a href="Euler.html">Back</a>
+  </body>
+</html>

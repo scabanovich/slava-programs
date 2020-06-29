@@ -212,6 +212,32 @@ common.math.BigNumber.prototype.power = function(k, digits) {
 	return p2;
 }
 
+common.math.BigNumber.prototype.reverseDigits = function() {
+	var a = [];
+	var j = 0;
+	while (this.sourceArray[j] == 0 && j + 1 < this.sourceArray.length) {
+		j++;
+	}
+	for (var i = this.sourceArray.length - 1; i >= j; i--) {
+		a.push(this.sourceArray[i]);
+	}
+	return new common.math.BigNumber(a);
+}
+
+common.math.BigNumber.prototype.equals = function(other) {
+	if (this.sourceArray.length != other.sourceArray.length) {
+		return false;
+	}
+	for (var i = 0; i < this.sourceArray.length; i++) {
+		if (this.sourceArray[i] != other.sourceArray[i]) {
+			return false;
+		}
+	}
+	return true;
+}
+
+//end of class BigNumber
+
 //class common.math.Primes
 common.math.Primes = function(limit) {
 	this.limit = limit;
