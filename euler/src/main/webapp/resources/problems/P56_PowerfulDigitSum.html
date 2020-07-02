@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <!-- Problem 56 -->
+    <title>Powerful digit sum</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	function countSumOfDigits(big) {
+    		var sum = 0;
+    		for (var i = 0; i < big.sourceArray.length; i++) {
+    			sum += big.sourceArray[i];
+    		}
+    		return sum;
+    	}
+    
+		function solveAndOut(n, targetId) {
+			var result = 0;
+			var aResult = 0;
+			var bResult = 0;
+			for (var a = 1; a < n; a++) {
+				var aBig = new common.math.BigNumber(common.math.getDigits(a));
+				var aPower = aBig;
+				var b = 1;
+				while (b < n) {
+					var sum = countSumOfDigits(aPower);
+					if (sum > result) {
+						result = sum;
+						aResult = a;
+						bResult = b;
+					}
+					aPower = aPower.multiply(aBig);
+					b++;
+				}
+			}
+			common.out("Result = " + result + " is sum of digits of " + aResult + "<sup>" + bResult + "</sup>", targetId);
+		}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem56Title', 56);">
+    <div id="problem56Title"></div>
+    <div class="problemStatement">
+    	<p>A googol (10<sup>100</sup>) is a massive number: one followed by one-hundred zeros; 100<sup>100</sup> is almost unimaginably large: one followed by two-hundred zeros. Despite their size, the sum of the digits in each number is only 1.</p>
+    	<p>Considering natural numbers of the form, <i>a<sup>b</sup></i>, where <i>a, b &lt; 100</i>, what is the maximum digital sum?</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="5"><b>Find maximum digital sum of <i>a<sup>b</sup></i>, where <i>a, b &lt; n</i></b></td></tr>
+      <tr>
+          <td>N:</td><td><input id="n1" name="n1" value="100" oninput="common.clearOut(['out2']);"/></td>
+          <td><button id="b1" onclick="solveAndOut(common.getInt('n1'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td><td ></td>
+      </tr>
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
