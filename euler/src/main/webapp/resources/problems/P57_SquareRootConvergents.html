@@ -1,0 +1,105 @@
+<html>
+  <head>
+    <!-- Problem 57 -->
+    <title>Square root convergents</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	var f2 = {
+    		n: new common.math.BigNumber(3),
+    		d: new common.math.BigNumber(2),
+    	}
+    	var f3 = {
+      		n: new common.math.BigNumber(2),
+      		d: new common.math.BigNumber(1),
+       	}
+    	var f5 = {
+      		n: new common.math.BigNumber(2),
+      		d: new common.math.BigNumber(1),
+       	}
+    	
+    	function next2(n, d) {
+			var d1 = n.add(d);
+			var n1 = d1.add(d);
+			return {n: n1, d: d1};
+		}
+    	function next3(n, d) {
+    		var s = n.add(d);
+			var d1 = s.add(d);
+			var n1 = d1.add(s);
+			return {n: n1, d: d1};
+		}
+    	function next5(n, d) {
+    		var s = n.add(d);
+    		var d1 = s.add(d);
+			var n1 = d.add(d1).add(d1);
+			return {n: n1, d: d1};
+		}
+    	function nextByA(a) {
+    		return a == 5 ? next5 : a == 3 ? next3 : next2;
+    	}
+  
+    	function solveAndOut(a, n, targetId) {
+    		var result = 0;
+    		var v = a == 3 ? f3 : f2;
+    		var next = nextByA(a);
+    		for (var i = 1; i <= n; i++) {
+    			if (v.n.sourceArray.length > v.d.sourceArray.length) {
+    				result++;
+    			}
+    			v = next(v.n, v.d);
+    		}
+    		
+    		common.out(result, targetId);
+    	}
+    	
+    	function findExpansion(a, n, targetId) {
+    		var result = 0;
+    		var v = a == 5 ? f5 : a == 3 ? f3 : f2;
+    		var next = nextByA(a);
+    		for (var i = 1; i < n; i++) {
+    			v = next(v.n, v.d);
+    		}
+    		result = "" + v.n + " / " + v.d;
+    		common.out(result, targetId);
+    	}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem57Title', 57);">
+    <div id="problem57Title"></div>
+    <div class="problemStatement">
+		<p>It is possible to show that the square root of two can be expressed as an infinite continued fraction.</p>
+		<p>&#8730;2 = 1 + 1 / (2 + 1 / (2 + ... )</p>
+		<p>1 + 1/2 = 3/2</p>
+		<p>1 + 1 / (2 + 1 / 2 = 7 / 5</p>
+		<p>The next three expansions are 17/12, 41/29, 99/70, 239/169, and 577/408, but the eighth expansion, 1393/985, is the first example where the number of digits in the numerator exceeds the number of digits in the denominator.</p>
+		<p>In the first one-thousand expansions, how many fractions contain a numerator with more digits than the denominator?</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td>A:</td><td><select name="a" id="a">
+  				<option value="2" selected="selected">2</option>
+  				<option value="3">3</option>
+  				<option value="5">5</option>
+			</select>
+        </td>
+      </tr>
+      <tr><td colspan="5"><b>Find <i>n</i>-th expansion of &#8730;<i>a</i></b></td></tr>
+      <tr>
+          <td>N:</td><td><input id="n" name="n" value="1" oninput="common.clearOut(['out1']);"/></td>
+          <td><button id="b1" onclick="findExpansion(common.getInt('a'), common.getInt('n'), 'out1')">Solve</button></td>
+          <td><div id="out1"></div></td><td ></td>
+      </tr>
+      <tr><td colspan="5"><b>Solve the problem for the first <i>n</i> expansions of &#8730;<i>a</i></b></td></tr>
+      <tr>
+          <td>N:</td><td><input id="n1" name="n1" value="100" oninput="common.clearOut(['out2']);"/></td>
+          <td><button id="b1" onclick="solveAndOut(common.getInt('a'), common.getInt('n1'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td><td ></td>
+      </tr>
+    
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
