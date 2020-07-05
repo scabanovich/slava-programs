@@ -1,0 +1,122 @@
+<html>
+  <head>
+    <title>Expand square root into chain fraction</title>
+    <link rel="stylesheet" href="../common.css"/>
+    <script src="../common.js"></script>
+    <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({
+      jax: ["input/TeX", "output/HTML-CSS"],
+      tex2jax: {
+         inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+         displayMath: [ ["$$","$$"], ["\\[","\\]"] ],
+         processEscapes: true
+      },
+      "HTML-CSS": { availableFonts: ["TeX"] }
+   });
+    </script>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML-full,Safe"></script>
+    <script type="text/javascript">
+		function build(n, depth) {
+			var vs = [];
+			var m = parseInt(Math.sqrt(n));
+			var v = m;
+			var k = m;
+			var d = 1;
+			vs.push(v);
+			depth--;
+			while (depth > 0) {
+				var d1 = n - k * k;
+				if (d1 == 0) break;
+				d = parseInt(d1 / d);
+				v = parseInt((m + k) / d);
+				vs.push(v);
+				k = v * d - k;
+				depth--;
+				
+			}
+			var result = {
+				n : n,
+				vs : vs,
+				k : k,
+				d : d				
+			}
+			return result;
+		}
+		
+		function buildChainFractionInLateX(data) {
+			var result = "$$\\sqrt{" + data.n + "} = ";
+			console.log(data.k + " " + data.n);
+			if (data.k * data.k == data.n) {
+				result += "" + data.k + "$$";
+				return result;
+			}
+			var k = data.vs[data.vs.length - 1];
+			var rt = "\\sqrt{" + data.n + "}" + " - " + data.k;
+			if (data.d > 1) {
+				rt = "\\frac{1}{" + data.d + "}" + "(" + rt + ")";
+			}
+			var t = "" + k + " + " + rt;
+			for (var i = data.vs.length - 2; i >= 0; i--) {
+				t = "" + data.vs[i] + " + \\dfrac{1}{" + t + "}"; 
+			}
+			result += t + "$$";
+			return result;
+		}
+		
+		function countFraction(data) {
+			var n0 = 0;
+			var n1 = 1;
+			var d0 = 1;
+			var d1 = 0;
+			for (var i = 0; i < data.vs.length; i++) {
+				var n2 = n0 + data.vs[i] * n1;
+				var d2 = d0 + data.vs[i] * d1;
+				n0 = n1;
+				d0 = d1;
+				n1 = n2;
+				d1 = d2;
+			}
+			return {n: n1, d : d1};
+		}
+    	
+    	function solveAndOut(depth, n, targetId) {
+    		var r = build(n, depth);
+    		var f = countFraction(r);
+    		var latex = buildChainFractionInLateX(r);
+    		if (f.d != 1) {
+    			latex += " $$\\sqrt{" + n + "} \\approx \\frac{" + f.n + "}{" + f.d + "}$$";
+    		}
+    		common.out(latex, targetId);
+    		setTimeout(100, MathJax.Hub.Queue(["Typeset",MathJax.Hub, targetId]));
+    	}
+    	
+    	function next(depthId, n, targetId) {
+    		var depth = common.getInt(depthId) + 1;
+    		document.getElementById(depthId).value = depth;
+    		solveAndOut(depth, n, targetId);
+    	}
+    </script>  
+  </head>
+  
+  <body>
+    <h3>Expand square root into chain fraction</h3>
+    <!-- div class="problemStatement">
+    </div-->
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="5"><b>Solve the problem for the first <i>depth</i> expansions of &#8730;<i>n</i></b></td></tr>
+      <tr>
+        <td>Depth:</td><td><input id="depth" name="depth" value="2" oninput="common.clearOut(['out2']);"/></td>
+        <td><button id="next" onclick="next('depth', common.getInt('n1'), 'out2')">Next</button></td>
+      </tr>
+      <tr>
+          <td>N:</td><td><input id="n1" name="n1" value="3" oninput="common.clearOut(['out2']);"/></td>
+          <td><button id="b1" onclick="solveAndOut(common.getInt('depth'), common.getInt('n1'), 'out2')">Solve</button></td>
+          <td></td><td ></td>
+      </tr>
+    </table>
+    <div id="out2"></div>
+
+    <a href="../P57_SquareRootConvergents.html">Back</a>
+  </body>
+</html>
