@@ -1,2 +1,3 @@
 &#215; - multiplication symbol
 &#163; - UK pound symbol
+&#8776; - almost equals symbol
