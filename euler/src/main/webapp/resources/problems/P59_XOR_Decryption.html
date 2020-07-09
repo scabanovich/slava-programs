@@ -1,0 +1,132 @@
+<html>
+  <head>
+    <!-- Problem 59 -->
+    <title>XOR decryption</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	var codeLetters = "abcdefghijklmnopqrstuvxwyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
+
+    	function readCharCodes(commaSeparatedCodes) {
+    		var s = commaSeparatedCodes.split(",");
+    		var result = [];
+    		for (var i = 0; i < s.length; i++) {
+    			result.push(parseInt(s[i].trim()));
+    		}
+    		return result;
+    	}
+    	
+    	
+    	
+    	function findPossibleKeyChar(codes, index, keyLength) {
+    		var bestCode = '\0';
+    		var bestScore = 10000000;
+    		for (var i = 0; i < codeLetters.length; i++) {
+    			var c = codeLetters.charCodeAt(i);
+    			var whitespaces = 0;
+    			var goodLetters = 0;
+    			var badSymbols = 0;
+    			var count = 0;
+    			var digits = 0;
+    			for (var j = index; j < codes.length; j += keyLength) {
+    				count++;
+    				var n = codes[j] ^ c;
+    				var q = "" + String.fromCharCode(n);
+    				if (q == " ") {
+    					whitespaces++;
+    				} else if ((q >= "a" && q <= "z") || (q >= "A" && q <= "Z")) {
+    					goodLetters++;
+    				} else if ((q >= "0" && q <= "9")) {
+    					digits++;
+    				} else if ((n < 32 || n > 122 || q == "#" || q == "~" || q == "!" || q == "}") 
+    						&& n != 13 && n != 10) {
+    					badSymbols++;
+    				}
+    			}
+				var score = (- 30 * whitespaces - 10 * goodLetters - 20 * digits + 50 * badSymbols) / count;
+				if (score < bestScore) {
+					bestScore = score;
+					bestCode = c;
+				}
+    		}
+    		return {code: bestCode, score: bestScore};
+    	}
+    	
+    	//Returns array of number codes
+    	function findPossibleKey(codes, keyLength) {
+    		var result = [];
+    		for (var i = 0; i < keyLength; i++) {
+    			result.push(findPossibleKeyChar(codes, i, keyLength).code);
+    		}
+    		return result;
+    	}
+    	
+    	//Read key array of number codes
+    	function getKey(key) {
+    		var result = "";
+    		for (var i = 0; i < key.length; i++) {
+    			result += " " + String.fromCharCode(key[i]);
+    		}
+    		return result;
+    	}
+    	
+    	function applyCode(codes, key) {
+    		var result = "";
+    		for (var i = 0; i < codes.length; i++) {
+    			result += String.fromCharCode(codes[i] ^ (key[i % key.length]));
+    		}
+    		return result;
+    	}
+
+    	function decrypt(text, keyLength, keyTargetId, originalTextTargetId) {
+    		var codes = readCharCodes(text);
+    		
+    		var key = findPossibleKey(codes, keyLength); //[{code, score}]
+    		var s = applyCode(codes, key);   		
+    		
+    		
+    		common.out("key = " + getKey(key), keyTargetId);
+    		var e = document.getElementById(originalTextTargetId);
+    		e.style.visibility = 'visible';
+    		common.out("" + s, originalTextTargetId);
+    	}
+    	function hide(targetId) {
+    		var e = document.getElementById(targetId);
+    		e.style.visibility = 'hidden';
+    	}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem59Title', 59);">
+    <div id="problem59Title"></div>
+    <div class="problemStatement">
+		<p>Each character on a computer is assigned a unique code and the preferred standard is ASCII (American Standard Code for Information Interchange). For example, uppercase A = 65, asterisk (*) = 42, and lowercase k = 107.</p>
+		<p>A modern encryption method is to take a text file, convert the bytes to ASCII, then XOR each byte with a given value, taken from a secret key. The advantage with the XOR function is that using the same encryption key on the cipher text, restores the plain text; for example, 65 XOR 42 = 107, then 107 XOR 42 = 65.</p>
+		<p>For unbreakable encryption, the key is the same length as the plain text message, and the key is made up of random bytes. The user would keep the encrypted message and the encryption key in different locations, and without both "halves", it is impossible to decrypt the message.</p>
+		<p>Unfortunately, this method is impractical for most users, so the modified method is to use a password as a key. If the password is shorter than the message, which is likely, the key is repeated cyclically throughout the message. The balance for this method is using a sufficiently long password key for security, but short enough to be memorable.</p>
+		<p>Your task has been made easy, as the encryption key consists of three lower case characters. 
+		Using <a href="https://projecteuler.net/project/resources/p059_cipher.txt">p059_cipher.txt</a> (right click and 'Save Link/Target As...'), a file containing the encrypted ASCII codes, and the knowledge that the plain text must contain common English words, decrypt the message and find the sum of the ASCII values in the original text.</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+
+      <tr><td colspan="5"><b>Decrypt</b></td></tr>
+      <tr><td colspan="5">
+        <textarea cols="100" rows = "10" id="s" name="s" oninput="common.clearOut(['out1','out2']); hide('out2');"></textarea>
+      </td></tr>
+      <tr>
+          <td>Key length:</td><td><input id="n" name="n" value="3" oninput="common.clearOut(['out1', 'out2']);"/></td>
+          <td><button id="b1" onclick="decrypt(document.getElementById('s').value, common.getInt('n'), 'out1','out2')">Solve</button></td>
+          <td><div id="out1"></div></td><td ></td>
+      </tr>
+      <tr><td colspan="5">
+        <textarea readonly = "readonly" cols="100" rows = "10" id="out2" name="out2" style="visibility: hidden;"></textarea>
+      </td></tr>
+
+    </table>
+
+    <p>Open <a target="_blank" rel="noopener noreferrer" href="P59_XOR_Encryption.html">XOR Encryption</a> to generate an encrypted text with your key and try to decrypt it on this page.</p>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>

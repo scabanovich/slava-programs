@@ -1,0 +1,100 @@
+<html>
+  <head>
+    <!-- Problem 59 -->
+    <title>XOR encryption</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+	var codeLetters = "abcdefghijklmnopqrstuvxwyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-_";
+
+    	function readCharCodes(commaSeparatedCodes) {
+    		var s = commaSeparatedCodes.split(",");
+    		var result = [];
+    		for (var i = 0; i < s.length; i++) {
+    			result.push(parseInt(s[i].trim()));
+    		}
+    		return result;
+    	}
+    	
+    	//Read key array of number codes
+    	function getKey(key) {
+    		var result = "";
+    		for (var i = 0; i < key.length; i++) {
+    			result += " " + String.fromCharCode(key[i]);
+    		}
+    		return result;
+    	}
+    	
+    	function applyCode(codes, key) {
+    		var result = "";
+    		for (var i = 0; i < codes.length; i++) {
+    			result += String.fromCharCode(codes[i] ^ (key[i % key.length]));
+    		}
+    		return result;
+    	}
+    	
+    	function validate(code, errorId) {
+    		if (code.length == 0) {
+    			return false;
+    		}
+    		for (var i = 0; i < code.length; i++) {
+    			var c = code.charAt(i);
+    			if (codeLetters.indexOf(c) < 0) {
+    				common.err("Key should have only letters, digits, hyphens and underscores.", errorId);
+    				return false;
+    			}
+    		}
+    		
+    		return true;
+    	}
+
+    	function encrypt(text, code, errorId, targetId) {
+    		if (!validate(code, errorId)) {
+    			return;
+    		}
+    		var codes = [];
+    		for (var i = 0; i < text.length; i++) {
+    			console.log(text.charCodeAt[i]);
+    			codes.push(text.charCodeAt(i) ^ code.charCodeAt(i % code.length));
+    		}    		
+    		var e = document.getElementById(targetId);
+    		e.style.visibility = 'visible';
+    		common.out("" + codes.join(","), targetId);
+    	}
+
+    	function hide(targetId) {
+    		var e = document.getElementById(targetId);
+    		e.style.visibility = 'hidden';
+    	}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem59Title', 59);">
+    <div id="problem59Title"></div>
+    <div class="problemStatement">
+		<p>Each character on a computer is assigned a unique code and the preferred standard is ASCII (American Standard Code for Information Interchange). For example, uppercase A = 65, asterisk (*) = 42, and lowercase k = 107.</p>
+		<p>A modern encryption method is to take a text file, convert the bytes to ASCII, then XOR each byte with a given value, taken from a secret key. The advantage with the XOR function is that using the same encryption key on the cipher text, restores the plain text; for example, 65 XOR 42 = 107, then 107 XOR 42 = 65.</p>
+		<p>For unbreakable encryption, the key is the same length as the plain text message, and the key is made up of random bytes. The user would keep the encrypted message and the encryption key in different locations, and without both "halves", it is impossible to decrypt the message.</p>
+		<p>Unfortunately, this method is impractical for most users, so the modified method is to use a password as a key. If the password is shorter than the message, which is likely, the key is repeated cyclically throughout the message. The balance for this method is using a sufficiently long password key for security, but short enough to be memorable.</p>
+		<p>On this page you can encrypt a text with your key of letters and digits and test if the decrypting page can crack it.</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="5"><b>Encrypt</b></td></tr>
+      <tr><td>Code:</td><td><input id="code" name="code" oninput="common.clearOut(['out1','out2']); hide('out2');"/></td></tr>
+      <tr><td colspan="5">
+        <textarea cols="100" rows = "10" id="s" name="s" oninput="common.clearOut(['out1']); hide('out2');"></textarea>
+      </td></tr>
+      <tr>
+          <td></td><td></td><td><button id="b1" onclick="encrypt(document.getElementById('s').value, document.getElementById('code').value, 'out1', 'out2')">Encrypt</button></td>
+          <td><div id="out1"></div></td><td ></td>
+      </tr>
+      <tr><td colspan="5">
+        <textarea readonly = "readonly" cols="100" rows = "10" id="out2" name="out2" style="visibility: hidden;"></textarea>
+      </td></tr>
+
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
