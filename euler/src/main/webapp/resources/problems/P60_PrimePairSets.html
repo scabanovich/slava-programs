@@ -1,0 +1,109 @@
+<html>
+  <head>
+    <!-- Problem 60 -->
+    <title>Prime pair sets</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	var primes = new common.math.Primes(10000000);
+
+    	function concatenateToPrimes(a, b) {
+    		var ab = parseInt("" + a + "" + b);
+    		if (!primes.isPrime(ab)) {
+    			return false;
+    		}
+    		var ba = parseInt("" + b + "" + a);
+    		if (!primes.isPrime(ba)) {
+    			return false;
+    		}
+    		return true;
+    	}
+    	
+    	//list is of indices
+    	function concatenateToPrimesWithAll(list, a) {
+			for (var i = 0; i < list.length; i++) {
+				if (!concatenateToPrimes(a, primes.get(list[i]))) {
+					return false;
+				}
+			}
+			return true;
+    	}
+    	
+    	//takes list of indices 
+    	//returns list of primes
+    	function find(list, n, sum) {
+    		if (n == 0) {
+    			return (sum == 0) ? list.slice(0) : [];
+    		} else if (n == 1) {
+    			var a = sum;
+    			if (!primes.isPrime(a) || !concatenateToPrimesWithAll(list, a)) {
+    				return [];
+    			}
+    			var result = [];
+    			for (var i = 0; i < list.length; i++) {
+    				result.push(primes.get(list[i]));
+    			}
+    			result.push(a);
+    			return result;
+    		}
+    		var aMax = parseInt(sum / n);
+    		var aiFirst = list.length == 0 ? 1 : list[list.length - 1] + 1;
+    		for (var ia = aiFirst; primes.get(ia) <= aMax; ia++) {
+    			var a = primes.get(ia);
+    			if (!concatenateToPrimesWithAll(list, a)) {
+    				continue;
+    			}
+    			list.push(ia);
+    			var result = find(list, n - 1, sum - a);
+    			if (result.length > 0) {
+    				return result;
+    			}
+    			list.pop();
+    		}
+    		return [];
+    	}
+
+    	function solveAndOut(n, targetId) {
+    		//3 5 7 11 13
+    		var minSum = 0;
+    		for (var i = 1; i <= n; i++) {
+    			minSum += primes.get(i);
+    		}
+    		var result = [];
+    		var list = [];
+    		if (n == 5) {
+    			minSum = 26000;
+    		}
+    		var sum = minSum;
+    		for (; sum < 1000000; sum++) {
+    			console.log(sum);
+    			var result = find(list, n, sum);
+    			if (result.length > 0) {
+    				break;
+    			}
+    		};
+    		common.out("Sum = " + sum + " = " + result.join(" + "), targetId);
+    	}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem60Title', 60);">
+    <div id="problem60Title"></div>
+    <div class="problemStatement">
+      <p>The primes 3, 7, 109, and 673, are quite remarkable. By taking any two primes and concatenating them in any order the result will always be prime. For example, taking 7 and 109, both 7109 and 1097 are prime. The sum of these four primes, 792, represents the lowest sum for a set of four primes with this property.</p>
+      <p>Find the lowest sum for a set of five primes for which any two primes concatenate to produce another prime.</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Solve the problem for <i>n</i> primes</b></td></tr>
+      <tr>
+          <td>N:</td><td><input id="n" name="n" value="3"/></td>
+          <td><button onclick="solveAndOut(common.getInt('n'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+    
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
