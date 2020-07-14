@@ -1,0 +1,86 @@
+<html>
+  <head>
+    <!-- Problem 62 -->
+    <title>Cubic permutations</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    
+    	function getDigitDistribution(n) {
+    		var result = [0,0,0,0,0,0,0,0,0,0];
+    		while (n != 0) {
+    			result[n % 10]++;
+    			n = parseInt(n / 10);
+    		}
+    		return result;
+    	}
+
+    	function getKeyOfDigitDistribution(n) {
+    		return getDigitDistribution(n).join(" ");
+    	}
+    	
+    	function findSolutionInMap(map, count) {
+    		for (var [key, value] of map) {
+    			if (value.size >= count) {
+    				return value;
+    			}
+    		}
+    		return null;
+    	}
+    	
+		function solveAndOut(power, count, targetId) {
+			var map = new Map();
+			var a = 8993625543;
+			var length = 1;
+			var m = 1;
+			var set = null;
+			while (true) {
+				var c = common.power(m, power);
+				if (("" + c).length > length) {
+					set = findSolutionInMap(map, count);
+					if (set != null) {
+						break;
+					}
+					length = ("" + c).length;
+					if (length > 18) {
+						common.err("Cannot solve with long integers.", targetId);
+						return;
+					}
+				}
+				var key = getKeyOfDigitDistribution(c);
+				if (!map.has(key)) {
+				   map.set(key, new Set());
+				}
+				map.get(key).add(m);
+				m++;
+			}
+			var list = Array.from(set).sort();
+			var nFirst = common.power(list[0], power);
+			common.out("Result = " + nFirst + "<br/>Numbers : " + list.join(" "), targetId);
+		}    
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem62Title', 62);">
+    <div id="problem62Title"></div>
+    <div class="problemStatement">
+      <p>The cube, 41063625 (345<sup>3</sup>), can be permuted to produce two other cubes: 56623104 (384<sup>3</sup>) and 66430125 (405<sup>3</sup>). In fact, 41063625 is the smallest cube which has exactly three permutations of its digits which are also cube.</p>
+      <p>Find the smallest cube for which exactly five permutations of its digits are cube.</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Solve the problem for <i>n</i> permutations of power <i>p</i></b></td></tr>
+      <tr>
+          <td>P:</td><td><input id="p" name="p" value="3" oninput="common.clearOut(['out2']);"/></td>
+      </tr>
+      <tr>
+          <td>N:</td><td><input id="n" name="n" value="3" oninput="common.clearOut(['out2']);"/></td>
+          <td><button onclick="solveAndOut(common.getInt('p'), common.getInt('n'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+    
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
