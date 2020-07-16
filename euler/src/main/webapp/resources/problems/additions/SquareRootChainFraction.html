@@ -3,6 +3,7 @@
     <title>Expand square root into chain fraction</title>
     <link rel="stylesheet" href="../common.css"/>
     <script src="../common.js"></script>
+    <script src="../js/chainFraction.js"></script>
     <script type="text/x-mathjax-config">
    MathJax.Hub.Config({
       jax: ["input/TeX", "output/HTML-CSS"],
@@ -16,33 +17,6 @@
     </script>
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML-full,Safe"></script>
     <script type="text/javascript">
-		function build(n, depth) {
-			var vs = [];
-			var m = parseInt(Math.sqrt(n));
-			var v = m;
-			var k = m;
-			var d = 1;
-			vs.push(v);
-			depth--;
-			while (depth > 0) {
-				var d1 = n - k * k;
-				if (d1 == 0) break;
-				d = parseInt(d1 / d);
-				v = parseInt((m + k) / d);
-				vs.push(v);
-				k = v * d - k;
-				depth--;
-				
-			}
-			var result = {
-				n : n,
-				vs : vs,
-				k : k,
-				d : d				
-			}
-			return result;
-		}
-		
 		function buildChainFractionInLateX(data) {
 			var result = "$$\\sqrt{" + data.n + "} = ";
 			console.log(data.k + " " + data.n);
@@ -80,7 +54,7 @@
 		}
     	
     	function solveAndOut(depth, n, targetId) {
-    		var r = build(n, depth);
+    		var r = chain.build(n, depth);
     		var f = countFraction(r);
     		var latex = buildChainFractionInLateX(r);
     		if (f.d != 1) {
@@ -95,7 +69,15 @@
     		document.getElementById(depthId).value = depth;
     		solveAndOut(depth, n, targetId);
     	}
-    </script>  
+
+    	function period(depthId, n, targetId) {
+    		var r = chain.buildPeriod(n);
+    		var depth = r.vs.length;
+    		document.getElementById(depthId).value = depth;
+    		solveAndOut(depth, n, targetId);
+    	}
+
+  	</script>  
   </head>
   
   <body>
@@ -108,6 +90,7 @@
       <tr>
         <td>Depth:</td><td><input id="depth" name="depth" value="2" oninput="common.clearOut(['out2']);"/></td>
         <td><button id="next" onclick="next('depth', common.getInt('n1'), 'out2')">Next</button></td>
+        <td><button id="period" onclick="period('depth', common.getInt('n1'), 'out2')">Show To Period</button></td>
       </tr>
       <tr>
           <td>N:</td><td><input id="n1" name="n1" value="3" oninput="common.clearOut(['out2']);"/></td>
