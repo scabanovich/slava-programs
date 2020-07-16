@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <!-- Problem 63 -->
+    <title>Powerful digit counts</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	function solveAndOutForMN(m, n, targetId) {
+    		var result = parseInt(Math.pow(10, (m - 0.0000000001) / n)) - parseInt(Math.pow(10, (m - 1.0000000001) / n));
+    		common.out("Result = " + result, targetId);
+    	}
+
+		function solveAndOutForN(n, targetId) {
+			solveAndOutForMN(n, n, targetId);
+		}
+		
+		function solveAndOut(targetId) {
+			var result = 0;
+			for (var a = 1; a < 10; a++) {
+				result += parseInt(1 / (1 - Math.log10(a)));
+			}
+			common.out("Result = " + result, targetId);
+		}    
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem63Title', 63);">
+    <div id="problem63Title"></div>
+    <div class="problemStatement">
+      <p>The 5-digit number, 16807=7<sup>5</sup>, is also a fifth power. Similarly, the 9-digit number, 134217728=8<sup>9</sup>, is a ninth power.</p>
+      <p>How many <i>n</i>-digit positive integers exist which are also an <i>n</i>th power?</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Count <i>m</i>-digit numbers that are <i>n</i>th power</b></td></tr>
+      <tr>
+          <td>M:</td><td><input id="m" name="m" value="3" oninput="common.clearOut(['out1']);"/></td>
+      </tr>
+      <tr>
+          <td>N:</td><td><input id="n1" name="n1" value="3" oninput="common.clearOut(['out1']);"/></td>
+          <td><button onclick="solveAndOutForMN(common.getInt('m'), common.getInt('n1'), 'out1')">Solve</button></td>
+          <td><div id="out1"></div></td>
+      </tr>
+
+      <tr><td colspan="4"><b>Count <i>n</i>-digit numbers that are  <i>n</i>th power</b></td></tr>
+      <tr>
+          <td>N:</td><td><input id="n" name="n" value="3" oninput="common.clearOut(['out2']);"/></td>
+          <td><button onclick="solveAndOutForN(common.getInt('n'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+
+      <tr><td colspan="4"><b>Solve the problem</b></td></tr>
+      <tr>
+          <td><button onclick="solveAndOut('out3')">Solve</button></td>
+          <td><div id="out3"></div></td>
+      </tr>
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
