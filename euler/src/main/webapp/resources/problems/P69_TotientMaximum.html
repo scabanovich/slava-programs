@@ -1,0 +1,56 @@
+<html>
+  <head>
+    <!-- Problem 69 -->
+    <title>Totient maximum</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+      var primes = new common.math.Primes(10000);
+      
+      function getTotientAndOut(n, targetId) {
+    	  var result = primes.getTotient(n);
+    	  var out = "<i>&phi;(n)</i> = " + result + "<br/>"
+			+ "<i>n / &phi;(n)</i> = " + (n / result);
+    	  common.out(out, targetId);
+      }
+    
+      function solveAndOut(n, targetId) {
+    	  var result = 1;
+    	  for (var i = 0; i < primes.size(); i++) {
+    		  if (result > n / primes.get(i)) break;
+    		  result = result * primes.get(i);
+    	  }
+    	  common.out("Result = " + result, targetId);
+      }
+    
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem69Title', 69);">
+    <div id="problem69Title"></div>
+    <div class="problemStatement">
+    <p>Euler's Totient function, &phi;(n) [sometimes called the phi function], is used to determine the number of numbers less than n which are relatively prime to n. For example, as 1, 2, 4, 5, 7, and 8, are all less than nine and relatively prime to nine, &phi;(9)=6.</p>
+	<p>It can be seen that n=6 produces a maximum n/&phi;(n) for n &le; 10.</p>
+	<p>Find the value of n &le; 1,000,000 for which n/&phi;(n) is a maximum.</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Solve the problem for <i>n</i> &le; <i>N</i></b></td></tr>
+      <tr>
+          <td>N:</td><td><input type="text" id="n" name="n" value="10" oninput="common.clearOut(['out1'])"/></td>
+          <td><button onclick="solveAndOut(common.getInt('n'), 'out1')">Solve</button></td>
+          <td><div id="out1"></div></td>
+      </tr>
+
+      <tr><td colspan="4"><b>Compute &phi;<i>(n)</i></b></td></tr>
+      <tr>
+          <td>N:</td><td><input type="text" id="n1" name="n1" value="10" oninput="common.clearOut(['out2'])"/></td>
+          <td><button onclick="getTotientAndOut(common.getInt('n1'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+    
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>

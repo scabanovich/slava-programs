@@ -300,6 +300,30 @@ common.math.Primes.prototype.countDistinctFactors = function(n) {
 	return result;
 }
 
+common.math.Primes.prototype.getTotient = function(n) {
+	var result = 1;
+	for (var i = 0; i < this.set.size; i++) {
+		var p = this.get(i);
+		if (p * p > n) {
+			if (n > 1) {
+				result *= (n - 1);
+			}
+			break;
+		}
+		var c = 0;
+		while (n % p == 0) {
+			n /= p;
+			if (c == 0) {
+				result *= (p - 1);
+			} else {
+				result *= p;
+			}
+			c++;
+		}
+	}
+	return result;
+}
+
 common.math.Primes.prototype.size = function() {
 	return this.set.size;
 }
