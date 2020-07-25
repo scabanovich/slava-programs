@@ -359,3 +359,11 @@ common.math.convertToBase = function (n, b) {
 	}
 	return result;
 }
+
+common.math.gcd = function(a, b) {
+	if (a < 0) a = -a;
+	if (b < 0) b = -b;
+	if (a == 0) return b;
+	if (b == 0) return a;
+	return (a > b) ? common.math.gcd(a % b, b) : common.math.gcd(a, b % a);
+}

@@ -1,0 +1,102 @@
+<html>
+  <head>
+    <!-- Problem 71 -->
+    <title>Ordered fractions</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	function countFractionsBelow(n, d, dmax) {
+    		var g = common.math.gcd(n, d);
+    		if (g > 1) {
+    			n = parseInt(n / g);
+    			d = parseInt(d / g);
+    		}
+    		var res = [];
+    		res.push(0);
+			for (var d1 = 1; d1 <= dmax; d1++) {
+				var n1 = parseInt(d1 * n / d);
+				if (d * n1 == d1 * n) n1--;
+				res.push(n1);
+			}
+			for (var d1 = 1; d1 <= dmax; d1++) {
+				for (var f = 2; ; f++) {
+					var d2 = f * d1;
+					if (d2 > dmax) break;
+					res[d2] -= res[d1];
+				}
+			}
+			var c = 0;
+			for (var i = 0; i < res.length; i++) {
+				c += res[i];
+			}
+			return c;
+    	}
+    	
+    	function solveAndOutFractionsBelow(n, d, dmax, targetId) {
+    		common.out("" + countFractionsBelow(n, d, dmax), targetId);
+    	}
+
+    	function solveAndOut(n, d, dmax, targetId) {
+    		var g = common.math.gcd(n, d);
+    		if (g > 1) {
+    			n = parseInt(n / g);
+    			d = parseInt(d / g);
+    		}
+			var result = -1;
+			var nBest = 0
+			var dBest = 0;
+			for (var d1 = 2; d1 <= dmax; d1++) {
+				if (d == d1) continue;
+				var n1 = parseInt(d1 * n / d);
+				var rel = n1 / d1;
+				if (rel > result) {
+					if (common.math.gcd(n1, d1) == 1) {
+						result = rel;
+						nBest = n1;
+						dBest = d1;
+					}
+				}
+			}
+    		common.out("n=" + nBest + " d=" + dBest + "<br/>diff=" + (n/d - nBest/dBest), targetId);
+    	}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem71Title', 71);">
+    <div id="problem71Title"></div>
+    <div class="problemStatement">
+		<p>Consider the fraction, <i>n/d</i>, where <i>n</i> and <i>d</i> are positive integers. If <i>n &lt; d </i> and HCF<i>(n,d)</i> = 1, it is called a reduced proper fraction.</p>
+		<p>If we list the set of reduced proper fractions for <i>d</i> &le; 8 in ascending order of size, we get:</p>
+		<p class="formulaIndent">1/8, 1/7, 1/6, 1/5, 1/4, 2/7, 1/3, 3/8, <b>2/5</b>, 3/7, 1/2, 4/7, 3/5, 5/8, 2/3, 5/7, 3/4, 4/5, 5/6, 6/7, 7/8</p>
+		<p>It can be seen that 2/5 is the fraction immediately to the left of 3/7.</p>
+		<p>By listing the set of reduced proper fractions for <i>d</i> &le; 1,000,000 in ascending order of size, find the numerator of the fraction immediately to the left of 3/7.</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Find fraction <i>n / d</i> immediately below <i>N / D</i> with <i>d &le; Dmax</i></b></td></tr>
+      <tr>
+        <td>N:</td><td><input name="n" id="n" value="3" oninput="common.clearOut(['out1']);"/></td>
+        <td>D:</td><td><input name="d" id="d" value="7" oninput="common.clearOut(['out1']);"/></td>
+      </tr>
+      <tr>
+        <td>D max:</td><td><input name="limit" id="limit" value="1000000" oninput="common.clearOut(['out1']);"/></td>
+        <td><button onclick="solveAndOut(common.getInt('n'), common.getInt('d'), common.getInt('limit'), 'out1');">Solve</button></td>
+        <td> <div id="out1"></div></td>
+      </tr>
+    
+      <tr><td colspan="4"><b>Count fractions below <i>N / D</i> with <i>d &le; Dmax</i></b></td></tr>
+      <tr>
+        <td>N:</td><td><input name="nc" id="nc" value="3" oninput="common.clearOut(['out2']);"/></td>
+        <td>D:</td><td><input name="dc" id="dc" value="7" oninput="common.clearOut(['out2']);"/></td>
+      </tr>
+      <tr>
+        <td>D max:</td><td><input name="limitC" id="limitC" value="100" oninput="common.clearOut(['out2']);"/></td>
+        <td><button onclick="solveAndOutFractionsBelow(common.getInt('nc'), common.getInt('dc'), common.getInt('limitC'), 'out2');">Solve</button></td>
+        <td> <div id="out2"></div></td>
+      </tr>
+    
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
