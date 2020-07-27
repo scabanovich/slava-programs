@@ -5,6 +5,16 @@
     <link rel="stylesheet" href="common.css"/>
     <script src="common.js"></script>
     <script type="text/javascript">
+        function hideProblem() {
+        	console.log(window.location.href);
+        	var hideId = "problem72";
+        	if (("" + window.location.href).endsWith("#problem72Title")) {
+        		hideId = "problem71";
+        	}
+        	var e = document.getElementById(hideId);
+        	e.parentElement.removeChild(e);
+        }
+
     	function countFractionsBelow(n, d, dmax) {
     		var g = common.math.gcd(n, d);
     		if (g > 1) {
@@ -62,7 +72,8 @@
     </script>  
   </head>
   
-  <body onload="common.addProblemHeader('problem71Title', 71);">
+  <body onload="common.addProblemHeader('problem71Title', 71); hideProblem();">
+<div id="problem71">
     <div id="problem71Title"></div>
     <div class="problemStatement">
 		<p>Consider the fraction, <i>n/d</i>, where <i>n</i> and <i>d</i> are positive integers. If <i>n &lt; d </i> and HCF<i>(n,d)</i> = 1, it is called a reduced proper fraction.</p>
@@ -94,9 +105,33 @@
         <td><button onclick="solveAndOutFractionsBelow(common.getInt('nc'), common.getInt('dc'), common.getInt('limitC'), 'out2');">Solve</button></td>
         <td> <div id="out2"></div></td>
       </tr>
+    </table>
+</div>
+
+<div id="problem72">
+    <div id="problem72Title">
+      <h3>Counting fractions</h3>
+      <h4>Problem 72</h4>
+    </div>
+    <div class="problemStatement">
+		<p>Consider the fraction, <i>n/d</i>, where <i>n</i> and <i>d</i> are positive integers. If <i>n &lt; d </i> and HCF<i>(n,d)</i> = 1, it is called a reduced proper fraction.</p>
+		<p>If we list the set of reduced proper fractions for <i>d</i> &le; 8 in ascending order of size, we get:</p>
+		<p class="formulaIndent">1/8, 1/7, 1/6, 1/5, 1/4, 2/7, 1/3, 3/8, 2/5, 3/7, 1/2, 4/7, 3/5, 5/8, 2/3, 5/7, 3/4, 4/5, 5/6, 6/7, 7/8</p>
+		<p>It can be seen that there are 21 elements in this set.</p>
+		<p>How many elements would be contained in the set of reduced proper fractions for  <i>d</i> &le; 1,000,000?</p>
+    </div>
+
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Count fractions below 1 with <i>d &le; Dmax</i></b></td></tr>
+      <tr>
+        <td>D max:</td><td><input name="limitD" id="limitD" value="100" oninput="common.clearOut(['out3']);"/></td>
+        <td><button onclick="solveAndOutFractionsBelow(1, 1, common.getInt('limitD'), 'out3');">Solve</button></td>
+        <td> <div id="out3"></div></td>
+      </tr>
     
     </table>
-
+</div>
+	<br/>
     <a href="Euler.html">Back</a>
   </body>
 </html>
