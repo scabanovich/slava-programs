@@ -5,16 +5,24 @@
     <link rel="stylesheet" href="common.css"/>
     <script src="common.js"></script>
     <script type="text/javascript">
-        function hideProblem() {
-        	console.log(window.location.href);
-        	var hideId = "problem72";
-        	if (("" + window.location.href).endsWith("#problem72Title")) {
-        		hideId = "problem71";
-        	}
-        	var e = document.getElementById(hideId);
-        	e.parentElement.removeChild(e);
-        }
+    	var problems = ["problem71", "problem72", "problem73"];
 
+    	function hideProblem() {
+        	console.log(window.location.href);
+        	var showId = "problem71";
+        	if (("" + window.location.href).endsWith("#problem72Title")) {
+        		showId = "problem72";
+        	} else if (("" + window.location.href).endsWith("#problem73Title")) {
+           		showId = "problem73";
+        	}
+          	for (var i = 0; i < problems.length; i++) {
+          		if (problems[i] != showId) {
+                	var e = document.getElementById(problems[i]);
+                	e.parentElement.removeChild(e);
+          		}
+          	}
+        }
+    	
     	function countFractionsBelow(n, d, dmax) {
     		var g = common.math.gcd(n, d);
     		if (g > 1) {
@@ -68,6 +76,29 @@
 				}
 			}
     		common.out("n=" + nBest + " d=" + dBest + "<br/>diff=" + (n/d - nBest/dBest), targetId);
+    	}
+    	
+    	//Returns [n,d]
+    	function stringToFraction(f) {
+    		var i = f.indexOf("/");
+    		var result = [];
+    		if (i < 0) {
+    			result.push(parseInt(f));
+    			result.push(1);
+    		} else {
+    			result.push(parseInt(f.substring(0, i)));
+    			result.push(parseInt(f.substring(i + 1)));
+    		}
+    		return result; 
+    	}
+    	
+    	function solveAndOutFractionsBetween(f1, f2, dmax, targetId) {
+    		f1 = stringToFraction(f1);
+    		f2 = stringToFraction(f2);
+    		var count1 = countFractionsBelow(f1[0], f1[1], dmax);
+    		var count2 = countFractionsBelow(f2[0], f2[1], dmax);
+    		var result = count2 - count1 - 1;
+    		common.out("" + result, targetId);
     	}
     </script>  
   </head>
@@ -131,7 +162,36 @@
     
     </table>
 </div>
-	<br/>
+
+<div id="problem73">
+    <div id="problem73Title">
+      <h3>Counting fractions in a range</h3>
+      <h4>Problem 73</h4>
+    </div>
+    <div class="problemStatement">
+		<p>Consider the fraction, <i>n/d</i>, where <i>n</i> and <i>d</i> are positive integers. If <i>n &lt; d </i> and HCF<i>(n,d)</i> = 1, it is called a reduced proper fraction.</p>
+		<p>If we list the set of reduced proper fractions for <i>d</i> &le; 8 in ascending order of size, we get:</p>
+		<p class="formulaIndent">1/8, 1/7, 1/6, 1/5, 1/4, 2/7, 1/3, <b>3/8, 2/5, 3/7</b>, 1/2, 4/7, 3/5, 5/8, 2/3, 5/7, 3/4, 4/5, 5/6, 6/7, 7/8</p>
+		<p>It can be seen that there are 3 fractions between 1/3 and 1/2.</p>
+		<p>How many fractions lie between 1/3 and 1/2 in the sorted set of reduced proper fractions for <i>d</i> &le; 12000?</p>
+    </div>
+
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Count fractions between <i>f<sub>1</sub></i> and <i>f<sub>2</sub></i> with <i>d &le; Dmax</i></b></td></tr>
+      <tr>
+        <td>F<sub>1</sub>:</td><td><input name="f1" id="f1" type="text" value="1/3" oninput="common.clearOut(['out4']);"/></td>
+        <td>F<sub>2</sub>:</td><td><input name="f2" id="f2" type="text" value="1/2" oninput="common.clearOut(['out4']);"/></td>
+      </tr>
+      <tr>
+        <td>D max:</td><td><input name="limitD2" id="limitD2" value="100" oninput="common.clearOut(['out4']);"/></td>
+        <td><button onclick="solveAndOutFractionsBetween(document.getElementById('f1').value, document.getElementById('f2').value, common.getInt('limitD2'), 'out4');">Solve</button></td>
+        <td> <div id="out4"></div></td>
+      </tr>
+    
+    </table>
+</div>
+
+    <br/>
     <a href="Euler.html">Back</a>
   </body>
 </html>
