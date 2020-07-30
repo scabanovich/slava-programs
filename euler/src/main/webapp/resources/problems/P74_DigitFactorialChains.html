@@ -1,0 +1,103 @@
+<html>
+  <head>
+    <!-- Problem 74 -->
+    <title>Digit factorial chains</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+        var factorials = [];
+        factorials.push(1);
+        for (var n = 1; n < 10; n++) {
+        	factorials.push(n * factorials[n - 1]);
+        }
+ 
+        function next(n) {
+        	var ds = common.math.getDigits(n);
+        	var result = 0;
+        	for (var i = 0; i < ds.length; i++) {
+        		result += factorials[ds[i]];
+        	}
+        	return result;
+        }
+
+    	function getChain(n) {
+    		var result = [];
+    		while (!result.includes(n)) {
+    			result.push(n);
+    			n = next(n);
+    		}
+    		return result;
+    	}
+    	
+    	function chainToString(c) {
+    		var result = "";
+			for (var i = 0; i < c.length; i++) {
+				result += "" + c[i];
+				if (i < c.length - 1) {
+					result += " &rarr; ";
+				}
+			}
+			var m = next(c[c.length - 1]);
+			result += " (&rarr; " + m + ")";
+			return result;
+    	}
+
+    	function getChainAndOut(n, targetId) {
+			var c = getChain(n);
+			common.out(chainToString(c), targetId);
+		}    
+
+    	function solveAndOut(chainLength, limit, targetId) {
+			var result = 0;
+			for (var n = 2; n < limit; n++) {
+				var c = getChain(n);
+				if (c.length == chainLength) {
+					result++;
+				}
+			}
+			
+			common.out(result, targetId);
+		}    
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem74Title', 74);">
+    <div id="problem74Title"></div>
+    <div class="problemStatement">
+      <p>The number 145 is well known for the property that the sum of the factorial of its digits is equal to 145:</p>
+      <p class="formulaIndent">1! + 4! + 5! = 1 + 24 + 120 = 145</p>
+      <p>Perhaps less well known is 169, in that it produces the longest chain of numbers that link back to 169; it turns out that there are only three such loops that exist:</p>
+      <p class="formulaIndent">169 &rarr; 363601 &rarr; 1454 &rarr; 169</p>
+      <p class="formulaIndent">871 &rarr; 45361 &rarr; 871</p>
+      <p class="formulaIndent">872 &rarr; 45362 &rarr; 872</p>
+      <p>It is not difficult to prove that EVERY starting number will eventually get stuck in a loop. For example,</p>
+      <p class="formulaIndent">69 &rarr; 363600 &rarr; 1454 &rarr; 169 &rarr; 363601 (&rarr; 1454)</p>
+      <p class="formulaIndent">78 &rarr; 45360 &rarr; 871 &rarr; 45361 (&rarr; 871)</p>
+      <p class="formulaIndent">540 &rarr; 145 (&rarr; 145)</p>
+      <p>Starting with 69 produces a chain of five non-repeating terms, but the longest non-repeating chain with a starting number below one million is sixty terms.</p>
+      <p>How many chains, with a starting number below one million, contain exactly sixty non-repeating terms?</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Find chain starting with <i>n</i></b></td></tr>
+      <tr>
+          <td>N:</td><td><input id="n1" name="n1" value="169" oninput="common.clearOut(['out2']);"/></td>
+          <td><button onclick="getChainAndOut(common.getInt('n1'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+
+      <tr><td colspan="4"><b>Count number of chains with exactly <i>n</i> non-repeating terms below <i>limit</i></b></td></tr>
+      <tr>
+          <td>N:</td><td><input id="n" name="n" value="60" oninput="common.clearOut(['out1']);"/></td>
+      </tr>
+      <tr>
+          <td>Limit</td><td><input id="limit" name="limit" value="1000000" oninput="common.clearOut(['out1']);"/></td>
+          <td><button onclick="solveAndOut(common.getInt('n'), common.getInt('limit'), 'out1')">Solve</button></td>
+          <td><div id="out1"></div></td>
+      </tr>
+
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>

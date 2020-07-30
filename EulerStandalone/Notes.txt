@@ -2,3 +2,4 @@
 &#163; - UK pound symbol
 &#8776; - almost equals symbol
 &#8730; - square root symbol
+&rarr; &#8594; - right arrow
