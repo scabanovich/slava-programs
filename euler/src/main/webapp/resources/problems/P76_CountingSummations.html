@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <!-- Problem 76 -->
+    <title>Counting summations</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	var cache = new Map();
+    	function countWaysToMakeNAsSum(n, max) {    		
+    		if (n == 0) {
+    			return 1;
+    		} else if (n == 1) {
+    			return 1;
+    		} else if (max == 1) {
+    			return 1;
+    		}
+    		if (max > n) {
+    			max = n;
+    		}
+    		if (max == 2) {
+    			return parseInt(n / 2) + 1;
+    		}
+    		var key = "" + n + ":" + max;
+    		if (cache.has(key)) {
+    			return cache.get(key);
+    		}
+    		var result = 0;
+    		for (var i = max; i >= 1; i--) {
+    			result += countWaysToMakeNAsSum(n - i, i);
+    		}
+    		cache.set(key, result);
+    		return result;
+    	}
+  
+    	function solveAndOut(n, targetId) {
+    		var result = countWaysToMakeNAsSum(n, n) - 1;
+    		common.out("Result = " + result, targetId);
+    	}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem0Title', 76);">
+    <div id="problem76Title"></div>
+    <div class="problemStatement">
+		<p>It is possible to write five as a sum in exactly six different ways:</p>
+		<p class="formulaIndent">4 + 1</p>
+		<p class="formulaIndent">3 + 2</p>
+		<p class="formulaIndent">3 + 1 + 1</p>
+		<p class="formulaIndent">2 + 2 + 1</p>
+		<p class="formulaIndent">2 + 1 + 1 + 1</p>
+		<p class="formulaIndent">1 + 1 + 1 + 1 + 1</p>
+		<p>How many different ways can one hundred be written as a sum of at least two positive integers?</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Count different ways number <i>N</i> can be written as a sum of at least two positive integers</b></td></tr>
+      <tr>
+          <td>N:</td><td><input id="n" name="n" value="100" oninput="common.clearOut(['out1']);"/></td>
+          <td><button onclick="solveAndOut(common.getInt('n'), 'out1')">Solve</button></td>
+          <td><div id="out1"></div></td>
+      </tr>
+    
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>

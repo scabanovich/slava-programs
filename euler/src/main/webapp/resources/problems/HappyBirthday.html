@@ -1,0 +1,103 @@
+<html>
+	<head>
+		<title>Happy Birthday!</title>	
+		<!--link rel="stylesheet" href="common.css"/-->
+		<style>
+			.formulaIndent {
+				padding: 0px 50px;
+			}
+			.red {
+				color: red;
+			}
+			.green {
+				color: green;
+			}
+			.yellow {
+				color: #7799aa;
+			}
+			.magenta {
+			    color: #b676b1;
+			}
+		</style>
+		<script type="text/javascript">
+		  var text = [
+			["Happy", "Birthday!"],
+			["The", "best", "mother", "that", "ever", "exists!"],
+			["Always", "cooks", "incredible", "food"],
+			["Calms", "me", "down,", "in", "the", "worst", "of", "situations"],
+			["Very,", "very", "nice,", "one", "of", "the kindest", "in", "the world"],
+			["Sadly,", "I", "couldn't", "make", "a good", "present", "other", "than", "this"],
+			["This", "is", "all", "that", "I", "can", "do"],
+			["I", "want", "Father", "and", "Mother,", "to", "have", "a job", "to", "work,"],
+			["For", "us", "to", "all", "have", "money,"],
+			["And", "live", "peacefully."],
+			["And", "so", "that", "all", "other", "people,", "lived", "happily", "and", "peacefully."],
+			["Written", "by,", "<i>Yuri Kabanovich</i>"],			
+		  ];
+		  
+		  var maxId = 0;
+		  
+		  function generate() {
+			  var content = "";
+			  for (var line = 0; line < text.length; line++) {
+				  content += "<p class='formulaIndent'>";
+				  if (line == 0) content += "<b>";
+				  for (var i = 0; i < text[line].length; i++) {
+					  maxId++;
+					  content += "<span id='" + maxId + "'>" + text[line][i] + "</span> ";
+				  }
+				  if (line == 0) content += "</b>";
+				  content += "</p>";
+			  }
+			  var e = document.getElementById("dv");
+			  e.innerHTML = content;
+			  for (var i = 0; i < indices.length; i++) {
+				  move(i);
+			  }
+		  }
+		  
+		  var indices = [1,10,20, 30];
+		  var classes = ["red", "green", "yellow", "magenta"];
+		  var delays = [50, 60, 70, 80];
+		  
+		  function move(i) {
+			  var e = document.getElementById("" + ((indices[i] + maxId - 8) % maxId + 1));
+			  if (e) {
+				  e.classList.remove(classes[i]);
+			  }
+			  indices[i]++;
+			  if (indices[i] > maxId) {
+				  indices[i] = 0;
+			  }
+			  e = document.getElementById("" + indices[i]);
+			  if (e) {
+				  e.classList.add(classes[i]);
+			  }
+			  setTimeout(() => move(i), delays[i]); 
+		  }
+		</script>
+	</head>
+	
+		<body onload="generate();">
+			<div id="dv">
+			<!-- 
+			<p id="1" class="formulaIndent"><b>Happy Birthday!</b></p>	
+			<p id="2"  class="formulaIndent">The best mother that ever exists!						</p>
+			<p id="3"  class="formulaIndent">Always cooks incredible food								</p>
+			<p id="4"  class="formulaIndent">Calms me down, in the worst of situations				</p>
+			<p id="5"  class="formulaIndent">Very, very nice, one of the kindest in the world			</p>											
+			<p id="6"  class="formulaIndent">Sadly, I couldn't make a good present other than this	</p>
+			<p id="7"  class="formulaIndent">This is all that I can do								</p>
+			<p id="8"  class="formulaIndent">I want Father and Mother, to have a job to work,			</p>
+			<p id="9"  class="formulaIndent">For us to all have money,								</p>
+			<p id="10"  class="formulaIndent">And live peacefully.
+			<p id="11"  class="formulaIndent">And so that all other people, lived happily and peacefully.</p>
+			<p id="12"  class="formulaIndent">Written by, <i>Yuri Kabanovich</i></p>
+			-->
+			</div>
+		
+		
+		</body>	
+
+
+</html>
