@@ -5,8 +5,24 @@
     <link rel="stylesheet" href="common.css"/>
     <script src="common.js"></script>
     <script type="text/javascript">
+		var problems = ["problem76", "problem78"];
+
+    	function hideProblem() {
+        	console.log(window.location.href);
+        	var showId = "problem76";
+        	if (("" + window.location.href).endsWith("#problem78Title")) {
+        		showId = "problem78";
+        	}
+          	for (var i = 0; i < problems.length; i++) {
+          		if (problems[i] != showId) {
+                	var e = document.getElementById(problems[i]);
+                	e.parentElement.removeChild(e);
+          		}
+          	}
+        }    	
+
     	var cache = new Map();
-    	function countWaysToMakeNAsSum(n, max) {    		
+    	function countWaysToMakeNAsSum(n, max) {
     		if (n == 0) {
     			return 1;
     		} else if (n == 1) {
@@ -31,7 +47,38 @@
     		cache.set(key, result);
     		return result;
     	}
-  
+
+    	function countWaysToMakeNAsSumMod(n, mod) {
+    		var w = [];
+    		for (var i = 0; i <= n; i++) {
+    			w.push(1);
+    		}
+    		for (var m = 2; m <= n; m++) {
+    			var i = m;
+    			while (i <= n) {
+    				w[i] = (w[i] + w[i - m]) % mod;
+    				i++;
+    			}
+    		}
+    		return w;
+    	}
+
+    	function solve78AndOut(d, targetId) {
+    		var nmax = 1000;
+    		while (nmax < 65000) {
+    			var w = countWaysToMakeNAsSumMod(nmax, d);
+    			for (var n = 2; n < w.length; n++) {
+	    			var result = w[n];
+    				if (result % d == 0) {
+    					common.out("Result = " + n, targetId);
+    					return;
+	    			}
+    			}
+    			nmax *= 2;
+    		}
+			common.err("Could not find for n < " + 64000, targetId);
+    	}
+    	
     	function solveAndOut(n, targetId) {
     		var result = countWaysToMakeNAsSum(n, n) - 1;
     		common.out("Result = " + result, targetId);
@@ -39,7 +86,8 @@
     </script>  
   </head>
   
-  <body onload="common.addProblemHeader('problem76Title', 76);">
+  <body onload="common.addProblemHeader('problem76Title', 76); hideProblem();">
+<div id="problem76">
     <div id="problem76Title"></div>
     <div class="problemStatement">
 		<p>It is possible to write five as a sum in exactly six different ways:</p>
@@ -61,6 +109,35 @@
       </tr>
     
     </table>
+</div>
+
+<div id="problem78">
+    <div id="problem78Title">
+      <h3>Coin partitions</h3>
+      <h4>Problem 78</h4>
+    </div>
+    <div class="problemStatement">
+		<p>Let p(n) represent the number of different ways in which n coins can be separated into piles. For example, five coins can be separated into piles in exactly seven different ways, so p(5)=7.</p>
+		<p style="padding-left: 60px">OOOOO</p>
+		<p style="padding-left: 58px">OOOO O</p>
+		<p style="padding-left: 58px">OOO OO</p>
+		<p style="padding-left: 56px">OOO O O</p>
+		<p style="padding-left: 56px">OO OO O</p>
+		<p style="padding-left: 54px">OO O O O</p>
+		<p style="padding-left: 52px">O O O O O</p>
+		<p>Find the least value of n for which p(n) is divisible by one million.</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Find the least value of n for which p(n) is divisible by <i>d</i></b></td></tr>
+      <tr>
+          <td>D:</td><td><input id="d" name="d" value="1000" oninput="common.clearOut(['out2']);"/></td>
+          <td><button onclick="solve78AndOut(common.getInt('d'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+    
+    </table>
+</div>
 
     <a href="Euler.html">Back</a>
   </body>
