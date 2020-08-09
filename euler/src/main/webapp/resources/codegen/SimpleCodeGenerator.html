@@ -1,0 +1,258 @@
+<html>
+  <head>  
+    <script src="codegen.js"></script>
+    <script type="text/javascript">
+
+    </script>
+  </head>
+  
+  <body onload="cg.loadTemplates();">
+  
+  <table>
+     <tr>
+        <td rowspan="3" style="width: 25%; vertical-align: top;">
+          <ul>
+            <li><b>For</b>
+              <ul>
+            	<li><a onclick="cg.setTemplate('template-for-over-array');" href="#">over array</a></li>
+            	<li><a onclick="cg.setTemplate('template-for-over-list');" href="#">over list</a></li>
+            	<li><a onclick="cg.setTemplate('template-for-over-string');" href="#">over string</a></li>
+              </ul>
+            </li>
+
+            <li><b>New</b>
+              <ul>
+            	<li><a onclick="cg.setTemplate('template-new-sb');" href="#">StringBuilder</a></li>
+            	<li><a onclick="cg.setTemplate('template-new-list');" href="#">List</a></li>
+              </ul>
+            </li>
+
+            <li><b>Methods</b>
+              <ul>
+            	<li><a onclick="cg.setTemplate('template-list-to-array');" href="#">List To Array</a></li>
+              </ul>
+            </li>
+          </ul>
+        </td>
+        <td style="width: 80%; padding-left: 20px; padding-bottom: 20px;" id="formArea">
+        	Form goes here.
+        </td>
+     </tr>
+     <tr>
+     	<td style="padding-left: 20px">
+     	  <table>
+     	    <tr>
+     	      <td rowspan="2">
+ 		     	  <textarea id="output" cols="60" rows="15"></textarea>
+     	      </td>
+     	      <td style="vertical-align: top;">
+     	          <table>
+     	            <tr><td><button onclick="cg.generate();" style="width: 70px;">Generate</button></td></tr>
+     	            <tr><td><input type="checkbox" oninput="cg.autocopy = this.checked; if (this.checked) cg.copyToClipboard('output');"/>Autocopy</td></tr>
+     	            <tr><td><button onclick="cg.copyToClipboard('output');" style="width: 70px;">Copy</button></td></tr>
+     	          </table>
+     	      </td>
+     	    </tr>
+     	    <tr>
+     	      <td style="vertical-align: bottom;">
+     	          <table>
+     	            <tr><td>Indent: <input type="text" value="2" id="indent" style="width: 30px;" oninput="cg.generate();"></td></tr>
+     	          </table>
+     	      </td>
+     	    </tr>
+     	  </table>
+     	</td>
+     </tr>
+  </table>
+  
+  <div id="templates">
+  <!-- For Over Array -->
+    <div id="template-for-over-array" onclick="cg.writeToOut(generateForOverArray());">
+      <script type="text/javascript">
+      	function generateForOverArray() {
+      		var i = cg.value('for-array-i');
+      		var n = cg.value('for-array-name');
+      		var b = document.getElementById('for-array-back').checked;
+      		var v = cg.value('for-array-value');
+      		var t = cg.value('for-array-type');
+      		if (b) {
+      			return "for (int " + i + " = " + n + ".length - 1; " + i + " >= 0; " + i + "--) {\n"
+      		    + "    " + t + " " + v + " = " + n + "[" + i + "];\n"      		    
+      			+ "\n}";
+      		}
+      		return "for (int " + i + " = 0; " + i + " < " + n + ".length; " + i + "++) {\n"
+  		    + "    " + t + " " + v + " = " + n + "[" + i + "];\n"      		    
+      		    + "\n}"
+      	}
+      </script>
+      <h3>for over array</h3>
+      Var: <input type="text" style="width: 40px" value="i" id="for-array-i" oninput="cg.generate();"/>&nbsp;
+      Array: <input type="text" style="width: 60px" value="a" id="for-array-name" oninput="cg.generate();"/>&nbsp;
+      Backwards: <input type="checkbox" id="for-array-back" oninput="cg.generate();"/><br/><br/>
+      Value: <input type="text" style="width: 40px" value="v" id="for-array-value" oninput="cg.generate();"/>&nbsp;
+      Type: <select id="for-array-type" oninput="cg.generate();">
+      		  <option value="int" selected>int</option>
+      		  <option value="long">long</option>
+      		  <option value="char">char</option>
+      		  <option value="String">String</option>
+      		</select>
+      
+    </div>
+
+  <!-- For Over List -->
+    <div id="template-for-over-list" onclick="cg.writeToOut(generateForOverList());">
+      <script type="text/javascript">
+      	function generateForOverList() {
+      		var i = cg.value('for-list-i');
+      		var n = cg.value('for-list-name');
+      		var b = document.getElementById('for-list-back').checked;
+      		var v = cg.value('for-list-value');
+      		var t = cg.value('for-list-type');
+      		var vt = "    "
+      		if (b) {
+      			return "for (int " + i + " = " + n + ".size() - 1; " + i + " >= 0; " + i + "--) {\n"
+      		    + "    " + t + " " + v + " = " + n + ".get(" + i + ");\n"      		    
+      			+ "\n}";
+      		}
+      		return "for (int " + i + " = 0; " + i + " < " + n + ".size(); " + i + "++) {\n"
+	  		    + "    " + t + " " + v + " = " + n + ".get(" + i + ");\n"      		    
+      		    + "\n}"
+      	}
+      </script>
+      <h3>for over list</h3>
+      Var: <input type="text" style="width: 40px" value="i" id="for-list-i" oninput="cg.generate();"/>&nbsp;
+      List: <input type="text" style="width: 60px" value="a" id="for-list-name" oninput="cg.generate();"/>&nbsp;
+      Backwards: <input type="checkbox" id="for-list-back" oninput="cg.generate();"/><br/><br/>
+      Value: <input type="text" style="width: 40px" value="v" id="for-list-value" oninput="cg.generate();"/>&nbsp;
+      Type: <select id="for-list-type" oninput="cg.generate();">
+      		  <option value="int" selected>int</option>
+      		  <option value="long">long</option>
+      		  <option value="char">char</option>
+      		  <option value="String">String</option>
+      		</select>
+    </div>
+
+  <!-- For Over String -->
+    <div id="template-for-over-string" onclick="cg.writeToOut(generateForOverString());">
+      <script type="text/javascript">
+      	function generateForOverString() {
+      		var i = cg.value('for-string-i');
+      		var n = cg.value('for-string-name');
+      		var c = cg.value('for-string-char');
+      		var b = document.getElementById('for-string-back').checked;
+      		if (b) {
+      			return "for (int " + i + " = " + n + ".length() - 1; " + i + " >= 0; " + i + "--) {\n"
+      				+ "    char " + c + " = " + n + ".charAt(" + i + ");\n"
+      				+ "    \n}";
+      		}
+      		return "for (int " + i + " = 0; " + i + " < " + n + ".length(); " + i + "++) {\n"
+					+ "    char " + c + " = " + n + ".charAt(" + i + ");\n"
+  					+ "    \n}";
+      	}
+      </script>
+      <h3>for over string</h3>
+      Var: <input type="text" style="width: 40px" value="i" id="for-string-i" oninput="cg.generate();"/>&nbsp;
+      Name: <input type="text" style="width: 60px" value="s" id="for-string-name" oninput="cg.generate();"/>&nbsp;
+      Backwards: <input type="checkbox" id="for-string-back" onchange="cg.generate()"/>&nbsp;
+      char: <input type="text" style="width: 40px" value="c" id="for-string-char" oninput="cg.generate();"/>
+    </div>
+
+
+    <div id="template-new-sb" onclick="cg.writeToOut(generateNewStringBuilder());">
+      <script type="text/javascript">
+      	function generateNewStringBuilder() {
+      		var n = cg.value('new-stringbuilder-name');
+      		var res = "StringBuilder " + n + " = new StringBuilder();\n";
+      		var b = document.getElementById('new-stringbuilder-return').checked;
+      		if (b) {
+      			res += "    \n" + "return " + n + ".toString();\n";
+      		}
+     		return res;
+      	}
+      </script>
+      <h3>new StringBuilder</h3>
+      Name: <input type="text" style="width: 60px" value="sb" id="new-stringbuilder-name" oninput="cg.generate();"/>&nbsp;
+      Return String: <input type="checkbox" id="new-stringbuilder-return" onchange="cg.generate()"/>&nbsp;
+    </div>
+
+    <div id="template-new-list" onclick="cg.writeToOut(generateNewArrayList());">
+      <script type="text/javascript">
+      	function generateNewArrayList() {
+      		var n = cg.value('new-list-name');
+      		var t = cg.value('new-list-type');
+      		var t1 = (t == "Integer") ? "int" : (t == "Long") ? "long" : (t == "Character") ? "char" : t;
+      		var c = cg.value('new-list-collection');
+      		var res = "List<";
+      		if (c == "none") res += t;
+      		else if (c == "array") res += t1 + "[]";
+      		else if (c == "list") res += "List<" + t + ">";
+      		else if (c == "set") res += "Set<" + t + ">";
+      		res += "> " + n + " = new ArrayList<>();\n";
+     		return res;
+      	}
+      </script>
+      <h3>new ArrayList</h3>
+      Name: <input type="text" style="width: 60px" value="list" id="new-list-name" oninput="cg.generate();"/>&nbsp;
+      Type: <select id="new-list-type" oninput="cg.generate();">
+      		  <option value="Integer" selected>int</option>
+      		  <option value="Long">long</option>
+      		  <option value="Character">char</option>
+      		  <option value="String">String</option>
+      		</select>&nbsp;
+      Collection: <select id="new-list-collection" oninput="cg.generate();">
+      		  <option value="none" selected>none</option>
+      		  <option value="array">array</option>
+      		  <option value="list">list</option>
+      		  <option value="set">set</option>
+      		</select><br/>
+    </div>
+
+    <div id="template-list-to-array" onclick="cg.writeToOut(generateListToArray());">
+      <script type="text/javascript">
+      	function generateListToArray() {
+      		var res = "";
+      		var kind = document.querySelector('input[name="group"]:checked').value;
+      		var b = document.getElementById('list-to-array-primitive').checked;
+      		if (b) {
+          		var t = cg.value('list-to-array-type');
+          		var t1 = (t == "Integer") ? "int" : (t == "Long") ? "long" : (t == "Character") ? "char" : "?";
+          		if (kind == "Definition") {
+      			res = "static " + t1 + "[] listToArray(List<" + t + "> list) {\n"
+      				   + "    " + t1 + "[] result = new " + t1 + "[list.size()];\n" 
+      				   + "    for (int i = 0; i < list.size(); i++) {\n"
+      				   + "        result[i] = list.get(i);\n"
+      				   + "    }\n"
+      				   + "    return result;\n"
+      				   + "}\n";
+          		} else {
+          			res = "" + t1 + "[] result = listToArray(list);\n" 
+          		}
+      		} else {
+          		var t = cg.value('list-to-array-type-name');
+          		if (kind == "Definition") {
+      			res = "static " + t + "[] listToArray(List<" + t + "> list) {\n"
+    				   + "    return list.toArray(new " + t + "[list.size()]);\n"   			
+					   + "}\n";
+          		} else {
+          			res = "" + t + "[] result = list.toArray(new " + t + "[list.size()]);\n" 
+          		}
+      		}
+     		return res;
+      	}
+      </script>
+      <h3>Method Convert List to Array</h3>
+      Primitive: <input type="checkbox" id="list-to-array-primitive" checked onchange="cg.generate()"/>&nbsp;
+      Type: <select id="list-to-array-type" oninput="cg.generate();">
+      		  <option value="Integer" selected>int</option>
+      		  <option value="Long">long</option>
+      		  <option value="Character">char</option>
+      		</select>&nbsp;
+      Type Name: <input type="text" style="width: 60px" value="String" id="list-to-array-type-name" oninput="cg.generate();"/>&nbsp;
+      <br/><br/>
+	  <input type="radio" value="Definition" name="group" checked onchange="cg.generate()">Definition&nbsp;
+	  <input type="radio" value="Usage" name="group" onchange="cg.generate()">Usage
+    </div>
+  </div>
+  </body>
+
+</html>
