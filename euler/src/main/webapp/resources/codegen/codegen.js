@@ -48,14 +48,23 @@ cg.copyToClipboard = function(sourceId) {
 	active.focus();
 }
    
+function changeIndent(dv, targetId) {
+	var e = document.getElementById(targetId)
+	var i = parseInt(e.value);
+	e.value = i + dv;
+	cg.generate();
+}
+
 cg.writeToOut = function(text) {
 	var e = document.getElementById("output");
 	var ls = text.split("\n");
 	var indent = document.getElementById("indent").value;
-	var is = (indent == "1") ? "    " 
+	var is = (indent == "0") ? ""
+		   : (indent == "1") ? "    " 
 		   : (indent == "2") ? "        " 
 		   : (indent == "3") ? "            " 
-		   : "";
+		   : (indent == "4") ? "                " 
+		   : "        ";
 	var indentedText = "";
 	for (var i = 0; i < ls.length; i++) {
 		indentedText += is + ls[i] + "\n";

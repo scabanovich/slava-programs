@@ -2,12 +2,11 @@
   <head>  
     <script src="codegen.js"></script>
     <script type="text/javascript">
-
     </script>
   </head>
   
-  <body onload="cg.loadTemplates();">
-  
+  <body onload="cg.loadTemplates();" style="background-color: #d9daee;">
+  	<h2 style="padding-left: 300px;">Java Code Generator</h2>
   <table>
      <tr>
         <td rowspan="3" style="width: 25%; vertical-align: top;">
@@ -24,6 +23,7 @@
               <ul>
             	<li><a onclick="cg.setTemplate('template-new-sb');" href="#">StringBuilder</a></li>
             	<li><a onclick="cg.setTemplate('template-new-list');" href="#">List</a></li>
+            	<li><a onclick="cg.setTemplate('template-new-map');" href="#">Map</a></li>
               </ul>
             </li>
 
@@ -47,16 +47,33 @@
      	      </td>
      	      <td style="vertical-align: top;">
      	          <table>
-     	            <tr><td><button onclick="cg.generate();" style="width: 70px;">Generate</button></td></tr>
+     	            <tr><td><button onclick="cg.generate();" style="width: 100px;">Generate</button></td></tr>
      	            <tr><td><input type="checkbox" oninput="cg.autocopy = this.checked; if (this.checked) cg.copyToClipboard('output');"/>Autocopy</td></tr>
-     	            <tr><td><button onclick="cg.copyToClipboard('output');" style="width: 70px;">Copy</button></td></tr>
+     	            <tr><td><button onclick="cg.copyToClipboard('output');" style="width: 100px;">Copy</button></td></tr>
      	          </table>
      	      </td>
      	    </tr>
      	    <tr>
      	      <td style="vertical-align: bottom;">
      	          <table>
-     	            <tr><td>Indent: <input type="text" value="2" id="indent" style="width: 30px;" oninput="cg.generate();"></td></tr>
+     	            <tr><td>Indent: <input type="text" value="2" id="indent" style="width: 30px;" oninput="cg.generate();"></td>
+     	            <td>
+     	              <table>
+     	                 <tr>
+     	                   <td style="margin: 0; border: 0; padding: 0; font-size: 4;">
+     	                     <button onclick="changeIndent(1, 'indent');" style="width: 16px; height: 10px; padding: 0; margin: 0; position:relative;">
+     	                     <span style="position:absolute;top:-4;left:2">+</span></button>
+     	                   </td>
+     	                 </tr>
+     	                 <tr>
+     	                   <td style="margin: 0; border: 0; padding: 0; font-size: 4;">
+     	                     <button onclick="changeIndent(-1, 'indent');" style="width: 16px; height: 10px; padding: 0; margin: 0; position:relative;">
+     	                     <span style="position:absolute;top:-5;left:3">-</span></button>
+     	                   </td>
+     	                 </tr>
+     	              </table>     	            
+     	            </td>
+     	            </tr>
      	          </table>
      	      </td>
      	    </tr>
@@ -207,13 +224,66 @@
       		</select><br/>
     </div>
 
+    <div id="template-new-map" onclick="cg.writeToOut(generateNewMap());">
+      <script type="text/javascript">
+      	function generateNewMap() {
+      		var n = cg.value('new-map-name');
+      		var t = cg.value('new-map-key-type');
+      		var vt = cg.value('new-map-value-type');
+      		var t1 = (vt == "Integer") ? "int" : (vt == "Long") ? "long" : (vt == "Character") ? "char" : vt;
+      		var c = cg.value('new-map-value-collection');
+      		var kind = document.querySelector('input[name="map-group"]:checked').value;
+      		var res = (kind == "hash" ? "Map" : "TreeMap") + "<" + t + ",";
+      		if (c == "none") res += vt;
+      		else if (c == "array") res += t1 + "[]";
+      		else if (c == "list") res += "List<" + vt + ">";
+      		else if (c == "set") res += "Set<" + vt + ">";
+      		res += "> " + n + " = new " + (kind == "hash" ? "HashMap" : "TreeMap") + "<>();\n";
+     		return res;
+      	}
+      </script>
+      <h3>new Map</h3>
+        <table>
+          <tr>
+      <td>Name:</td><td><input type="text" style="width: 60px" value="map" id="new-map-name" oninput="cg.generate();"/></td>
+      <td style="padding-left: 20px;"><input type="radio" value="hash" name="map-group" checked onchange="cg.generate()"/>Hash</td>
+	  <td><input type="radio" value="tree" name="map-group" onchange="cg.generate()"/>Tree</td>
+      	  </tr>
+      	  <tr>
+      <td>Key:</td><td><select id="new-map-key-type" oninput="cg.generate();">
+      		  <option value="Integer" selected>int</option>
+      		  <option value="Long">long</option>
+      		  <option value="Character">char</option>
+      		  <option value="String">String</option>
+      		</select></td>
+      		<td></td><td></td>
+      	  </tr>
+      	  <tr>
+      <td>Value:</td><td><select id="new-map-value-type" oninput="cg.generate();">
+      		  <option value="Integer" selected>int</option>
+      		  <option value="Long">long</option>
+      		  <option value="Character">char</option>
+      		  <option value="String">String</option>
+      		</select></td>
+      <td style="padding-left: 20px;">Collection:</td><td><select id="new-map-value-collection" oninput="cg.generate();">
+      		  <option value="none" selected>none</option>
+      		  <option value="array">array</option>
+      		  <option value="list">list</option>
+      		  <option value="set">set</option>
+      		</select></td>
+      	  </tr>
+      
+      	</table>
+    </div>
+
+
     <div id="template-list-to-array" onclick="cg.writeToOut(generateListToArray());">
       <script type="text/javascript">
       	function generateListToArray() {
       		var res = "";
       		var kind = document.querySelector('input[name="group"]:checked').value;
-      		var b = document.getElementById('list-to-array-primitive').checked;
-      		if (b) {
+      		var b = document.querySelector('input[name="p-group"]:checked').value;
+      		if (b == 'primitive') {
           		var t = cg.value('list-to-array-type');
           		var t1 = (t == "Integer") ? "int" : (t == "Long") ? "long" : (t == "Character") ? "char" : "?";
           		if (kind == "Definition") {
@@ -241,15 +311,22 @@
       	}
       </script>
       <h3>Method Convert List to Array</h3>
-      Primitive: <input type="checkbox" id="list-to-array-primitive" checked onchange="cg.generate()"/>&nbsp;
-      Type: <select id="list-to-array-type" oninput="cg.generate();">
+      <table>
+        <tr>
+      <td>Type:</td>
+	  <td><input type="radio" value="primitive" name="p-group" checked onchange="cg.generate()">Primitive:</td>
+      <td><select id="list-to-array-type" oninput="cg.generate();" style="width: 100px;">
       		  <option value="Integer" selected>int</option>
       		  <option value="Long">long</option>
       		  <option value="Character">char</option>
-      		</select>&nbsp;
-      Type Name: <input type="text" style="width: 60px" value="String" id="list-to-array-type-name" oninput="cg.generate();"/>&nbsp;
-      <br/><br/>
-	  <input type="radio" value="Definition" name="group" checked onchange="cg.generate()">Definition&nbsp;
+      		</select></td>
+	    </tr>
+	    <tr>
+	  <td></td><td><input type="radio" value="object" name="p-group" onchange="cg.generate()">Name:</td>
+      <td><input type="text" value="String" id="list-to-array-type-name" oninput="cg.generate();" style="width: 100px;"/></td>
+	  </table>
+	  <br/>
+	  <input type="radio" value="Definition" name="group" checked onchange="cg.generate()">Definition &nbsp; 
 	  <input type="radio" value="Usage" name="group" onchange="cg.generate()">Usage
     </div>
   </div>
