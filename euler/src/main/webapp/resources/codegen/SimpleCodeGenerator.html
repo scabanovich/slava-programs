@@ -1,4 +1,3 @@
-<html>
   <head>  
     <script src="codegen.js"></script>
     <script type="text/javascript">
@@ -18,6 +17,7 @@
             	<li><a onclick="cg.setTemplate('template-for-over-string');" href="#">over string</a></li>
               </ul>
             </li>
+         	<li><b><a onclick="cg.setTemplate('template-switch');" href="#">Switch</a></b></li>
 
             <li><b>New</b>
               <ul>
@@ -83,6 +83,7 @@
   </table>
   
   <div id="templates">
+
   <!-- For Over Array -->
     <div id="template-for-over-array" onclick="cg.writeToOut(generateForOverArray());">
       <script type="text/javascript">
@@ -173,6 +174,73 @@
       Backwards: <input type="checkbox" id="for-string-back" onchange="cg.generate()"/>&nbsp;
       char: <input type="text" style="width: 40px" value="c" id="for-string-char" oninput="cg.generate();"/>
     </div>
+
+  <!-- Switch -->
+    <div id="template-switch" onclick="cg.writeToOut(generateSwitch());">
+      <script type="text/javascript">
+      	function wrapValue(value, type) {
+				return type == "char" ? "'" + value + "'" : type == "String" ? '"' + value + '"' : value;
+      	}
+
+      	function generateSwitch() {
+      		var n = cg.value('switch-name');
+      		var t = cg.value('switch-type');
+      		var kind = document.querySelector('input[name="switch-group"]:checked').value;
+      		var vs = cg.value('switch-values').split(' ');
+      		if (vs.length > 0 && vs[vs.length - 1] == 0) {
+      			vs.splice(vs.length - 1, 1);
+      		}
+      		if (vs.length == 0) {
+      			vs.push(t == "int" || t == "long" ? "0" : "a");      			
+      		}
+      		var b = document.getElementById('switch-default').checked;
+      		
+      		var result = "";
+      		if (kind == "switch") {
+      			result = "switch (" + n + ") {\n";
+      			for (var i = 0; i < vs.length; i++) {
+      				result += "    case " + wrapValue(vs[i], t) + ": \n" + "        \n        break;\n";
+      			}
+      			if (b) {
+      				result += "    default :\n        \n";
+      			}
+      		} else {
+      			for (var i = 0; i < vs.length; i++) {
+      				if (i > 0) {
+      					result += "} else "; 
+      				}
+      				result += "if (" + n + " == " + wrapValue(vs[i], t) + ") {\n    \n";
+      			}
+      			if (b) {
+      				result += "} else {\n    \n";
+      			}
+      		}
+  			result += "}";
+  			return result;
+      	}
+      </script>
+      <h3>switch / if</h3>
+        <table>
+          <tr>
+      <td colspan="2" style="padding-left: 20px;"><input type="radio" value="switch" name="switch-group" checked onchange="cg.generate()"/>Switch
+	  <span style="width: 20px;"></span><input type="radio" value="if" name="switch-group" onchange="cg.generate()"/>If</td>
+      	  </tr>
+		  <tr><td>Var:</td><td><input type="text" style="width: 70px" value="i" id="switch-name" oninput="cg.generate();"/></td>
+		    <td style="padding-left: 20px;">Type:</td>
+		    <td><select id="switch-type" oninput="cg.generate();" style="width: 70px" >
+      		  <option value="int" selected>int</option>
+      		  <option value="long">long</option>
+      		  <option value="char">char</option>
+      		  <option value="String">String</option>
+      		</select>
+		    </td>
+		  </tr>
+		  <tr><td>Values:</td><td colspan="3"><input type="text" style="width: 204px;" value="" id="switch-values" oninput="cg.generate();"/></td></tr>
+		  <tr><td></td><td colspan="2"><input type="checkbox" checked="checked" id="switch-default" oninput="cg.generate();"/>Add default</td></tr>
+		</table>      
+      
+    </div>
+
 
 
     <div id="template-new-sb" onclick="cg.writeToOut(generateNewStringBuilder());">
