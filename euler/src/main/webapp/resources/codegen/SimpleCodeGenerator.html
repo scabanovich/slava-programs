@@ -30,6 +30,11 @@
             <li><b>Methods</b>
               <ul>
             	<li><a onclick="cg.setTemplate('template-list-to-array');" href="#">List To Array</a></li>
+            	<li><a onclick="cg.setTemplate('template-distribution');" href="#">Distribution Map</a>
+            	  <ul>
+            	    <li><a onclick="cg.setTemplate('template-distribution-string');" href="#">over string</a></li>
+            	  </ul>
+            	</li>
               </ul>
             </li>
           </ul>
@@ -209,7 +214,12 @@
       				if (i > 0) {
       					result += "} else "; 
       				}
-      				result += "if (" + n + " == " + wrapValue(vs[i], t) + ") {\n    \n";
+      				var v = wrapValue(vs[i], t);
+      				if (t == "String") {
+      					result += "if (" + v + ".equals(" + n + ")) {\n    \n";
+      				} else {
+      					result += "if (" + n + " == " + v + ") {\n    \n";
+      				}
       			}
       			if (b) {
       				result += "} else {\n    \n";
@@ -397,7 +407,84 @@
 	  <input type="radio" value="Definition" name="group" checked onchange="cg.generate()">Definition &nbsp; 
 	  <input type="radio" value="Usage" name="group" onchange="cg.generate()">Usage
     </div>
+
+
+    <div id="template-distribution" onclick="cg.writeToOut(generateDistribution());">
+      <script type="text/javascript">
+      	function generateDistribution() {
+      		var res = "";
+      		var kind = document.querySelector('input[name="distribution-group"]:checked').value;
+      		var b = document.querySelector('input[name="distribution-p-group"]:checked').value;
+     		var t = (b != 'primitive') ? cg.value('distribution-type-name') : cg.value('distribution-type');
+      		var t1 = (b != 'primitive') ? t : (t == "Integer") ? "int" : (t == "Long") ? "long" : (t == "Character") ? "char" : "?";
+     		var c = cg.value('distribution-collection');
+     		var ct = (c == 'list') ? "List<" + t + ">" : t1 + "[]"; 
+      		if (kind == "Definition") {
+	  			res = "static TreeMap<" + t + ",Integer> distribution(" + ct + " values) {\n"
+      				   + "    TreeMap<" + t + ",Integer> result = new TreeMap<>();\n" 
+      				   + "    for (" + t1 + " value : values) {\n"
+      				   + "        result.put(value, result.getOrDefault(value, 0) + 1);\n"
+      				   + "    }\n"
+      				   + "    return result;\n"
+      				   + "}\n";
+      		} else {
+      			res = "TreeMap<" + t + ",Integer> result = distribution(values);\n" 
+      		}
+     		return res;
+      	}
+      </script>
+      <h3>Method Distribution of Values</h3>
+      <table>
+        <tr>
+      <td>Type:</td>
+	  <td><input type="radio" value="primitive" name="distribution-p-group" checked onchange="cg.generate()">Primitive:</td>
+      <td><select id="distribution-type" oninput="cg.generate();" style="width: 100px;">
+      		  <option value="Integer" selected>int</option>
+      		  <option value="Long">long</option>
+      		  <option value="Character">char</option>
+      		</select></td>
+      <td style="padding-left: 20px;">Collection:</td><td><select id="distribution-collection" oninput="cg.generate();">
+      		  <option value="array">array</option>
+      		  <option value="list">list</option>
+      		</select></td>
+	    </tr>
+	    <tr>
+	  <td></td><td><input type="radio" value="object" name="distribution-p-group" onchange="cg.generate()">Name:</td>
+      <td><input type="text" value="String" id="distribution-type-name" oninput="cg.generate();" style="width: 100px;"/></td>
+	  </table>
+	  <br/>
+	  <input type="radio" value="Definition" name="distribution-group" checked onchange="cg.generate()">Definition &nbsp; 
+	  <input type="radio" value="Usage" name="distribution-group" onchange="cg.generate()">Usage
+    </div>
+
+    <div id="template-distribution-string" onclick="cg.writeToOut(generateDistributionInString());">
+      <script type="text/javascript">
+      	function generateDistributionInString() {
+      		var res = "";
+      		var kind = document.querySelector('input[name="distribution-string-group"]:checked').value;
+      		if (kind == "Definition") {
+	  			res = "static TreeMap<Character,Integer> distribution(String s) {\n"
+      				   + "    TreeMap<Character,Integer> result = new TreeMap<>();\n" 
+      				   + "    for (int i = 0; i < s.length(); i++) {\n"
+      				   + "        char c = s.charAt(i);\n"
+      				   + "        result.put(c, result.getOrDefault(c, 0) + 1);\n"
+      				   + "    }\n"
+      				   + "    return result;\n"
+      				   + "}\n";
+      		} else {
+      			res = "TreeMap<Character,Integer> result = distribution(s);\n" 
+      		}
+     		return res;
+      	}
+      </script>
+      <h3>Method Distribution of Values</h3>
+	  <input type="radio" value="Definition" name="distribution-string-group" checked onchange="cg.generate()">Definition &nbsp; 
+	  <input type="radio" value="Usage" name="distribution-string-group" onchange="cg.generate()">Usage
+    </div>
+
+
   </div>
+
   </body>
 
 </html>
