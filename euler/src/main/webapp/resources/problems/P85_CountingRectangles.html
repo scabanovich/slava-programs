@@ -1,0 +1,75 @@
+<html>
+  <head>
+    <!-- Problem 85 -->
+    <title>Counting rectangles</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+		function countRectangles(n, m) {
+//			var result = 0;
+//			for (var i = 1; i <= n; i++) {
+//				for (var j = 1; j <= m; j++) {
+//					result += (n - i + 1) * (m - j + 1);
+//				}
+//			}
+			return parseInt((m + 1) * m / 2) * parseInt((n + 1) * n / 2);
+		}
+
+    	function countRectanglesAndOut(n, m, targetId) {
+    		common.out(countRectangles(n, m), targetId);
+    	}
+
+    	function solveAndOut(t, targetId) {
+    		var bestN = -1;
+    		var bestM = -1;
+    		var bestCount = -1;
+    		var bestD = 1000000000;
+    		for (var n = 1; n <= 1000; n++) {
+    			for (var m = n; m <= 1000; m++) {
+    				var c = countRectangles(n, m);
+    				var d = Math.abs(t - c);
+    				if (d < bestD) {
+    					bestN = n;
+    					bestM = m;
+    					bestCount = c; 
+    					bestD = d;
+    				}
+    				if (c > t) break;
+    			}
+    		}
+    		var message = "" + bestCount + " rectangles for grid " 
+			    		+ (bestN * bestM) + " = " + bestN + " &#215; " + bestM;
+    		common.out(message, targetId);
+    	}
+
+   	</script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem85Title', 85);">
+    <div id="problem85Title"></div>
+    <div class="problemStatement">
+      <p>By counting carefully it can be seen that a rectangular grid measuring 3 by 2 contains eighteen rectangles:</p>
+      <p>6 of 1x1, 4 of 1x2, 2 of 1x3, 3 of 2x1, 2 of 2x2, 1 of 2x3</p>
+      <p>Although there exists no rectangular grid that contains exactly two million rectangles, find the area of the grid with the nearest solution.</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Count rectangles in grin <i>n</i>&#215;<i>m</i></b></td></tr>
+      <tr>
+          <td>N:</td><td><input id="n" name="n" value="4" oninput="common.clearOut(['out2']);"/></td>
+          <td>M:</td><td><input id="m" name="m" value="4" oninput="common.clearOut(['out2']);"/></td>
+          <td><button id="b1" onclick="countRectanglesAndOut(common.getInt('n'), common.getInt('m'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+
+      <tr><td colspan="4"><b>Find count of rectangles nearest to the target</b></td></tr>
+      <tr>
+          <td>Target:</td><td><input id="t" name="t" value="2000000" oninput="common.clearOut(['out3']);"/></td>
+          <td><button id="b2" onclick="solveAndOut(common.getInt('t'), 'out3')">Solve</button></td>
+          <td><div id="out3"></div></td>
+      </tr>
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
