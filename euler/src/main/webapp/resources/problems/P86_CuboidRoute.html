@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <!-- Problem 86 -->
+    <title>Cuboid route</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	function countAndOut(m, targetId) {
+    		var result = 0;
+    		for (var p = 3; p < 200; p+=2) {
+    			for (var q = 1; q < p; q+=2) {
+    				if (common.math.gcd(p,q) > 1) {
+    					continue;
+    				}
+    				var a = parseInt((p * p - q * q) / 2);
+    				var b = p * q;
+    				if (b > a) {
+    					var c = a;
+    					a = b;
+    					b = c;
+    				}
+    				if (b > m || a > 2 * m) {
+    					continue;
+    				}
+    				for (var r = 1; ; r++) {
+    					var ar = a * r;
+    					var br = b * r;
+        				if (br > m || ar > 2 * m) {
+        					break;
+        				}
+        				if (ar <= m) {
+        					result += parseInt(br / 2);
+        				}
+        				var k2 = m < br ? m : br;
+        				var k1 = parseInt((ar + 1) / 2);
+        				if (k2 >= k1) {
+        					result += (k2 - k1 + 1);
+        				}
+    				}
+    			}
+    		}
+    		common.out(result, targetId);
+    	}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem86Title', 86);">
+    <div id="problem86Title"></div>
+    <div class="problemStatement">
+     <p>A spider, S, sits in one corner of a cuboid room, measuring 6 by 5 by 3, and a fly, F, sits in the opposite corner. By travelling on the surfaces of the room the shortest "straight line" distance from S to F is 10 and the path is shown on the diagram.</p>
+     <p>Diagram...</p>
+     <p>However, there are up to three "shortest" path candidates for any given cuboid and the shortest route doesn't always have integer length.</p>
+     <p>It can be shown that there are exactly 2060 distinct cuboids, ignoring rotations, with integer dimensions, up to a maximum size of M by M by M, for which the shortest route has integer length when M = 100. This is the least value of M for which the number of solutions first exceeds two thousand; the number of solutions when M = 99 is 1975.</p>
+     <p>Find the least value of M such that the number of solutions first exceeds one million.</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Count solutions for maximum size <i>M</i></b></td></tr>
+      <tr>
+          <td>M:</td><td><input id="m" name="m" value="4" oninput="common.clearOut(['out2']);"/></td>
+          <td><button id="b1" onclick="countAndOut(common.getInt('m'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
