@@ -1,0 +1,118 @@
+<html>
+  <head>
+    <!-- Problem 87 -->
+    <title>Prime power triples</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	var primes = new common.math.Primes(10000);
+
+    	function express(n) {
+    		var solutions = [];
+    		for (var i1 = 0; i1 < primes.size(); i1++) {
+    			var p = primes.get(i1);
+    			var s1 = p * p;
+    			if (s1 >= n) break;
+    			for (var i2 = 0; i2 < primes.size(); i2++) {
+        			var q = primes.get(i2);
+    				var s2 = s1 + q * q* q;
+    				if (s2 >= n) break;
+    				for (var i3 = 0; i3 < primes.size(); i3++) {
+            			var r = primes.get(i3);
+        				var s3 = s2 + r * r * r * r;
+        				if (s3 >= n) {
+        					if (s3 == n) {
+        						solutions.push([p, q, r]);
+        					}
+        					break;
+        				}            			
+    				}
+    			}
+    		}
+    		return solutions;
+    	}
+
+    	function countBelow(n) {
+    		var result = new Set();
+    		for (var i1 = 0; i1 < primes.size(); i1++) {
+    			var p = primes.get(i1);
+    			var s1 = p * p;
+    			if (s1 >= n) break;
+    			for (var i2 = 0; i2 < primes.size(); i2++) {
+        			var q = primes.get(i2);
+    				var s2 = s1 + q * q* q;
+    				if (s2 >= n) break;
+    				for (var i3 = 0; i3 < primes.size(); i3++) {
+            			var r = primes.get(i3);
+        				var s3 = s2 + r * r * r * r;
+        				if (s3 >= n) {
+        					break;
+        				}
+        				result.add(s3);
+    				}
+    			}
+    		}
+    		return result.size;
+    	}
+
+    	function expressAndOut(n, targetId) {
+    		var solutions = express(n);
+    		var message = "";
+    		if (solutions.length == 0) {
+    			message = "Cannot be expressed as the sum.";
+    		} else {
+    			for (var i = 0; i < solutions.length; i++) {
+    				message += "" + solutions[i][0] + "<sup>2</sup> + "
+    				              + solutions[i][1] + "<sup>3</sup> + "
+    				              + solutions[i][2] + "<sup>4</sup><br/>";
+    			}
+    		}
+    		common.out(message, targetId);
+    	}
+
+    	function solveAndOut(n, targetId) {
+			var result = 0;
+//			for (var m = 28; m < n; m++) {
+//				var solutions = express(m);
+//				if (solutions.length > 0) {
+//					result++;
+//				}
+//			}
+			result = countBelow(n);
+    		common.out(result, targetId);
+    	}
+
+   	</script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem87Title', 87);">
+    <div id="problem87Title"></div>
+    <div class="problemStatement">
+      <p>The smallest number expressible as the sum of a prime square, prime cube, and prime fourth power is 28. In fact, there are exactly four numbers below fifty that can be expressed in such a way:</p>
+      <p class="formulaIndent">28 = 2<sup>2</sup> + 2<sup>3</sup> + 2<sup>4</sup></p>
+      <p class="formulaIndent">33 = 3<sup>2</sup> + 2<sup>3</sup> + 2<sup>4</sup></p>
+      <p class="formulaIndent">49 = 5<sup>2</sup> + 2<sup>3</sup> + 2<sup>4</sup></p>
+      <p class="formulaIndent">47 = 2<sup>2</sup> + 3<sup>3</sup> + 2<sup>4</sup></p>
+      <p>How many numbers below fifty million can be expressed as the sum of a prime square, prime cube, and prime fourth power?</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Express numbers <i>N</i> as the sum of a prime square,<br/> prime cube, and prime fourth power</td></tr>
+      <tr>
+          <td>N:</td><td><input id="n" name="n" value="28" oninput="common.clearOut(['out2']);"/></td>
+          <td><button id="b1" onclick="expressAndOut(common.getInt('n'), 'out2')">Solve</button></td>
+          <td><div id="out2"></div></td>
+      </tr>
+
+      <tr><td colspan="4"><b>Count number below <i>N</i></b> that can be expressed as the sum<br/> of a prime square, prime cube, and prime fourth power</td></tr>
+      <tr>
+          <td>N:</td><td><input id="n1" name="n1" value="100" oninput="common.clearOut(['out3']);"/></td>
+          <td><button id="b2" onclick="solveAndOut(common.getInt('n1'), 'out3')">Solve</button></td>
+          <td><div id="out3"></div></td>
+      </tr>
+    
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
