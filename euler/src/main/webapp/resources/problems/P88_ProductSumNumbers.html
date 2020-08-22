@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <!-- Problem 88 -->
+    <title>Product-sum numbers</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+
+    	function build(n, k, d, m, s, mpsn, todo) {
+    		if (d > m && m > 1) return;
+    		var k1 = k + 1 + (n - (s + m));
+    		if (mpsn[k1] == 0 || n < mpsn[k1]) {
+    			if (mpsn[k1] == 0) todo[0]--;
+    			mpsn[k1] = n;
+    		}
+    		var m2 = parseInt(m / 2);
+    		for (var d1 = d; d1 <= m2; d1++) {
+    			if (m % d1 == 0) {
+    				build(n, k + 1, d1, m / d1, s + d1, mpsn, todo);
+    			}
+    		}
+    	}
+    
+		function solveAndOut(limit, targetId) {
+			var mpsn = [];
+			for (var i = 0; i <= limit; i++) {
+				mpsn.push(0);
+			}
+			
+			var todo = [limit];
+			for (var n = 4; todo[0] > 0; n++) {
+				build(n, 0, 2, n, 0, mpsn, todo);
+			}			
+			var result = 0;
+			var set = new Set();
+			for (var i = 2; i <= limit; i++) {
+				if (set.has(mpsn[i])) continue;
+				set.add(mpsn[i]);
+				result += mpsn[i];
+			}
+			common.out(result, targetId);
+		}    
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem88Title', 88);">
+    <div id="problem88Title"></div>
+    <div class="problemStatement">
+      <p>A natural number, N, that can be written as the sum and product of a given set of at least two 
+      natural numbers, {a<sup>1</sup>, a<sup>2</sup>, ... , a<sup>k</sup>} is called a product-sum 
+      number: N = a<sup>1</sup> + a<sup>2</sup> + ... + a<sup>k</sup> = a<sup>1</sup> &#215; a<sup>2</sup> &#215; ... &#215; a<sup>k</sup>.</p>
+      <p>For example, 6 = 1 + 2 + 3 = 1 &#215; 2 &#215; 3.</p>
+      <p>For a given set of size, k, we shall call the smallest N with this property a minimal product-sum number. The minimal product-sum numbers for sets of size, k = 2, 3, 4, 5, and 6 are as follows.</p>
+      <p class="formulaIndent">k=2: 4 = 2 &#215; 2 = 2 + 2</p>
+      <p class="formulaIndent">k=3: 6 = 1 &#215; 2 &#215; 3 = 1 + 2 + 3</p>
+      <p class="formulaIndent">k=4: 8 = 1 &#215; 1 &#215; 2 &#215; 4 = 1 + 1 + 2 + 4</p>
+      <p class="formulaIndent">k=5: 8 = 1 &#215; 1 &#215; 2 &#215; 2 &#215; 2 = 1 + 1 + 2 + 2 + 2</p>
+      <p class="formulaIndent">k=6: 12 = 1 &#215; 1 &#215; 1 &#215; 1 &#215; 2 &#215; 6 = 1 + 1 + 1 + 1 + 2 + 6</p>
+      <p>Hence for 2&le;k&le;6, the sum of all the minimal product-sum numbers is 4+6+8+12 = 30; note that 8 is only counted once in the sum.</p>
+      <p>In fact, as the complete set of minimal product-sum numbers for 2&le;k&le;12 is {4, 6, 8, 12, 15, 16}, the sum is 61.</p>
+      <p>What is the sum of all the minimal product-sum numbers for 2&le;k&le;12000?</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Count number below <i>N</i></b> that can be expressed as the sum<br/> of a prime square, prime cube, and prime fourth power</td></tr>
+      <tr>
+          <td>Limit:</td><td><input id="limit" name="limit" value="12000" oninput="common.clearOut(['out3']);"/></td>
+          <td><button id="b2" onclick="solveAndOut(common.getInt('limit'), 'out3')">Solve</button></td>
+          <td><div id="out3"></div></td>
+      </tr>
+    
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
