@@ -1,0 +1,120 @@
+<html>
+  <head>
+    <!-- Problem 89 -->
+    <title>Roman numerals</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+        function Rule(index, nextRule, repeat, d, code) {
+        	this.index = index;
+        	this.nextRule = nextRule;
+        	this.repeat = repeat;
+        	this.d = d;
+        	this.code = code;
+        }
+        
+        Rule.prototype.matches = function(s, i) {
+        	if (s.length < i + this.code.length) {
+        		return false;
+        	}
+        	return this.code == s.substring(i, i + this.code.length);
+        }
+ 
+        var rules = [new Rule(0, 1, true, 1000, "M"),
+        			 new Rule(1, 2, false, 900, "CM"),
+        			 new Rule(2, 4, false, 500, "D"),
+        			 new Rule(3, 5, false, 400, "CD"),
+        			 new Rule(4, 5, true, 100, "C"),
+        			 new Rule(5, 9, false, 90, "XC"),
+        			 new Rule(6, 8, false, 50, "L"),
+        			 new Rule(7, 9, false, 40, "XL"),  // do not use X after XL
+        			 new Rule(8, 9, true, 10, "X"),
+        			 new Rule(9, 13, false, 9, "IX"),
+        			 new Rule(10, 12, false, 5, "V"),
+        			 new Rule(11, 13, false, 4, "IV"),
+        			 new Rule(12, 13, true, 1, "I")];
+
+		function asRomanNumber(n) {
+			var result = "";
+			for (var i = 0; i < rules.length; i++) {
+				var rule = rules[i];
+				while (n >= rule.d) {
+					result += rule.code;
+					n -= rule.d;
+				}
+			}
+			return result;
+		}
+		
+		function decodeRomanNumber(roman) {
+			var ruleIndex = 0;
+			var index = 0;
+			var result = 0;
+			while (ruleIndex < rules.length) {
+				if (rules[ruleIndex].matches(roman, index)) {
+					index += rules[ruleIndex].code.length;
+					result += rules[ruleIndex].d;
+					if (!rules[ruleIndex].repeat) {
+						ruleIndex = rules[ruleIndex].nextRule;
+					}
+				} else {
+					ruleIndex++;
+				}
+			}
+			if (index < roman.length) {
+				return "Invalid Roman number";
+			}
+			return result;
+		}
+
+    	function asRomanNumberAndOut(n, targetId) {
+    		common.out(asRomanNumber(n), targetId);
+    	}
+    	
+    	function decodeRomanNumberAndOut(roman, targetId) {
+    		common.out(decodeRomanNumber(roman), targetId);
+    	}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem89Title', 89);">
+    <div id="problem89Title"></div>
+    <div class="problemStatement">
+      <p>For a number written in Roman numerals to be considered 
+      valid there are basic rules which must be followed. Even 
+      though the rules allow some numbers to be expressed in more 
+      than one way there is always a "best" way of writing a particular number.</p>
+      <p>For example, it would appear that there are at least six ways of writing 
+      the number sixteen:</p>
+      <p class="formulaIndent">IIIIIIIIIIIIIIII</p>
+      <p class="formulaIndent">VIIIIIIIIIII</p>
+      <p class="formulaIndent">VVIIIIII</p>
+      <p class="formulaIndent">XIIIIII</p>
+      <p class="formulaIndent">VVVI</p>
+      <p class="formulaIndent">XVI</p>
+      <p>However, according to the rules only XIIIIII and XVI are valid, and the last 
+      example is considered to be the most efficient, as it uses the least number of numerals.</p>
+      <p>The 11K text file, roman.txt (right click and 'Save Link/Target As...'), contains one thousand numbers written in valid, but not necessarily minimal, Roman numerals; see About... Roman Numerals for the definitive rules for this problem.</p>
+      <p>Find the number of characters saved by writing each of these in their minimal form.</p>
+      <p>Note: You can assume that all the Roman numerals in the file contain no more than four consecutive identical units.</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Write as Roman number</b></td></tr>
+      <tr>
+          <td>N:</td><td><input id="n" name="n" value="35" oninput="common.clearOut(['out3']);"/></td>
+          <td><button id="b2" onclick="asRomanNumberAndOut(common.getInt('n'), 'out3')">Solve</button></td>
+          <td><div id="out3"></div></td>
+      </tr>
+      <tr><td colspan="4"><b>Decode Roman number</b></td></tr>
+      <tr>
+          <td>R:</td><td><input id="r" name="r" value="XXX" oninput="common.clearOut(['out4']);"/></td>
+          <td><button id="b3" onclick="decodeRomanNumberAndOut(document.getElementById('r').value, 'out4')">Solve</button></td>
+          <td><div id="out4"></div></td>
+      </tr>
+    
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
