@@ -1,0 +1,92 @@
+<html>
+  <head>
+    <!-- Problem 91 -->
+    <title>Right triangles with integer coordinates</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+   
+    	function arePointsEqual(x1, y1, x2, y2) {
+    		return x1 == x2 && y1 == y2;
+    	}
+   
+    	function areOnOneLineWithOrigin(x1, y1, x2, y2) {
+    		return x1 * y2 == x2 * y1;
+    	}
+
+    	function isRightAngle(x1, y1, x2, y2, x3, y3) {
+    		var x21 = x1 - x2;
+    		var y21 = y1 - y2;
+    		var x23 = x3 - x2;
+    		var y23 = y3 - y2;
+    		return x21 * x23 + y21 * y23;
+    	}
+    	
+    	function isRightTriangle(x1, y1, x2, y2) {
+    		if (arePointsEqual(x1, y1, x2, y2) 
+    				|| arePointsEqual(0, 0, x2, y2) 
+    				|| arePointsEqual(x1, y1, 0, 0)) {
+    			return false;
+    		}
+    		if (areOnOneLineWithOrigin(x1, y1, x2, y2)) {
+    			return false;
+    		}
+    		return isRightAngle(0, 0, x1, y1, x2, y2)
+    			|| isRightAngle(x1, y1, 0, 0, x2, y2)
+    			|| isRightAngle(x1, y1, x2, y2, 0, 0)
+    	}
+ 
+    	function isInSquare(x, y, n) {
+    		return x >= 0 && y >= 0 && x <= n && y <= n;
+    	}
+
+    	function solveAndOut(n, targetId) {
+    		var result = 3 * n * n;  //x1 = 0 or y1 = 0 
+    		for (var x1 = 1; x1 <= n; x1++) {
+        		for (var y1 = 1; y1 <= n; y1++) {
+        			var g = common.math.gcd(x1, y1);
+        			var dx = -parseInt(y1 / g);
+        			var dy = parseInt(x1 / g);
+        			var x2 = x1 + dx;
+        			var y2 = y1 + dy;
+        			while (isInSquare(x2, y2, n)) {
+        				result++;
+        				x2 += dx;
+        				y2 += dy;
+        			}
+        			x2 = x1 - dx;
+        			y2 = y1 - dy;
+        			while (isInSquare(x2, y2, n)) {
+        				result++;
+        				x2 -= dx;
+        				y2 -= dy;
+        			}
+        		}
+    		}
+    		common.out(result, targetId);
+    	}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem91Title', 91);">
+    <div id="problem91Title"></div>
+    <div class="problemStatement">
+      <p>The points P (x1, y1) and Q (x2, y2) are plotted at integer co-ordinates and are joined to the origin, O(0,0), to form OPQ.</p>
+      <p>here are exactly fourteen triangles containing a right angle that can be formed when each co-ordinate lies between 0 and 2 inclusive; that is,</p>
+	  <p>0 &le; x1, y1, x2, y2 &le; 2.</p>
+      <p>Given that 0 &le; x1, y1, x2, y2 &le; 50, how many right triangles can be formed?</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Count triangles 0 &le; x1, y1, x2, y2 &le; <i>N</i></b></td></tr>
+      <tr>
+          <td>N:</td><td><input id="n" name="n" value="10" oninput="common.clearOut(['out1']);"/></td>
+          <td><button id="b3" onclick="solveAndOut(common.getInt('n'), 'out1')">Solve</button></td>
+          <td><div id="out1"></div></td>
+      </tr>
+    
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>

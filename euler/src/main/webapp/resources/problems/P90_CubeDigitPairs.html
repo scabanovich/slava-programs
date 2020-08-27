@@ -7,13 +7,15 @@
     <script type="text/javascript">
 
     	function checkTwoDigits(d1, d2, cubeAsBits1, cubeAsBits2) {
-    		return ( ((cubeAsBits1 & (1 << d1)) > 0 && (cubeAsBits2 & (1 << d2)) > 0)
-    			|| ((cubeAsBits1 & (1 << d2)) > 0 && (cubeAsBits2 & (1 << d1)) > 0) );
+    		return ( 
+    			   ( (cubeAsBits1 & (1 << d1)) > 0 && (cubeAsBits2 & (1 << d2)) > 0)
+    			|| ( (cubeAsBits1 & (1 << d2)) > 0 && (cubeAsBits2 & (1 << d1)) > 0) 
+    			);
     	}
  
 		function checkTwoDigitNumber(n, cubeAsBits1, cubeAsBits2) {
 			var d1 = n % 10;
-			var d2 = (n / 10) % 10;
+			var d2 = parseInt(n / 10) % 10;
 			return checkTwoDigits(d1, d2, cubeAsBits1, cubeAsBits2);
 		}
 
@@ -26,7 +28,16 @@
     		}
     		return cannotForm;
     	}
-   
+
+    	function checkAllSquaresAsBoolean(cubeAsBits1, cubeAsBits2) {
+    		for (var n = 1; n <= 9; n++) {
+    			if (!checkTwoDigitNumber(n * n, cubeAsBits1, cubeAsBits2)) {
+    				return false;
+    			}
+    		}
+    		return true;
+    	}
+
     	function toBits(cubeStateAsString)  {
     		var n = 0;
     		for (var i = 0; i < cubeStateAsString.length; i++) {
@@ -64,7 +75,7 @@
     		}
     		if (bc < 6 || bc > 7) return false;
     		if (has6 != has9) return false;
-    		if (!has6 && bc != 6) return false;
+    		if ((!has6) && bc != 6) return false;
     		return true;
     	}
     	
@@ -84,8 +95,8 @@
     		console.log(states.length);
     		for (var i1 = 0; i1 < states.length; i1++) {
         		for (var i2 = i1; i2 < states.length; i2++) {
-        			if (checkAllSquares(states[i1], states[i2]).length == 0) {
-        				result++;
+        			if (checkAllSquaresAsBoolean(states[i1], states[i2])) {
+        				result += 1;
         			}
         		}
     		}
