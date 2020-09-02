@@ -1,0 +1,119 @@
+<html>
+  <head>
+    <!-- Problem 93 -->
+    <title>Arithmetic expressions</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+ 
+        function representedValue(v, expr) {
+			this.v = v;
+			this.expr = expr;
+        }
+        
+        function copy(arr, remove1, remove2, add) {
+        	var res = [];
+        	for (var i = 0; i < arr.length; i++) {
+        		if (i != remove1 && i != remove2) {
+        			res.push(arr[i]);
+        		}
+        	}
+        	res.push(add);
+        	return res;
+        }
+
+        function buildInner(exprs, res) {
+        	if (exprs.length == 1) {
+        		if (exprs[0].v > 0 && exprs[0].v < res.length && res[exprs[0].v] == "") {
+//            		console.log(exprs[0].v);
+        			res[exprs[0].v] = exprs[0].expr;
+        		}
+        		return;
+        	}
+        	for (var a = 0; a < exprs.length; a++) {
+        		var ea = exprs[a];
+            	for (var b = a + 1; b < exprs.length; b++) {
+            		var eb = exprs[b];
+            		buildInner(copy(exprs, a, b, new representedValue(ea.v + eb.v, "(" + ea.expr + " + " + eb.expr + ")")), res);
+            		buildInner(copy(exprs, a, b, new representedValue(ea.v - eb.v, "(" + ea.expr + " - " + eb.expr + ")")), res);
+            		buildInner(copy(exprs, a, b, new representedValue(eb.v - ea.v, "(" + eb.expr + " - " + ea.expr + ")")), res);
+            		buildInner(copy(exprs, a, b, new representedValue(ea.v * eb.v, "(" + ea.expr + " * " + eb.expr + ")")), res);
+            		if (eb.v != 0 && (ea.v % eb.v) == 0) {
+                		buildInner(copy(exprs, a, b, new representedValue(parseInt(ea.v / eb.v), "(" + ea.expr + " / " + eb.expr + ")")), res);
+            		}
+            		if (ea.v != 0 && (eb.v % ea.v) == 0) {
+                		buildInner(copy(exprs, a, b, new representedValue(parseInt(eb.v / ea.v), "(" + eb.expr + " / " + ea.expr + ")")), res);
+            		}
+            	}
+        	}
+        }
+  
+        function build(exprs) {
+        	var res = [];
+        	for (var i = 0; i <= 100; i++) {
+        		res.push("");
+        	}
+        	buildInner(exprs, res);
+        	return res;
+        }
+    
+    	function buildEquationsAndOut(digitsString, numberOfDigits, targetId) {
+    		var dsA = digitsString.split(" ");
+    		if (dsA.length != numberOfDigits) {
+    			common.err("Input must set 4 digits.", targetId);
+    			return;
+    		}
+    		var ds = [];
+    		for (var i = 0; i < dsA.length; i++) {
+    			var d = parseInt(dsA[i]);
+        		if (d <= 0 || d > 9) {
+        			common.err("Input must set 4 digits from 1 to 9.", targetId);
+        			return;
+        		}
+    			ds.push(new representedValue(d, "" + d));
+    		}
+    		var res = build(ds);
+    		var out = "";
+    		for (var i = 1; i < res.length; i++) {
+    			if (res[i] == "") {
+    				break;
+    			}
+    			out += "" + i + " = " + res[i] + "</br>";    			
+    		}
+    		common.out(out, targetId);
+    	}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem93Title', 93);">
+    <div id="problem93Title"></div>
+    <div class="problemStatement">
+      <p>By using each of the digits from the set, {1, 2, 3, 4}, exactly once, and making use of the four arithmetic operations (+, -, *, /) and brackets/parentheses, it is possible to form different positive integer targets.</p>
+      <p>For example,</p>
+      <p class="formulaIndent">8 = (4 * (1 + 3)) / 2</p>
+      <p class="formulaIndent">14 = 4 * (3 + 1 / 2)</p>
+      <p class="formulaIndent">19 = 4 * (2 + 3) - 1</p>
+      <p class="formulaIndent">36 = 3 * 4 * (2 + 1)</p>
+      <p>Note that concatenations of the digits, like 12 + 34, are not allowed.</p>
+      <p>Using the set, {1, 2, 3, 4}, it is possible to obtain thirty-one different target numbers of which 36 is the maximum, and each of the numbers 1 to 28 can be obtained before encountering the first non-expressible number.</p>
+      <p>Find the set of four distinct digits, a &lt; b &lt; c &lt; d, for which the longest set of consecutive positive integers, 1 to n, can be obtained, giving your answer as a string: abcd.</p>
+      <p></p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Build all equations for 4 digits</b></td></tr>
+      <tr>
+          <td>4 Digits:</td><td><input id="ds" name="ds" value="1 2 3 4" oninput="common.clearOut(['out1']);"/></td>
+          <td><button id="b3" onclick="buildEquationsAndOut(document.getElementById('ds').value, 4, 'out1')">Solve</button></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td></td><td colspan="2"><div id="out1"></div></td>
+      </tr>
+
+
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
