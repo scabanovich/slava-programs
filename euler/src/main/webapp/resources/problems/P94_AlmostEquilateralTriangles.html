@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <!-- Problem 94 -->
+    <title>Almost Equilateral Triangles</title>
+    <link rel="stylesheet" href="common.css"/>
+    <script src="common.js"></script>
+    <script type="text/javascript">
+    	function isSquare(n) {
+    		var i = parseInt(Math.sqrt(n));
+    		var i2 = i * i;
+    		if (i2 < n) {
+    			i2 += i2 + i2 + 1;
+    		} else if (i2 > n) {
+    			i2 -= i2 + i2 - 1;
+    		}
+    		if (i2 == n) {
+    			return true;
+    		}
+    		return false;
+    	}
+    	function findTrianglesAndOut(p, targetId) {
+    		var sum = 0;
+    		var result = "";
+    		for (var b = 3; ; b++) {
+				var b2 = 2 * b;
+    			var pb = 6 * b - 2;
+    			if (pb > p) {
+    				console.log(p + " " + pb);
+    				break;
+    			}
+    			var h2 = 3 * b * b + 4 * b + 1;
+    			if (isSquare(h2)) {
+    				var a = b2 + 1;
+    				result += "(" + a + "," + a + "," + b2 + ")<br/>";
+    				sum += 2 * a + b2;
+    			}
+    			h2 = 3 * b * b - 4 * b + 1;
+    			if (isSquare(h2)) {
+    				var a = b2 - 1;
+    				result += "(" + a + "," + a + "," + b2 + ")<br/>";
+    				sum += 2 * a + b2;
+    			}
+    		}
+			result += "Sum of perimeters = " + sum;
+    		
+    		common.out(result, targetId);
+    	}
+    </script>  
+  </head>
+  
+  <body onload="common.addProblemHeader('problem94Title',94);">
+    <div id="problem94Title"></div>
+    <div class="problemStatement">
+		<p>It is easily proved that no equilateral triangle exists with integral length sides and integral area. However, the <i>almost equilateral triangle</i> 5-5-6 has an area of 12 square units.</p>
+		<p>We shall define an <i>almost equilateral triangle</i> to be a triangle for which two sides are equal and the third differs by no more than one unit.</p>
+		<p>Find the sum of the perimeters of all <i>almost equilateral triangles</i> with integral side lengths and area and whose perimeters do not exceed one billion (1,000,000,000).</p>
+    </div>
+    
+    <table style="border-spacing: 10px;">
+      <tr><td colspan="4"><b>Fibd triangles with perimeter not exceeding <i>P</i></b></td></tr>
+      <tr>
+          <td>P:</td><td><input id="p" name="p" value="10000" oninput="common.clearOut(['out1']);"/></td>
+          <td><button id="b3" onclick="findTrianglesAndOut(common.getInt('p'), 'out1')">Solve</button></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td></td><td colspan="2"><div id="out1"></div></td>
+      </tr>
+    
+    </table>
+
+    <a href="Euler.html">Back</a>
+  </body>
+</html>
